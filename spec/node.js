@@ -18,7 +18,7 @@ function run(specs) {
 
 specs = {
   independant: [
-    'auth'
+    'auth.core'
     ]
 }
 

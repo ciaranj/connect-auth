@@ -1,7 +1,7 @@
 describe 'Express'
   before_each
     reset()
-    use(Auth=require('express/plugins/auth').Auth)
+    use(BasicAuth= require('express/plugins/auth').BasicAuth)
   end
   describe 'Auth'
     describe 'on'
@@ -87,7 +87,7 @@ describe 'Express'
             describe 'when a method requires authorization'
               it 'should pass the username and password to the onAuthorize callback' 
                  var user,pass;
-                  use(Auth, {onAuthorize: function(u,p, callback) {
+                  use(BasicAuth, {onAuthorize: function(u,p, callback) {
                                             user= u;
                                             pass= p;
                                             callback(null,true)
@@ -101,7 +101,7 @@ describe 'Express'
               end              
               describe 'and the onAuthorize function calls-back successfully'
                 before_each
-                  use(Auth, {onAuthorize: function(u,p, callback) { callback(null,true)} } )
+                  use(BasicAuth, {onAuthorize: function(u,p, callback) { callback(null,true)} } )
                 end
                 it 'should not set the WWW-Authenticate header' 
                    get('/', function() { 
@@ -134,7 +134,7 @@ describe 'Express'
               
               describe 'and the onAuthorize function calls-back as unauthorized'
                 before_each
-                  use(Auth, {onAuthorize: function(u,p, callback) { callback(null,false)} } )
+                  use(BasicAuth, {onAuthorize: function(u,p, callback) { callback(null,false)} } )
                 end
                 it 'should set the WWW-Authenticate header' 
                    get('/', function() { 
