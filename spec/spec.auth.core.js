@@ -1,7 +1,7 @@
 describe 'Express'
   before_each
     reset()
-    use(BasicAuth= require('express/plugins/auth').BasicAuth)
+    use(BasicAuth= require('express/plugins/auth').BasicAuth, {getPasswordForUser: function(error, callback) { callback(null, 'bar')} })
   end
   describe 'Auth'
     describe 'on'
@@ -85,23 +85,21 @@ describe 'Express'
                remoteUser.should_be undefined
             end
             describe 'when a method requires authorization'
-              it 'should pass the username and password to the onAuthorize callback' 
-                 var user,pass;
-                  use(BasicAuth, {onAuthorize: function(u,p, callback) {
+              it 'should request the password for the given username from the getPasswordForUser callback' 
+                 var user;
+                  use(BasicAuth, {getPasswordForUser: function(u, callback) {
                                             user= u;
-                                            pass= p;
-                                            callback(null,true)
+                                            callback(null,'bar')
                     }} )
                   get('/', function() {
                     this.isAuthorized(function(error, authorized) {})
                   });
                   var response= get('/', { headers: { authorization : "Basic Zm9vOmJhcg==" } } )
                   user.should.eql 'foo'
-                  pass.should.eql 'bar'
-              end              
-              describe 'and the onAuthorize function calls-back successfully'
+              end             
+              describe 'and the getPasswordForUser function returns the expected password'
                 before_each
-                  use(BasicAuth, {onAuthorize: function(u,p, callback) { callback(null,true)} } )
+                  use(BasicAuth, {getPasswordForUser: function(user, callback) { callback(null, 'bar')} } )
                 end
                 it 'should not set the WWW-Authenticate header' 
                    get('/', function() { 
@@ -132,9 +130,9 @@ describe 'Express'
                 end
               end
               
-              describe 'and the onAuthorize function calls-back as unauthorized'
+              describe 'and the onAuthorize function returns a mis-matching password'
                 before_each
-                  use(BasicAuth, {onAuthorize: function(u,p, callback) { callback(null,false)} } )
+                  use(BasicAuth, {getPasswordForUser: function(error, callback) { callback(null, null)} }  )
                 end
                 it 'should set the WWW-Authenticate header' 
                    get('/', function() { 
