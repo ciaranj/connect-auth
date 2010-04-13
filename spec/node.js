@@ -4,7 +4,8 @@ require.paths.unshift('spec', 'lib', 'spec/lib')
 
 require("jspec")
 require("express")
-require("express/spec") 
+require("express/spec")
+require("express/plugins") 
 
 print = puts
 quit = process.exit

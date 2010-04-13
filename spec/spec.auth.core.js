@@ -1,6 +1,8 @@
 describe 'Express'
   before_each
     reset()
+    use(Cookie)
+    use(Session)
     use(BasicAuth= require('express/plugins/auth').BasicAuth, {getPasswordForUser: function(error, callback) { callback(null, 'bar')} })
   end
   describe 'Auth'
@@ -10,7 +12,7 @@ describe 'Express'
           it 'should set auth provided false'
             var auth; 
              get('/', function(){ 
-               auth= this.auth;  
+               auth= this.session.auth;  
              })
              get('/')
              auth.provided.should.eql( false )
@@ -18,7 +20,7 @@ describe 'Express'
            it 'should set REMOTE_USER to be undefined'
              var remoteUser; 
               get('/', function(){ 
-                remoteUser= this.REMOTE_USER;  
+                remoteUser= this.session.auth.REMOTE_USER;  
               })
               get('/')
               remoteUser.should_be undefined
@@ -41,7 +43,7 @@ describe 'Express'
           it 'should set auth provided false'
             var auth; 
             get('/', function(){ 
-              auth= this.auth;
+              auth= this.session.auth;
             })
             get('/', { headers: { authorization : "Basic Zm9vOsdsmJhcg==" } } )
             auth.provided.should.eql false
@@ -49,7 +51,7 @@ describe 'Express'
           it 'should set REMOTE_USER to be undefined'
             var remoteUser;
             get('/', function(){ 
-              remoteUser= this.REMOTE_USER;  
+              remoteUser= this.session.auth.REMOTE_USER;  
             })
             get('/', { headers: { authorization : "Basic Zm9sdsdvOmJhcg==" } } )
             remoteUser.should_be undefined
@@ -71,7 +73,7 @@ describe 'Express'
            it 'should set auth provided true'
              var auth; 
               get('/', function(){ 
-                auth= this.auth;
+                auth= this.session.auth;
               })
               get('/', { headers: { authorization : "Basic Zm9vOmJhcg==" } } )
               auth.provided.should.eql( true )
@@ -79,7 +81,7 @@ describe 'Express'
             it 'should set REMOTE_USER to be undefined'
               var remoteUser;
                get('/', function(){ 
-                 remoteUser= this.REMOTE_USER;  
+                 remoteUser= this.session.auth.REMOTE_USER;  
                })
                get('/', { headers: { authorization : "Basic Zm9vOmJhcg==" } } )
                remoteUser.should_be undefined
@@ -113,7 +115,7 @@ describe 'Express'
                     get('/', function() {
                       var self=this; 
                       this.isAuthorized(function(error, authorized) {
-                                              remoteUser= self.REMOTE_USER})
+                                              remoteUser= self.session.auth.REMOTE_USER})
                     });
                     var response= get('/', { headers: { authorization : "Basic Zm9vOmJhcg==" } } )
                     remoteUser.should.eql "foo"
@@ -146,7 +148,7 @@ describe 'Express'
                     get('/', function() {
                       var self=this; 
                       this.isAuthorized(function(error, authorized) {
-                                              remoteUser= self.REMOTE_USER})
+                                              remoteUser= self.session.auth.REMOTE_USER})
                     });
                     var response= get('/', { headers: { authorization : "Basic Zm9vOmJhcg==" } } )
                     remoteUser.should_be undefined
