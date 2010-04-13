@@ -25,7 +25,7 @@ get('/', function() {
     if( authorized ) {
       if( ! self.session.counter ) self.session.counter= 0;
       self.status(200)  
-      self.respond("<h1>Hello!"+ self.REMOTE_USER+ "</h1>"  + "<p>" + (self.session.counter++) +"</p>")
+      self.respond("<h1>Hello!"+ self.session.auth.REMOTE_USER+ "</h1>"  + "<p>" + (self.session.counter++) +"</p>")
     }
   });
 })
