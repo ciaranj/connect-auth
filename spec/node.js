@@ -19,7 +19,8 @@ function run(specs) {
 
 specs = {
   independant: [
-    'auth.core'
+/*    'auth.core',  */
+    'strategies'
     ]
 }
 
