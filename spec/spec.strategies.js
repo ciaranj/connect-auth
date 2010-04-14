@@ -35,7 +35,8 @@ describe 'Express'
             strategies.add( 'test', mockStrategy )
 
             strategies.get( 'test' ).should.eql mockStrategy
-            strategies.get( 'xxx' ).should_be undefined
+
+            expect(function(){ strategies.get('xxx') }).to( throw_error )  
           end
         end
         describe 'with an array of strategy definitions'
@@ -49,7 +50,8 @@ describe 'Express'
 
             strategies.get( 'strategy1' ).should.eql mockStrategyA
             strategies.get( 'strategy2' ).should.eql mockStrategyB
-            strategies.get( 'xxx' ).should_be undefined
+
+            expect(function(){ strategies.get('xxx') }).to( throw_error )  
           end
         end
         describe 'with an invalid strategy'
@@ -70,15 +72,16 @@ describe 'Express'
         strategies.get('strategy1').should_be mockStrategyA
         strategies.get('strategy2').should_be mockStrategyB
         strategies.clear();
-        strategies.get('strategy1').should_be undefined
-        strategies.get('strategy2').should_be undefined
+        
+        expect(function(){ strategies.get('strategy1') }).to( throw_error )  
+        expect(function(){ strategies.get('strategy2') }).to( throw_error )  
         end
       end
       describe 'when get is called'
         describe 'with an unknown strategy'
-          it 'should return undefined'
+          it 'should raise an error'
             var strategies= new Strategies();
-            strategies.get('sdads').should_be undefined
+            expect(function(){ strategies.get('sdads') }).to( throw_error )  
           end
         end
         describe 'with a known strategy'
