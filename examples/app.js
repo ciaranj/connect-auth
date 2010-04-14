@@ -12,17 +12,34 @@ var getPasswordForUserFunction= function(user,  callback) {
 }
 
 use(Cookie)
-use(Session) 
-//use(Session, { dataStore: MongoDbStore, mongoDbName:'sessions_poop', lifetime: (15).seconds, reapInterval: (10).seconds })
-//use(Session, { dataStore: MongoDbStore, mongoServerPort: 27017, mongoServerAddress: "127.0.0.1", mongoDbName:'sessions_poop', lifetime: (15).seconds, reapInterval: (10).seconds })
-//use(Session, { dataStore: MongoDbStore, mongoServer:  new require('mongodb/connection').Server("127.0.0.1", 27017, {auto_reconnect: true}, {}) , lifetime: (15).seconds, reapInterval: (10).seconds })
 use(Session, { lifetime: (150).seconds, reapInterval: (10).seconds })
-use(Auth, {getPasswordForUser: getPasswordForUserFunction} )
+use(Auth, {strategies: [{"anon" : new Anonymous(),
+                        "never" : new Never(),
+                        "http" : new Http({getPasswordForUser: getPasswordForUserFunction}),
+                        "basic" : new Basic({getPasswordForUser: getPasswordForUserFunction}),
+                        "digest" : new Digest({getPasswordForUser: getPasswordForUserFunction})}
+                        ]})
 
+
+get('/anon', function() {
+  var self=this;
+  self.authenticate(['anon'], function(error, authenticated) { 
+    self.status(200)  
+    self.respond("<h1>Hello! Full anonymous access</p>")
+  });
+})
+
+get('/digest', function() {
+  var self=this;
+  self.authenticate(['digest'], function(error, authenticated) { 
+    self.status(200)  
+    self.respond("<h1>Hello! My little digestive"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p>")
+  });
+})
 
 get('/', function() {
   var self=this;
-  self.authenticate('admin', function(error, authenticated) { 
+  self.authenticate(['never', 'digest', 'anon'], function(error, authenticated) { 
     if( authenticated ) {
       if( ! self.session.counter ) self.session.counter= 0;
       self.status(200)  
