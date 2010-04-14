@@ -20,7 +20,8 @@ function run(specs) {
 specs = {
   independant: [
 /*    'auth.core',  */
-    'strategies'
+    'strategies',
+    'auth.strategies.anonymous'
     ]
 }
 
