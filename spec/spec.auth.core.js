@@ -3,7 +3,7 @@ describe 'Express'
     reset()
     use(Cookie)
     use(Session)
-    use(BasicAuth= require('express/plugins/auth').BasicAuth, {getPasswordForUser: function(error, callback) { callback(null, 'bar')} })
+    use(Basic= require('express/plugins/auth').Basic, {getPasswordForUser: function(error, callback) { callback(null, 'bar')} })
   end
   describe 'Auth'
     describe 'on'

@@ -21,7 +21,8 @@ specs = {
   independant: [
 /*    'auth.core',  */
     'strategies',
-    'auth.strategies.anonymous'
+    'auth.strategies.anonymous',
+    'auth.strategies.never'
     ]
 }
 

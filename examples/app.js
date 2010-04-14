@@ -22,11 +22,11 @@ use(Auth, {getPasswordForUser: getPasswordForUserFunction} )
 
 get('/', function() {
   var self=this;
-  self.authenticate(function(error, authenticated) { 
+  self.authenticate('admin', function(error, authenticated) { 
     if( authenticated ) {
       if( ! self.session.counter ) self.session.counter= 0;
       self.status(200)  
-      self.respond("<h1>Hello!"+ self.session.auth.REMOTE_USER+ "</h1>"  + "<p>" + (self.session.counter++) +"</p>")
+      self.respond("<h1>Hello!"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p>")
     }
     else {
       self.status(200)  
