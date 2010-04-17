@@ -13,16 +13,17 @@ var getPasswordForUserFunction= function(user,  callback) {
 
 use(Cookie)
 use(Session, { lifetime: (150).seconds, reapInterval: (10).seconds })
-use(Auth, {strategies: [{"anon" : new Anonymous(),
-                        "never" : new Never(),
-                        "http" : new Http({getPasswordForUser: getPasswordForUserFunction}),
-                        "basic" : new Basic({getPasswordForUser: getPasswordForUserFunction}),
-                        "digest" : new Digest({getPasswordForUser: getPasswordForUserFunction})}
-                        ]})
 
+var StrategyDefinition= require('../lib/express/plugins/strategyDefinition').StrategyDefinition;
+use(Auth, {"anon": new StrategyDefinition(Anonymous),
+           "never": new StrategyDefinition(Never),
+           "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
+           "basic": new StrategyDefinition(Basic, {getPasswordForUser: getPasswordForUserFunction}),
+           "digest": new StrategyDefinition(Digest, {getPasswordForUser: getPasswordForUserFunction})})
 
 get('/anon', function() {
   var self=this;
+  self.logout();
   self.authenticate(['anon'], function(error, authenticated) { 
     self.status(200)  
     self.respond("<h1>Hello! Full anonymous access</p>")
@@ -31,6 +32,7 @@ get('/anon', function() {
 
 get('/digest', function() {
   var self=this;
+  self.logout();
   self.authenticate(['digest'], function(error, authenticated) { 
     self.status(200)  
     self.respond("<h1>Hello! My little digestive"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p>")
@@ -39,6 +41,7 @@ get('/digest', function() {
 
 get('/', function() {
   var self=this;
+  self.logout();
   self.authenticate(['never', 'digest', 'anon'], function(error, authenticated) { 
     if( authenticated ) {
       if( ! self.session.counter ) self.session.counter= 0;

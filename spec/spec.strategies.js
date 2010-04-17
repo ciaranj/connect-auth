@@ -1,29 +1,31 @@
 describe 'Express'
   before_each
     Strategies= require('express/plugins/strategies').Strategies
-    MockStrategy= function(){ return {
-      authenticate: function(){},
-      isValid: function(){}
-    }};
+    StrategyDefinition= require('express/plugins/strategyDefinition').StrategyDefinition
+    AuthStrategy= require('express/plugins/auth.strategy.base').AuthStrategy
+    
+    MockStrategy= AuthStrategy.extend({ 
+      authenticate: function() {}
+    });
+    MockStrategyB= AuthStrategy.extend({ 
+      authenticate: function() {}
+    });
   end
   describe 'Auth'
     describe 'Strategies'
       describe 'when constructed'
         describe 'with an option declaring a strategy definition'
           it 'should add that strategy to the list of available strategies'
-            var mockStrategyA= new MockStrategy
-            var strategies= new Strategies({strategy:{'strategy1' : mockStrategyA} });
-            strategies.get( 'strategy1' ).should.eql mockStrategyA
+            var strategies= new Strategies({'strategy1' : new StrategyDefinition(MockStrategy)});
+            strategies.get( 'strategy1' ).should_be_an_instance_of MockStrategy
           end
         end
         describe 'with an option declaring an array of strategy definitions'
           it 'should add those strategies to the list of available strategies'
-            var mockStrategyA= new MockStrategy
-            var mockStrategyB= new MockStrategy
-            var strategies= new Strategies({strategies:[{'strategy1' : mockStrategyA},
-                                                        {'strategy2' : mockStrategyB}]});
-            strategies.get( 'strategy1' ).should.eql mockStrategyA
-            strategies.get( 'strategy2' ).should.eql mockStrategyB
+            var strategies= new Strategies({'strategy1' : new StrategyDefinition(MockStrategy),
+                                            'strategy2' : new StrategyDefinition(MockStrategyB)});
+            strategies.get( 'strategy1' ).should_be_an_instance_of MockStrategy
+            strategies.get( 'strategy2' ).should_be_an_instance_of MockStrategyB
           end
         end
       end
@@ -31,25 +33,20 @@ describe 'Express'
         describe 'with a label and a valid Strategy'
           it 'should add that strategy to the list of available strategies'
             var strategies= new Strategies();
-            var mockStrategy= new MockStrategy
-            strategies.add( 'test', mockStrategy )
-
-            strategies.get( 'test' ).should.eql mockStrategy
+            strategies.add( 'test', new StrategyDefinition(MockStrategy) )
+            strategies.get( 'test' ).should_be_an_instance_of MockStrategy
 
             expect(function(){ strategies.get('xxx') }).to( throw_error )  
           end
         end
-        describe 'with an array of strategy definitions'
+        describe 'with an object literal of strategy definitions'
           it 'should add those strategies to the list of available strategies'
             var strategies= new Strategies();
-            var mockStrategyA= new MockStrategy
-            var mockStrategyB= new MockStrategy
+            strategies.add( {'strategy1' : new StrategyDefinition(MockStrategy),
+                             'strategy2' : new StrategyDefinition(MockStrategyB)} )
 
-            strategies.add( [{'strategy1' : mockStrategyA},
-                             {'strategy2' : mockStrategyB}] )
-
-            strategies.get( 'strategy1' ).should.eql mockStrategyA
-            strategies.get( 'strategy2' ).should.eql mockStrategyB
+            strategies.get( 'strategy1' ).should_be_an_instance_of MockStrategy
+            strategies.get( 'strategy2' ).should_be_an_instance_of MockStrategyB
 
             expect(function(){ strategies.get('xxx') }).to( throw_error )  
           end
@@ -64,15 +61,13 @@ describe 'Express'
       describe 'when clear is called'
         it 'shold remove any known strategies'
         var strategies= new Strategies();
-        var mockStrategyA= new MockStrategy
-        var mockStrategyB= new MockStrategy
 
-        strategies.add( [{'strategy1' : mockStrategyA},
-                         {'strategy2' : mockStrategyB}] )
-        strategies.get('strategy1').should_be mockStrategyA
-        strategies.get('strategy2').should_be mockStrategyB
-        strategies.clear();
+        strategies.add( {'strategy1' : new StrategyDefinition(MockStrategy),
+                         'strategy2' : new StrategyDefinition(MockStrategyB) } )
         
+        strategies.get('strategy1').should_be_an_instance_of MockStrategy
+        strategies.get('strategy2').should_be_an_instance_of MockStrategyB
+        strategies.clear();
         expect(function(){ strategies.get('strategy1') }).to( throw_error )  
         expect(function(){ strategies.get('strategy2') }).to( throw_error )  
         end
@@ -87,9 +82,17 @@ describe 'Express'
         describe 'with a known strategy'
           it 'should return the strategy'
             var strategies= new Strategies();
-            var mockStrategy= new MockStrategy
-            strategies.add( 'test', mockStrategy )
-            strategies.get( 'test' ).should.eql mockStrategy
+            strategies.add( 'test', new StrategyDefinition(MockStrategy) )
+            strategies.get( 'test' ).should_be_an_instance_of MockStrategy
+          end
+          it 'should always return new instances of the strategy'
+            var strategies= new Strategies();
+            strategies.add( 'test', new StrategyDefinition(MockStrategy) )
+            var get1= strategies.get( 'test' )
+            get1.should_be_an_instance_of MockStrategy
+            var get2= strategies.get( 'test' )
+            var get3= strategies.get( 'test' )
+            ( ( get1 === get2) && (get1 === get3)  && (get2 === get3) ).should_be false
           end
         end
       end
