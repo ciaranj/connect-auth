@@ -15,12 +15,22 @@ use(Cookie)
 use(Session, { lifetime: (150).seconds, reapInterval: (10).seconds })
 
 var StrategyDefinition= require('../lib/express/plugins/strategyDefinition').StrategyDefinition;
-use(Auth, {"anon": new StrategyDefinition(Anonymous),
-           "never": new StrategyDefinition(Never),
-           "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
-           "basic": new StrategyDefinition(Basic, {getPasswordForUser: getPasswordForUserFunction}),
-           "digest": new StrategyDefinition(Digest, {getPasswordForUser: getPasswordForUserFunction})})
+use(Auth, {strategies:{"anon": new StrategyDefinition(Anonymous),
+                       "never": new StrategyDefinition(Never),
+                       "twitter": new StrategyDefinition(Twitter, {consumerKey: "TOqGJsdtsicNz4FDSW4N5A", consumerSecret: "CN15nhsuAGQVGL3MDAzfJ3F5FFhp1ce9U4ZbaFZrSwA"}),
+                       "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
+                       "basic": new StrategyDefinition(Basic, {getPasswordForUser: getPasswordForUserFunction}),
+                       "digest": new StrategyDefinition(Digest, {getPasswordForUser: getPasswordForUserFunction})}})
 
+get ('/twitter', function() {
+  var self=this;
+  self.logout();
+  self.authenticate(['twitter'], function(error, authenticated) { 
+    self.status(200)  
+    self.respond("<h1>Hello! Twitter authenticated user</p>")
+  });
+  
+})
 get('/anon', function() {
   var self=this;
   self.logout();
