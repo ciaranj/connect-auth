@@ -24,16 +24,20 @@ use(Auth, {strategies:{"anon": new StrategyDefinition(Anonymous),
 
 get ('/twitter', function() {
   var self=this;
-  self.logout();
   self.authenticate(['twitter'], function(error, authenticated) { 
-    self.status(200)  
-    self.respond("<h1>Hello! Twitter authenticated user</p>")
+    if( authenticated ) {
+      self.status(200)  
+      self.respond("<h1>Hello! Twitter authenticated user ("+self.session.auth.user.username+")</p>")
+    }
+    else {
+      self.status(200)  
+      self.respond("<h1>Twitter authentication failed :( )</p>")
+    }
   });
   
 })
 get('/anon', function() {
   var self=this;
-  self.logout();
   self.authenticate(['anon'], function(error, authenticated) { 
     self.status(200)  
     self.respond("<h1>Hello! Full anonymous access</p>")
@@ -42,7 +46,6 @@ get('/anon', function() {
 
 get('/digest', function() {
   var self=this;
-  self.logout();
   self.authenticate(['digest'], function(error, authenticated) { 
     self.status(200)  
     self.respond("<h1>Hello! My little digestive"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p>")
@@ -51,7 +54,6 @@ get('/digest', function() {
 
 get('/', function() {
   var self=this;
-  self.logout();
   self.authenticate(['never', 'digest', 'anon'], function(error, authenticated) { 
     if( authenticated ) {
       if( ! self.session.counter ) self.session.counter= 0;
