@@ -25,13 +25,11 @@ use(Auth, {strategies:{"anon": new StrategyDefinition(Anonymous),
 get ('/twitter', function() {
   var self=this;
   self.authenticate(['twitter'], function(error, authenticated) { 
-    if( authenticated ) {
-      self.status(200)  
-      self.respond("<h1>Hello! Twitter authenticated user ("+self.session.auth.user.username+")</p>")
+    if( authenticated ) { 
+      self.halt(200, "<h1>Hello! Twitter authenticated user ("+self.session.auth.user.username+")</p>")
     }
     else {
-      self.status(200)  
-      self.respond("<h1>Twitter authentication failed :( )</p>")
+      self.halt(200, "<h1>Twitter authentication failed :( </p>")
     }
   });
   
@@ -39,16 +37,14 @@ get ('/twitter', function() {
 get('/anon', function() {
   var self=this;
   self.authenticate(['anon'], function(error, authenticated) { 
-    self.status(200)  
-    self.respond("<h1>Hello! Full anonymous access</p>")
+    self.halt(200, "<h1>Hello! Full anonymous access</p>")
   });
 })
 
 get('/digest', function() {
   var self=this;
   self.authenticate(['digest'], function(error, authenticated) { 
-    self.status(200)  
-    self.respond("<h1>Hello! My little digestive"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p>")
+    self.halt(200, "<h1>Hello! My little digestive"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p>")
   });
 })
 
@@ -57,12 +53,10 @@ get('/', function() {
   self.authenticate(['never', 'digest', 'anon'], function(error, authenticated) { 
     if( authenticated ) {
       if( ! self.session.counter ) self.session.counter= 0;
-      self.status(200)  
-      self.respond("<h1>Hello!"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p>")
+      self.halt(200, "<h1>Hello!"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p>")
     }
     else {
-      self.status(200)  
-      self.respond("<h1>Who are you, you seem to be un-authenticateable</h1>")
+      self.halt(200, "<h1>Who are you, you seem to be un-authenticateable</h1>")
     }
   });
 })
