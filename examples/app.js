@@ -3,6 +3,10 @@ var sys= require('sys');
 
 kiwi.require('express') 
 require('express/plugins')
+kiwi.require('oauth')
+
+require.paths.unshift(__dirname+ "/../lib/node-oauth/lib/")
+
 global.merge(require('../lib/express/plugins/auth'));
 
 var getPasswordForUserFunction= function(user,  callback) {
@@ -26,10 +30,10 @@ get ('/twitter', function() {
   var self=this;
   self.authenticate(['twitter'], function(error, authenticated) { 
     if( authenticated ) { 
-      self.halt(200, "<h1>Hello! Twitter authenticated user ("+self.session.auth.user.username+")</p>")
+      self.halt(200, "<html><h1>Hello! Twitter authenticated user ("+self.session.auth.user.username+")</h1></html>")
     }
     else {
-      self.halt(200, "<h1>Twitter authentication failed :( </p>")
+      self.halt(200, "<html><h1>Twitter authentication failed :( </h1></html>")
     }
   });
   
@@ -37,14 +41,14 @@ get ('/twitter', function() {
 get('/anon', function() {
   var self=this;
   self.authenticate(['anon'], function(error, authenticated) { 
-    self.halt(200, "<h1>Hello! Full anonymous access</p>")
+    self.halt(200, "<html><h1>Hello! Full anonymous access</h1></html>")
   });
 })
 
 get('/digest', function() {
   var self=this;
   self.authenticate(['digest'], function(error, authenticated) { 
-    self.halt(200, "<h1>Hello! My little digestive"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p>")
+    self.halt(200, "<html><h1>Hello! My little digestive"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p></html>")
   });
 })
 
@@ -53,10 +57,10 @@ get('/', function() {
   self.authenticate(['never', 'digest', 'anon'], function(error, authenticated) { 
     if( authenticated ) {
       if( ! self.session.counter ) self.session.counter= 0;
-      self.halt(200, "<h1>Hello!"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p>")
+      self.halt(200, "<html><h1>Hello!"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p></html>")
     }
     else {
-      self.halt(200, "<h1>Who are you, you seem to be un-authenticateable</h1>")
+      self.halt(200, "<html><h1>Who are you, you seem to be un-authenticateable</h1></html>")
     }
   });
 })
