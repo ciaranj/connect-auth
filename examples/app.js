@@ -38,16 +38,8 @@ get ('/twitter', function() {
                         "CN15nhsuAGQVGL3MDAzfJ3F5FFhp1ce9U4ZbaFZrSwA",
                         "1.0",
                         "HMAC-SHA1");
-      var data= "";
-      
-      oa.getProtectedResource(self.session.auth["oauth_token"], self.session.auth["oauth_token_secret"], "http://twitter.com/statuses/user_timeline.xml", function (response) {
-        response.setEncoding('utf8');
-        response.addListener('data', function (chunk) {
-          data+=chunk;
-        });
-        response.addListener('end', function () {
+      oa.getProtectedResource("http://twitter.com/statuses/user_timeline.xml", "GET", self.session.auth["oauth_token"], self.session.auth["oauth_token_secret"],  function (error, data) {
           self.halt(200, "<html><h1>Hello! Twitter authenticated user ("+self.session.auth.user.username+")</h1>"+data+ "</html>")
-        });
       });
     }
     else {
