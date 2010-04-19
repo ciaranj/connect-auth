@@ -3,11 +3,12 @@ var sys= require('sys');
 
 kiwi.require('express') 
 require('express/plugins')
-kiwi.require('oauth')
+kiwi.seed('oauth')
+var OAuth= require('oauth').OAuth;
 
 require.paths.unshift(__dirname+ "/../lib/node-oauth/lib/")
 
-global.merge(require('../lib/express/plugins/auth'));
+global.merge(require('../lib/express/plugins/auth'));  
 
 var getPasswordForUserFunction= function(user,  callback) {
   var result;
@@ -29,15 +30,32 @@ use(Auth, {strategies:{"anon": new StrategyDefinition(Anonymous),
 get ('/twitter', function() {
   var self=this;
   self.authenticate(['twitter'], function(error, authenticated) { 
-    if( authenticated ) { 
-      self.halt(200, "<html><h1>Hello! Twitter authenticated user ("+self.session.auth.user.username+")</h1></html>")
+    if( authenticated ) {
+      var oa= new OAuth("http://twitter.com/oauth/request_token",
+                        "http://twitter.com/oauth/access_token",
+                        "http://twitter.com/oauth/authenticate?oauth_token=",
+                        "TOqGJsdtsicNz4FDSW4N5A",
+                        "CN15nhsuAGQVGL3MDAzfJ3F5FFhp1ce9U4ZbaFZrSwA",
+                        "1.0",
+                        "HMAC-SHA1");
+      var data= "";
+      
+      oa.getProtectedResource(self.session.auth["oauth_token"], self.session.auth["oauth_token_secret"], "http://twitter.com/statuses/user_timeline.xml", function (response) {
+        response.setEncoding('utf8');
+        response.addListener('data', function (chunk) {
+          data+=chunk;
+        });
+        response.addListener('end', function () {
+          self.halt(200, "<html><h1>Hello! Twitter authenticated user ("+self.session.auth.user.username+")</h1>"+data+ "</html>")
+        });
+      });
     }
     else {
       self.halt(200, "<html><h1>Twitter authentication failed :( </h1></html>")
     }
   });
-  
 })
+
 get('/anon', function() {
   var self=this;
   self.authenticate(['anon'], function(error, authenticated) { 
