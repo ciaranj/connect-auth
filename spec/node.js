@@ -23,8 +23,7 @@ specs = {
     'strategies',
     'auth.strategies.anonymous',
     'auth.strategies.never',
-    'auth.strategy.base',
-    'auth.strategies.oauth.oauth'
+    'auth.strategy.base'
     ]
 }
 
