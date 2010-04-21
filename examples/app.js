@@ -6,7 +6,7 @@ require('express/plugins')
 kiwi.seed('oauth')
 var OAuth= require('oauth').OAuth;
 
-require.paths.unshift(__dirname+ "/../lib/node-oauth/lib/")
+//require.paths.unshift(__dirname+ "/../lib/node-oauth/lib/")
 
 global.merge(require('../lib/express/plugins/auth'));  
 
@@ -33,7 +33,6 @@ get ('/twitter', function() {
     if( authenticated ) {
       var oa= new OAuth("http://twitter.com/oauth/request_token",
                         "http://twitter.com/oauth/access_token",
-                        "http://twitter.com/oauth/authenticate?oauth_token=",
                         "TOqGJsdtsicNz4FDSW4N5A",
                         "CN15nhsuAGQVGL3MDAzfJ3F5FFhp1ce9U4ZbaFZrSwA",
                         "1.0",
