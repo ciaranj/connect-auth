@@ -1,14 +1,12 @@
-var kiwi= require('kiwi');
-var sys= require('sys');
+var kiwi= require('kiwi'),
+    sys= require('sys')
 
 kiwi.require('express') 
-require('express/plugins')
-kiwi.seed('oauth')
-var OAuth= require('oauth').OAuth;
+     require('express/plugins')
 
-//require.paths.unshift(__dirname+ "/../lib/node-oauth/lib/")
+var OAuth= kiwi.require('oauth').OAuth;
 
-global.merge(require('../lib/express/plugins/auth'));  
+global.merge(require('../lib/express/plugins/auth'));
 
 var getPasswordForUserFunction= function(user,  callback) {
   var result;
@@ -73,4 +71,5 @@ get('/', function() {
     }
   });
 })
+
 run();
