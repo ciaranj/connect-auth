@@ -26,12 +26,14 @@ use(Session, { lifetime: (150).seconds, reapInterval: (10).seconds })
 // N.B. TO USE the facebook strategy you must specify these values correctly for your application.
 var fbId= "";
 var fbSecret= "";
+var twitterConsumerKey= "";
+var twitterConsumerSecret= "";
 
 var StrategyDefinition= require('../lib/express/plugins/strategyDefinition').StrategyDefinition;
 use(Auth, {strategies:{"anon": new StrategyDefinition(Anonymous),
                        "never": new StrategyDefinition(Never),
                        "facebook": new StrategyDefinition(Facebook, {appId : fbId, appSecret: fbSecret, scope: "email"}),
-                       "twitter": new StrategyDefinition(Twitter, {consumerKey: "TOqGJsdtsicNz4FDSW4N5A", consumerSecret: "CN15nhsuAGQVGL3MDAzfJ3F5FFhp1ce9U4ZbaFZrSwA"}),
+                       "twitter": new StrategyDefinition(Twitter, {consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
                        "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
                        "basic": new StrategyDefinition(Basic, {getPasswordForUser: getPasswordForUserFunction}),
                        "digest": new StrategyDefinition(Digest, {getPasswordForUser: getPasswordForUserFunction})}})
