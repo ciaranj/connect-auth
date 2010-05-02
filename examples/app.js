@@ -4,11 +4,12 @@ var sys= require('sys');
 kiwi.require('express') 
 require('express/plugins')
 kiwi.seed('oauth')
-var OAuth= require('oauth').OAuth;
 
 //require.paths.unshift(__dirname+ "/../lib/node-oauth/lib/")
+var OAuth= require('oauth').OAuth;
+var OAuth2= require('oauth2').OAuth2;
 
-global.merge(require('../lib/express/plugins/auth'));  
+Object.merge(global, require('../lib/express/plugins/auth'));
 
 var getPasswordForUserFunction= function(user,  callback) {
   var result;
@@ -17,11 +18,18 @@ var getPasswordForUserFunction= function(user,  callback) {
 }
 
 use(Cookie)
+use(Logger)
 use(Session, { lifetime: (150).seconds, reapInterval: (10).seconds })
+
+// N.B. TO USE the facebook strategy you must specify these values correctly for your application.
+var fbId= "";
+var fbSecret= "";
+
 
 var StrategyDefinition= require('../lib/express/plugins/strategyDefinition').StrategyDefinition;
 use(Auth, {strategies:{"anon": new StrategyDefinition(Anonymous),
                        "never": new StrategyDefinition(Never),
+                       "facebook": new StrategyDefinition(Facebook, {appId : fbId, appSecret: fbSecret, scope: "email"}),
                        "twitter": new StrategyDefinition(Twitter, {consumerKey: "TOqGJsdtsicNz4FDSW4N5A", consumerSecret: "CN15nhsuAGQVGL3MDAzfJ3F5FFhp1ce9U4ZbaFZrSwA"}),
                        "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
                        "basic": new StrategyDefinition(Basic, {getPasswordForUser: getPasswordForUserFunction}),
@@ -38,11 +46,26 @@ get ('/twitter', function() {
                         "1.0",
                         "HMAC-SHA1");
       oa.getProtectedResource("http://twitter.com/statuses/user_timeline.xml", "GET", self.session.auth["oauth_token"], self.session.auth["oauth_token_secret"],  function (error, data) {
-          self.halt(200, "<html><h1>Hello! Twitter authenticated user ("+self.session.auth.user.username+")</h1>"+data+ "</html>")
+        sys.p('got protected resource ')
+          self.respond(200, "<html><h1>Hello! Twitter authenticated user ("+self.session.auth.user.username+")</h1>"+data+ "</html>")
       });
     }
     else {
-      self.halt(200, "<html><h1>Twitter authentication failed :( </h1></html>")
+      self.respond(200, "<html><h1>Twitter authentication failed :( </h1></html>")
+    }
+  });
+})
+
+get ('/facebook', function() {
+  var self=this;
+  require('sys').puts('/facebook')
+  self.authenticate(['facebook'], function(error, authenticated) {
+    if( authenticated ) {
+
+      self.respond(200, "<html><h1>Hello Facebook user:" + JSON.stringify(  self.session.auth.user ) + ".</h1></html>")
+    }
+    else {
+      self.respond(200, "<html><h1>Twitter authentication failed :( </h1></html>")
     }
   });
 })
@@ -50,14 +73,20 @@ get ('/twitter', function() {
 get('/anon', function() {
   var self=this;
   self.authenticate(['anon'], function(error, authenticated) { 
-    self.halt(200, "<html><h1>Hello! Full anonymous access</h1></html>")
+    self.respond(200, "<html><h1>Hello! Full anonymous access</h1></html>")
   });
 })
 
 get('/digest', function() {
   var self=this;
   self.authenticate(['digest'], function(error, authenticated) { 
-    self.halt(200, "<html><h1>Hello! My little digestive"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p></html>")
+    if( authenticated  ) {
+      if( ! self.session.counter ) self.session.counter= 0;        
+      self.respond(200, "<html><h1>Hello! My little digestive"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p></html>")
+    }
+    else {
+      self.respond(200, "<html><h1>should not be happening...</h1></html>")
+    }
   });
 })
 
@@ -66,10 +95,10 @@ get('/', function() {
   self.authenticate(['never', 'digest', 'anon'], function(error, authenticated) { 
     if( authenticated ) {
       if( ! self.session.counter ) self.session.counter= 0;
-      self.halt(200, "<html><h1>Hello!"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p></html>")
+      self.respond(200, "<html><h1>Hello!"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p></html>")
     }
     else {
-      self.halt(200, "<html><h1>Who are you, you seem to be un-authenticateable</h1></html>")
+      self.respond(200, "<html><h1>Who are you, you seem to be un-authenticateable</h1></html>")
     }
   });
 })
