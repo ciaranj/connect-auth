@@ -1,8 +1,8 @@
-var kiwi= require('kiwi');
-var sys= require('sys');
+var kiwi= require('kiwi'),
+    sys= require('sys')
 
 kiwi.require('express') 
-require('express/plugins')
+     require('express/plugins')
 kiwi.seed('oauth')
 var style = require('express/pages/style').style  
 style+=  require('./style').style  
@@ -80,63 +80,14 @@ get('/auth/anon', function() {
 get('/auth/digest', function() {
   var self=this;
   self.authenticate(['digest'], function(error, authenticated) { 
-    if( authenticated  ) {
-      if( ! self.session.counter ) self.session.counter= 0;        
+    if( authenticated ) {
+      if( ! self.session.counter ) self.session.counter= 0;
       self.respond(200, "<html><h1>Hello! My little digestive"+ self.session.auth.user.username+ "</h1>"  + "<p>" + (self.session.counter++) +"</p></html>")
     }
     else {
       self.respond(200, "<html><h1>should not be happening...</h1></html>")
     }
   });
-})
-
-get ('/logout', function() {
-  this.logout();
-  this.redirect("/")
-})
-
-get('/', function() {
-  var self=this;
-  if( !this.isAuthenticated() ) {
-    self.respond(200, 
-      '<html>                                              \n\
-        <head>                                             \n\
-          <title>Express Auth -- Not Authenticated</title> \n\
-          ' + style + '                                    \n\
-        </head>                                            \n\
-        <body>                                             \n\
-          <div id="wrapper">                               \n\
-            <h1>Not authenticated</h1>                     \n\
-            <div class="fb_button" id="fb-login" style="float:left; background-position: left -188px">          \n\
-              <a href="/auth/facebook" class="fb_button_medium">        \n\
-                <span id="fb_login_text" class="fb_button_text"> \n\
-                  Connect with Facebook                    \n\
-                </span>                                    \n\
-              </a>                                         \n\
-            </div>                                         \n\
-            <div style="float:left;margin-left:5px">       \n\
-            <a href="/auth/twitter" style="border:0px">                \n\
-            <img style="border:0px" src="http://apiwiki.twitter.com/f/1242697715/Sign-in-with-Twitter-darker.png"/>\n\
-            </a>                                           \n\
-          </div>                                           \n\
-        </body>                                            \n\
-      </html>')
-  }
-  else {
-    self.respond(200, 
-      '<html>                                              \n\
-        <head>                                             \n\
-          <title>Express Auth -- Authenticated</title>\n\
-          ' + style + '                                    \n\
-        </head>                                            \n\
-        <body>                                             \n\
-          <div id="wrapper">                               \n\
-            <h1>Authenticated</h1>     \n\
-            <h2><a href="/logout">Logout</a></h2>                \n\
-          </div>                                           \n\
-        </body>                                            \n\
-      </html>')
-  }
 })
 
 run();
