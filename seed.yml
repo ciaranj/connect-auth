@@ -1,6 +1,6 @@
 ---
   name: express-auth
-  description: Authenticate your node apps to twitter easily
+  description: Simply add authentication strategies to your express applications. 
   version: 0.0.2
   dependencies:
-    - node-oauth >= 0.6.0
+    - oauth >= 0.6.0
