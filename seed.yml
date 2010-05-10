@@ -1,6 +1,6 @@
 ---
   name: express-auth
   description: Simply add authentication strategies to your express applications. 
-  version: 0.0.2
+  version: 0.0.3
   dependencies:
-    - oauth >= 0.6.0
+    - oauth >= 0.7.1

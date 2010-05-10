@@ -23,17 +23,22 @@ use(Cookie)
 use(Logger)
 use(Session, { lifetime: (150).seconds, reapInterval: (10).seconds })
 
-// N.B. TO USE the facebook strategy you must specify these values correctly for your application.
+// N.B. TO USE Any of these strategies the following relevant parameters must be defined!!!.
 var fbId= "";
 var fbSecret= "";
+var fbCallbackAddress="http://yourtesthost.com/auth/facebook_callback"
 var twitterConsumerKey= "";
 var twitterConsumerSecret= "";
+var yahooConsumerKey= "";
+var yahooConsumerSecret= "";
+var yahooCallbackAddress= "http://yourtesthost.com/auth/yahoo_callback"
 
 var StrategyDefinition= require('../lib/express/plugins/strategyDefinition').StrategyDefinition;
 use(Auth, {strategies:{"anon": new StrategyDefinition(Anonymous),
                        "never": new StrategyDefinition(Never),
-                       "facebook": new StrategyDefinition(Facebook, {appId : fbId, appSecret: fbSecret, scope: "email"}),
+                       "facebook": new StrategyDefinition(Facebook, {appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
                        "twitter": new StrategyDefinition(Twitter, {consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
+                       "yahoo": new StrategyDefinition(Yahoo, {consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress}),
                        "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
                        "basic": new StrategyDefinition(Basic, {getPasswordForUser: getPasswordForUserFunction}),
                        "digest": new StrategyDefinition(Digest, {getPasswordForUser: getPasswordForUserFunction})}})
@@ -44,9 +49,10 @@ get ('/auth/twitter', function() {
     if( authenticated ) {
       var oa= new OAuth("http://twitter.com/oauth/request_token",
                         "http://twitter.com/oauth/access_token",
-                        "TOqGJsdtsicNz4FDSW4N5A",
-                        "CN15nhsuAGQVGL3MDAzfJ3F5FFhp1ce9U4ZbaFZrSwA",
+                        twitterConsumerKey,
+                        twitterConsumerSecret,
                         "1.0",
+                        null,
                         "HMAC-SHA1");
       oa.getProtectedResource("http://twitter.com/statuses/user_timeline.xml", "GET", self.session.auth["oauth_token"], self.session.auth["oauth_token_secret"],  function (error, data) {
         sys.p('got protected resource ')
@@ -63,11 +69,22 @@ get ('/auth/facebook', function() {
   var self=this;
   self.authenticate(['facebook'], function(error, authenticated) {
     if( authenticated ) {
-
       self.respond(200, "<html><h1>Hello Facebook user:" + JSON.stringify(  self.session.auth.user ) + ".</h1></html>")
     }
     else {
       self.respond(200, "<html><h1>Twitter authentication failed :( </h1></html>")
+    }
+  });
+})
+
+get ('/auth/yahoo', function() {
+  var self=this;
+  self.authenticate(['yahoo'], function(error, authenticated) {
+    if( authenticated ) {
+      self.respond(200, "<html><h1>Hello Yahoo! user:" + JSON.stringify(  self.session.auth.user ) + ".</h1></html>")
+    }
+    else {
+      self.respond(200, "<html><h1>Yahoo! authentication failed :( </h1></html>")
     }
   });
 })
@@ -117,9 +134,15 @@ get('/', function() {
               </a>                                         \n\
             </div>                                         \n\
             <div style="float:left;margin-left:5px">       \n\
-            <a href="/auth/twitter" style="border:0px">                \n\
-            <img style="border:0px" src="http://apiwiki.twitter.com/f/1242697715/Sign-in-with-Twitter-darker.png"/>\n\
-            </a>                                           \n\
+              <a href="/auth/yahoo" style="border:0px">  \n\
+               <img style="border:0px" src="http://l.yimg.com/a/i/reg/openid/buttons/1_new.png"/> \n\
+              </a>                                         \n\
+            </div>                                         \n\
+            <div style="float:left;margin-left:5px">       \n\
+              <a href="/auth/twitter" style="border:0px">  \n\
+                <img style="border:0px" src="http://apiwiki.twitter.com/f/1242697715/Sign-in-with-Twitter-darker.png"/>\n\
+              </a>                                         \n\
+            </div>                                         \n\
           </div>                                           \n\
         </body>                                            \n\
       </html>')
@@ -134,6 +157,7 @@ get('/', function() {
         <body>                                             \n\
           <div id="wrapper">                               \n\
             <h1>Authenticated</h1>     \n\
+          ' + JSON.stringify(self.session.auth.user) + '   \n\
             <h2><a href="/logout">Logout</a></h2>                \n\
           </div>                                           \n\
         </body>                                            \n\
@@ -141,4 +165,4 @@ get('/', function() {
   }
 })
 
-run();
+run(80, null);
