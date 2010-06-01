@@ -27,6 +27,9 @@ use(Session, { lifetime: (150).seconds, reapInterval: (10).seconds })
 var fbId= "";
 var fbSecret= "";
 var fbCallbackAddress="http://yourtesthost.com/auth/facebook_callback"
+var ghId= "";
+var ghSecret= "";
+var ghCallbackAddress="http://yourtesthost.com/auth/github_callback"
 var twitterConsumerKey= "";
 var twitterConsumerSecret= "";
 var yahooConsumerKey= "";
@@ -37,6 +40,7 @@ var StrategyDefinition= require('../lib/express/plugins/strategyDefinition').Str
 use(Auth, {strategies:{"anon": new StrategyDefinition(Anonymous),
                        "never": new StrategyDefinition(Never),
                        "facebook": new StrategyDefinition(Facebook, {appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
+                       "github": new StrategyDefinition(Github, {appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
                        "twitter": new StrategyDefinition(Twitter, {consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
                        "yahoo": new StrategyDefinition(Yahoo, {consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress}),
                        "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
@@ -56,6 +60,7 @@ get ('/auth/twitter', function() {
                         "HMAC-SHA1");
       oa.getProtectedResource("http://twitter.com/statuses/user_timeline.xml", "GET", self.session.auth["oauth_token"], self.session.auth["oauth_token_secret"],  function (error, data) {
         sys.p('got protected resource ')
+        sys.p(error)
           self.respond(200, "<html><h1>Hello! Twitter authenticated user ("+self.session.auth.user.username+")</h1>"+data+ "</html>")
       });
     }
@@ -72,7 +77,19 @@ get ('/auth/facebook', function() {
       self.respond(200, "<html><h1>Hello Facebook user:" + JSON.stringify(  self.session.auth.user ) + ".</h1></html>")
     }
     else {
-      self.respond(200, "<html><h1>Twitter authentication failed :( </h1></html>")
+      self.respond(200, "<html><h1>Facebook authentication failed :( </h1></html>")
+    }
+  });
+})
+
+get ('/auth/github', function() {
+  var self=this;
+  self.authenticate(['github'], function(error, authenticated) {
+    if( authenticated ) {
+      self.respond(200, "<html><h1>Hello github user:" + JSON.stringify(  self.session.auth.user ) + ".</h1></html>")
+    }
+    else {
+      self.respond(200, "<html><h1>Github authentication failed :( </h1></html>")
     }
   });
 })
@@ -141,6 +158,11 @@ get('/', function() {
             <div style="float:left;margin-left:5px">       \n\
               <a href="/auth/twitter" style="border:0px">  \n\
                 <img style="border:0px" src="http://apiwiki.twitter.com/f/1242697715/Sign-in-with-Twitter-darker.png"/>\n\
+              </a>                                         \n\
+            </div>                                         \n\
+            <div style="float:left;margin-left:5px">       \n\
+              <a href="/auth/github" style="border:0px">  \n\
+                <img style="border:0px" src="http://github.com/intridea/authbuttons/raw/master/png/github_64.png"/>\n\
               </a>                                         \n\
             </div>                                         \n\
           </div>                                           \n\
