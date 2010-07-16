@@ -1,18 +1,29 @@
 var connect = require('connect');   
 var MemoryStore = require('connect/middleware/session/memory');
 var StrategyDefinition= require('../lib/strategyDefinition');
+var auth= require('../lib/auth');
 var Anonymous= require('../lib/auth.strategies/anonymous');
 var Never= require('../lib/auth.strategies/never');
-var auth= require('../lib/auth');
+var Basic= require('../lib/auth.strategies/http/basic')
 
-var sys= require('sys')
+var sys= require('sys')  
+
+
+var getPasswordForUserFunction= function(user,  callback) {
+  var result;
+  if( user == 'foo' ) result= 'bar';
+  callback(null, result);
+}
+
+
+
 function helloWorld(req, res) {
-   req.authenticate(['anon'], function(error, authenticated) { 
+   req.authenticate(['basic'], function(error, authenticated) { 
      if( authenticated ) {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('hello world - AUTHENTICATED');
       } 
-      else {
+      else { 
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('hello world - un-authenticated');
       }
@@ -21,7 +32,8 @@ function helloWorld(req, res) {
 
 connect.createServer( connect.cookieDecoder(), 
                       connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
-                      auth({"anon": new StrategyDefinition(Anonymous),
+                      auth({"basic": new StrategyDefinition(Basic,{getPasswordForUser: getPasswordForUserFunction}),
+                            "anon": new StrategyDefinition(Anonymous),
                             "never": new StrategyDefinition(Never)}), 
                       helloWorld)
        .listen(3000);
