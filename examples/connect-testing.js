@@ -5,6 +5,7 @@ var auth= require('../lib/auth');
 var Anonymous= require('../lib/auth.strategies/anonymous');
 var Never= require('../lib/auth.strategies/never');
 var Basic= require('../lib/auth.strategies/http/basic')
+var Digest= require('../lib/auth.strategies/http/digest')
 
 var sys= require('sys')  
 
@@ -18,7 +19,7 @@ var getPasswordForUserFunction= function(user,  callback) {
 
 
 function helloWorld(req, res) {
-   req.authenticate(['basic'], function(error, authenticated) { 
+   req.authenticate(['digest'], function(error, authenticated) { 
      if( authenticated ) {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('hello world - AUTHENTICATED');
@@ -33,6 +34,7 @@ function helloWorld(req, res) {
 connect.createServer( connect.cookieDecoder(), 
                       connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
                       auth({"basic": new StrategyDefinition(Basic,{getPasswordForUser: getPasswordForUserFunction}),
+                            "digest": new StrategyDefinition(Digest,{getPasswordForUser: getPasswordForUserFunction}),
                             "anon": new StrategyDefinition(Anonymous),
                             "never": new StrategyDefinition(Never)}), 
                       helloWorld)
