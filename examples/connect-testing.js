@@ -8,9 +8,15 @@ var Basic= require('../lib/auth.strategies/http/basic')
 var Digest= require('../lib/auth.strategies/http/digest')
 var Http= require('../lib/auth.strategies/http/http')
 var Twitter= require('../lib/auth.strategies/twitter')
+var Github = require('../lib/auth.strategies/github')
 
-var twitterConsumerKey= "TOqGJsdtsicNz4FDSW4N5A";
-var twitterConsumerSecret= "CN15nhsuAGQVGL3MDAzfJ3F5FFhp1ce9U4ZbaFZrSwA";
+var twitterConsumerKey= "";
+var twitterConsumerSecret= "";
+
+var ghId= "8021871de9c1265d0c1e";
+var ghSecret= "ec8fdfb4b2e38b54d90eb183aca780adfe67bdc2";
+var ghCallbackAddress="http://testtwitter.com/auth/github_callback"
+
 
 var sys= require('sys')  
 
@@ -24,7 +30,7 @@ var getPasswordForUserFunction= function(user,  callback) {
 
 
 function helloWorld(req, res) {
-   req.authenticate(['twitter'], function(error, authenticated) { 
+   req.authenticate(['github'], function(error, authenticated) { 
      if( authenticated ) {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('hello world - AUTHENTICATED');
@@ -39,6 +45,7 @@ function helloWorld(req, res) {
 connect.createServer( connect.cookieDecoder(), 
                       connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
                       auth({"basic": new StrategyDefinition(Basic,{getPasswordForUser: getPasswordForUserFunction}),
+                                     "github": new StrategyDefinition(Github, {appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
                                      "digest": new StrategyDefinition(Digest,{getPasswordForUser: getPasswordForUserFunction}),
                                      "twitter": new StrategyDefinition(Twitter, {consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
                                      "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
