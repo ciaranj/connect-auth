@@ -9,7 +9,8 @@ var Digest= require('../lib/auth.strategies/http/digest')
 var Http= require('../lib/auth.strategies/http/http')
 var Twitter= require('../lib/auth.strategies/twitter')
 var Github = require('../lib/auth.strategies/github')
-var Facebook= require('../lib/auth.strategies/facebook')
+var Facebook= require('../lib/auth.strategies/facebook') 
+var Yahoo = require('../lib/auth.strategies/yahoo')
 
 var twitterConsumerKey= "";
 var twitterConsumerSecret= "";
@@ -22,6 +23,9 @@ var fbId= "";
 var fbSecret= "";
 var fbCallbackAddress="http://yourhost.com/auth/facebook_callback"
 
+var yahooConsumerKey= "--";
+var yahooConsumerSecret= "";
+var yahooCallbackAddress= "http://yourhost.com/auth/yahoo_callback"
 
 var sys= require('sys')  
 
@@ -35,7 +39,7 @@ var getPasswordForUserFunction= function(user,  callback) {
 
 
 function helloWorld(req, res) {
-   req.authenticate(['facebook'], function(error, authenticated) { 
+   req.authenticate(['yahoo'], function(error, authenticated) { 
      if( authenticated ) {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('hello world - AUTHENTICATED');
@@ -52,6 +56,7 @@ connect.createServer( connect.cookieDecoder(),
                       auth({"basic": new StrategyDefinition(Basic,{getPasswordForUser: getPasswordForUserFunction}),
                                      "github": new StrategyDefinition(Github, {appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
                                      "digest": new StrategyDefinition(Digest,{getPasswordForUser: getPasswordForUserFunction}),
+                                     "yahoo": new StrategyDefinition(Yahoo, {consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress}),
                                      "facebook": new StrategyDefinition(Facebook, {appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
                                      "twitter": new StrategyDefinition(Twitter, {consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
                                      "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
