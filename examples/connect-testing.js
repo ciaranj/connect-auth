@@ -35,9 +35,9 @@ function helloWorld(req, res) {
 connect.createServer( connect.cookieDecoder(), 
                       connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
                       auth({"basic": new StrategyDefinition(Basic,{getPasswordForUser: getPasswordForUserFunction}),
-                            "digest": new StrategyDefinition(Digest,{getPasswordForUser: getPasswordForUserFunction}),
-                            "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
-                            "anon": new StrategyDefinition(Anonymous),
-                            "never": new StrategyDefinition(Never)}), 
+                                     "digest": new StrategyDefinition(Digest,{getPasswordForUser: getPasswordForUserFunction}),
+                                     "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
+                                     "anon": new StrategyDefinition(Anonymous),
+                                     "never": new StrategyDefinition(Never)}), 
                       helloWorld)
        .listen(3000);
