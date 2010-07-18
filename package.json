@@ -4,7 +4,7 @@
   "version" : "0.0.1",
   "author" : "Ciaran Jessup <ciaranj@gmail.com>",
   "engines" : ["node"], 
-  "main" : "lib/auth.js"
+  "main" : "lib/auth.js",
   "directories" : { "lib" : "./lib" },
   "repositories" : [
     { "type":"git", "url":"http://github.com/ciaranj/connect-auth.git" }
