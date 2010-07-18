@@ -7,6 +7,10 @@ var Never= require('../lib/auth.strategies/never');
 var Basic= require('../lib/auth.strategies/http/basic')
 var Digest= require('../lib/auth.strategies/http/digest')
 var Http= require('../lib/auth.strategies/http/http')
+var Twitter= require('../lib/auth.strategies/twitter')
+
+var twitterConsumerKey= "TOqGJsdtsicNz4FDSW4N5A";
+var twitterConsumerSecret= "CN15nhsuAGQVGL3MDAzfJ3F5FFhp1ce9U4ZbaFZrSwA";
 
 var sys= require('sys')  
 
@@ -20,7 +24,7 @@ var getPasswordForUserFunction= function(user,  callback) {
 
 
 function helloWorld(req, res) {
-   req.authenticate(['http'], function(error, authenticated) { 
+   req.authenticate(['twitter'], function(error, authenticated) { 
      if( authenticated ) {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('hello world - AUTHENTICATED');
@@ -36,8 +40,9 @@ connect.createServer( connect.cookieDecoder(),
                       connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
                       auth({"basic": new StrategyDefinition(Basic,{getPasswordForUser: getPasswordForUserFunction}),
                                      "digest": new StrategyDefinition(Digest,{getPasswordForUser: getPasswordForUserFunction}),
+                                     "twitter": new StrategyDefinition(Twitter, {consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
                                      "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
                                      "anon": new StrategyDefinition(Anonymous),
                                      "never": new StrategyDefinition(Never)}), 
                       helloWorld)
-       .listen(3000);
+       .listen(80);
