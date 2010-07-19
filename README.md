@@ -11,6 +11,7 @@ Provides out of the box authentication stratgies for:
  * Github (OAuth 2)
  * Yahoo (OAuth 1.0A)
  * Twitter (OAuth 1.0)
+ * RPXNow / janrain SSO 
  * Anonymous
  * Never
 

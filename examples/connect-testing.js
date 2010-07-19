@@ -11,6 +11,7 @@ var Twitter= require('../lib/auth.strategies/twitter')
 var Github = require('../lib/auth.strategies/github')
 var Facebook= require('../lib/auth.strategies/facebook') 
 var Yahoo = require('../lib/auth.strategies/yahoo')
+var Janrain = require('../lib/auth.strategies/janrain')
 
 var twitterConsumerKey= "";
 var twitterConsumerSecret= "";
@@ -27,6 +28,10 @@ var yahooConsumerKey= "--";
 var yahooConsumerSecret= "";
 var yahooCallbackAddress= "http://yourhost.com/auth/yahoo_callback"
 
+var janrainApiKey= "";
+var janrainAppDomain= "yourrpxnowsubdomain";
+var janrainCallbackUrl= "http://localhost/auth/janrain_callback";
+
 var sys= require('sys')  
 
 
@@ -39,7 +44,7 @@ var getPasswordForUserFunction= function(user,  callback) {
 
 
 function helloWorld(req, res) {
-   req.authenticate(['yahoo'], function(error, authenticated) { 
+   req.authenticate(['janrain'], function(error, authenticated) { 
      if( authenticated ) {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end('hello world - AUTHENTICATED');
@@ -51,8 +56,19 @@ function helloWorld(req, res) {
    });   
 }
 
-connect.createServer( connect.cookieDecoder(), 
+// Demonstrates janrain when embedded in link
+function janrain(req, res) {
+  res.writeHead(200, {'Content-Type': 'text/html'})
+  if( req.isAuthenticated() )  {
+    res.end("Signed in :  " + req.session.auth.user.email);
+  }
+  else {
+    res.end("<a  href='https://express-auth.rpxnow.com/openid/v2/signin?foo=bar&token_url=http%3A%2F%2Flocalhost%2Fauth%2Fjanrain_callback'> Sign In </a>");
+  }
+}
+var server= connect.createServer( connect.cookieDecoder(), 
                       connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
+                      connect.bodyDecoder() /* Only required for the janrain strategy*/,
                       auth({"basic": new StrategyDefinition(Basic,{getPasswordForUser: getPasswordForUserFunction}),
                                      "github": new StrategyDefinition(Github, {appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
                                      "digest": new StrategyDefinition(Digest,{getPasswordForUser: getPasswordForUserFunction}),
@@ -60,7 +76,11 @@ connect.createServer( connect.cookieDecoder(),
                                      "facebook": new StrategyDefinition(Facebook, {appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
                                      "twitter": new StrategyDefinition(Twitter, {consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
                                      "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
+                                     "janrain": new StrategyDefinition(Janrain, {apiKey: janrainApiKey, 
+                                                                                 appDomain: janrainAppDomain, 
+                                                                                 callback: janrainCallbackUrl}),
                                      "anon": new StrategyDefinition(Anonymous),
                                      "never": new StrategyDefinition(Never)}), 
-                      helloWorld)
-       .listen(80);
+                       /*helloWorld*/
+                      janrain);
+       server.listen(80);
