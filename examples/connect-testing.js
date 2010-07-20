@@ -12,6 +12,7 @@ var Github = require('../lib/auth.strategies/github')
 var Facebook= require('../lib/auth.strategies/facebook') 
 var Yahoo = require('../lib/auth.strategies/yahoo')
 var Janrain = require('../lib/auth.strategies/janrain')
+var Foursquare = require('../lib/auth.strategies/foursquare')
 
 var twitterConsumerKey= "";
 var twitterConsumerSecret= "";
@@ -27,6 +28,9 @@ var fbCallbackAddress="http://yourhost.com/auth/facebook_callback"
 var yahooConsumerKey= "--";
 var yahooConsumerSecret= "";
 var yahooCallbackAddress= "http://yourhost.com/auth/yahoo_callback"
+
+var foursquareConsumerKey= "";
+var foursquareConsumerSecret= "";
 
 var janrainApiKey= "";
 var janrainAppDomain= "yourrpxnowsubdomain";
@@ -44,10 +48,10 @@ var getPasswordForUserFunction= function(user,  callback) {
 
 
 function helloWorld(req, res) {
-   req.authenticate(['janrain'], function(error, authenticated) { 
+   req.authenticate(['foursquare'], function(error, authenticated) { 
      if( authenticated ) {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end('hello world - AUTHENTICATED');
+        res.end('hello world - AUTHENTICATED - ' + JSON.stringify(req.session.auth.user));
       } 
       else { 
         res.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -63,7 +67,7 @@ function janrain(req, res) {
     res.end("Signed in :  " + req.session.auth.user.email);
   }
   else {
-    res.end("<a  href='https://express-auth.rpxnow.com/openid/v2/signin?foo=bar&token_url=http%3A%2F%2Flocalhost%2Fauth%2Fjanrain_callback'> Sign In </a>");
+    res.end("<a  href='https://yourrpxnowsubdomain.rpxnow.com/openid/v2/signin?foo=bar&token_url=http%3A%2F%2Flocalhost%2Fauth%2Fjanrain_callback'> Sign In </a>");
   }
 }
 var server= connect.createServer( connect.cookieDecoder(), 
@@ -76,11 +80,12 @@ var server= connect.createServer( connect.cookieDecoder(),
                                      "facebook": new StrategyDefinition(Facebook, {appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
                                      "twitter": new StrategyDefinition(Twitter, {consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
                                      "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
+                                     "foursquare" : new StrategyDefinition(Foursquare, {consumerKey: foursquareConsumerKey, consumerSecret: foursquareConsumerSecret}),
                                      "janrain": new StrategyDefinition(Janrain, {apiKey: janrainApiKey, 
                                                                                  appDomain: janrainAppDomain, 
                                                                                  callback: janrainCallbackUrl}),
                                      "anon": new StrategyDefinition(Anonymous),
                                      "never": new StrategyDefinition(Never)}), 
-                       /*helloWorld*/
-                      janrain);
+                       helloWorld
+                      /*janrain*/);
        server.listen(80);
