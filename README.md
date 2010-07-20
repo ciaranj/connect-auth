@@ -7,13 +7,14 @@ Provides out of the box authentication stratgies for:
 
  * HTTP Basic - sole or negotiated
  * HTTP Digest - sole or negotiated
- * Facebook connect (OAuth 2)
- * Github (OAuth 2)
- * Yahoo (OAuth 1.0A)
- * Twitter (OAuth 1.0)
- * RPXNow / janrain SSO 
- * Anonymous
- * Never
+* Facebook connect (OAuth 2)
+* Github (OAuth 2)
+* Yahoo (OAuth 1.0A)
+* Twitter (OAuth 1.0)
+* RPXNow / janrain SSO 
+* Foursquare (thanks to http://github.com/stunti)
+* Anonymous
+* Never
 
 Please note this has only just been ported over from express, and whilst it does in fact now work again, I've not yet fully ported the tests or example applications so your mileage may vary :) 
 
