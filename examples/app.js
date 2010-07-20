@@ -2,19 +2,8 @@ var connect = require('connect');
 var MemoryStore = require('connect/middleware/session/memory');
 var StrategyDefinition= require('../lib/strategyDefinition');
 var auth= require('../lib/auth');
-var Anonymous= require('../lib/auth.strategies/anonymous');
-var Never= require('../lib/auth.strategies/never');
-var Basic= require('../lib/auth.strategies/http/basic')
-var Digest= require('../lib/auth.strategies/http/digest')
-var Http= require('../lib/auth.strategies/http/http')
-var Twitter= require('../lib/auth.strategies/twitter')
-var Github = require('../lib/auth.strategies/github')
-var Facebook= require('../lib/auth.strategies/facebook') 
-var Yahoo = require('../lib/auth.strategies/yahoo')
-var Janrain = require('../lib/auth.strategies/janrain')
-var Foursquare = require('../lib/auth.strategies/foursquare')
-var OAuth= require('oauth').OAuth;
 
+var OAuth= require('oauth').OAuth;
 
 var getPasswordForUserFunction= function(user,  callback) {
   var result;
@@ -181,23 +170,22 @@ function routes(app) {
     }
   })
 }
-
 var server= connect.createServer( 
                       connect.cookieDecoder(), 
                       connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
                       connect.bodyDecoder() /* Only required for the janrain strategy*/,
-                      auth({"basic": new StrategyDefinition(Basic,{getPasswordForUser: getPasswordForUserFunction}),
-                           "github": new StrategyDefinition(Github, {appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
-                           "digest": new StrategyDefinition(Digest,{getPasswordForUser: getPasswordForUserFunction}),
-                           "yahoo": new StrategyDefinition(Yahoo, {consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress}),
-                           "facebook": new StrategyDefinition(Facebook, {appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
-                           "twitter": new StrategyDefinition(Twitter, {consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
-                           "http": new StrategyDefinition(Http, {getPasswordForUser: getPasswordForUserFunction}),
-                           "foursquare" : new StrategyDefinition(Foursquare, {consumerKey: foursquareConsumerKey, consumerSecret: foursquareConsumerSecret}),
-                           "janrain": new StrategyDefinition(Janrain, {apiKey: janrainApiKey, 
+                      auth({"basic": new StrategyDefinition(auth.Basic,{getPasswordForUser: getPasswordForUserFunction}),
+                           "github": new StrategyDefinition(auth.Github, {appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
+                           "digest": new StrategyDefinition(auth.Digest,{getPasswordForUser: getPasswordForUserFunction}),
+                           "yahoo": new StrategyDefinition(auth.Yahoo, {consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress}),
+                           "facebook": new StrategyDefinition(auth.Facebook, {appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
+                           "twitter": new StrategyDefinition(auth.Twitter, {consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
+                           "http": new StrategyDefinition(auth.Http, {getPasswordForUser: getPasswordForUserFunction}),
+                           "foursquare" : new StrategyDefinition(auth.Foursquare, {consumerKey: foursquareConsumerKey, consumerSecret: foursquareConsumerSecret}),
+                           "janrain": new StrategyDefinition(auth.Janrain, {apiKey: janrainApiKey, 
                                                                        appDomain: janrainAppDomain, 
                                                                        callback: janrainCallbackUrl}),
-                           "anon": new StrategyDefinition(Anonymous),
-                           "never": new StrategyDefinition(Never)}), 
+                           "anon": new StrategyDefinition(auth.Anonymous),
+                           "never": new StrategyDefinition(auth.Never)}), 
                        connect.router(routes));
 server.listen(80);
