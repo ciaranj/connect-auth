@@ -1,6 +1,5 @@
 var connect = require('connect');   
 var MemoryStore = require('connect/middleware/session/memory');
-var StrategyDefinition= require('../lib/strategyDefinition');
 var auth= require('../lib/auth');
 
 var OAuth= require('oauth').OAuth;
@@ -18,8 +17,8 @@ var fbCallbackAddress= "http://yourtesthost.com/auth/facebook_callback"
 var ghId= "";
 var ghSecret= "";
 var ghCallbackAddress= "http://yourtesthost.com/auth/github_callback";
-var twitterConsumerKey= "";
-var twitterConsumerSecret= "";
+var twitterConsumerKey= "GHDOryA8raJAjQNolf1fHw";
+var twitterConsumerSecret= "gcfRBoQDbSwS3thxe6yTaIkWk4utIgsCNXxfidi0RDM";
 var yahooConsumerKey= "";
 var yahooConsumerSecret= "";
 var yahooCallbackAddress= "http://yourtesthost.com/auth/yahoo_callback";
@@ -49,7 +48,7 @@ function routes(app) {
       }
       else {
         res.writeHead(200, {'Content-Type': 'text/html'})
-        res.end(200, "<html><h1>Twitter authentication failed :( </h1></html>")
+        res.end("<html><h1>Twitter authentication failed :( </h1></html>")
       }
     });
   })
@@ -95,6 +94,20 @@ function routes(app) {
     req.authenticate(['anon'], function(error, authenticated) { 
       res.writeHead(200, {'Content-Type': 'text/html'})
       res.end("<html><h1>Hello! Full anonymous access</h1></html>")
+    });
+  })
+  
+  app.get('/auth/never', function(req, res, params) {
+    req.authenticate(['anon'], function(error, authenticated) { 
+      res.writeHead(200, {'Content-Type': 'text/html'})
+      res.end("<html><h1>Hello! Authenticated: "+ authenticated + "</h1></html>")
+    });
+  })
+    
+  app.get('/auth/basic', function(req, res, params) {
+    req.authenticate(['basic'], function(error, authenticated) { 
+      res.writeHead(200, {'Content-Type': 'text/html'})
+      res.end("<html><h1>Hello! Basic access</h1></html>")
     });
   })
   
@@ -174,6 +187,17 @@ var server= connect.createServer(
                       connect.cookieDecoder(), 
                       connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
                       connect.bodyDecoder() /* Only required for the janrain strategy*/,
+                      auth( [auth.Anonymous(),
+                            auth.Never(),
+                            auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
+                            auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress})]), 
+                            
+                      connect.router(routes));
+
+/*var server= connect.createServer( 
+                      connect.cookieDecoder(), 
+                      connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
+                      connect.bodyDecoder(), // Only required for the janrain strategy
                       auth({"basic": new StrategyDefinition(auth.Basic,{getPasswordForUser: getPasswordForUserFunction}),
                            "github": new StrategyDefinition(auth.Github, {appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
                            "digest": new StrategyDefinition(auth.Digest,{getPasswordForUser: getPasswordForUserFunction}),
@@ -187,5 +211,5 @@ var server= connect.createServer(
                                                                        callback: janrainCallbackUrl}),
                            "anon": new StrategyDefinition(auth.Anonymous),
                            "never": new StrategyDefinition(auth.Never)}), 
-                       connect.router(routes));
+                       connect.router(routes)); */
 server.listen(80);
