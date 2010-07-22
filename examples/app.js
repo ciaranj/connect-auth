@@ -199,7 +199,8 @@ var server= connect.createServer(
                             auth.Http({getPasswordForUser: getPasswordForUserFunction}),
                             auth.Never(),
                             auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
-                            auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress})
+                            auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
+                            auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress})
                             ]), 
                             
                       connect.router(routes));
@@ -208,18 +209,11 @@ var server= connect.createServer(
                       connect.cookieDecoder(), 
                       connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
                       connect.bodyDecoder(), // Only required for the janrain strategy
-                      auth({"basic": new StrategyDefinition(auth.Basic,{getPasswordForUser: getPasswordForUserFunction}),
                            "github": new StrategyDefinition(auth.Github, {appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
-                           "digest": new StrategyDefinition(auth.Digest,{getPasswordForUser: getPasswordForUserFunction}),
                            "yahoo": new StrategyDefinition(auth.Yahoo, {consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress}),
-                           "facebook": new StrategyDefinition(auth.Facebook, {appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
-                           "twitter": new StrategyDefinition(auth.Twitter, {consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
-                           "http": new StrategyDefinition(auth.Http, {getPasswordForUser: getPasswordForUserFunction}),
                            "foursquare" : new StrategyDefinition(auth.Foursquare, {consumerKey: foursquareConsumerKey, consumerSecret: foursquareConsumerSecret}),
                            "janrain": new StrategyDefinition(auth.Janrain, {apiKey: janrainApiKey, 
                                                                        appDomain: janrainAppDomain, 
                                                                        callback: janrainCallbackUrl}),
-                           "anon": new StrategyDefinition(auth.Anonymous),
-                           "never": new StrategyDefinition(auth.Never)}), 
                        connect.router(routes)); */
 server.listen(80);
