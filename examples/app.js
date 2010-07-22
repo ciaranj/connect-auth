@@ -110,7 +110,12 @@ function routes(app) {
       res.end("<html><h1>Hello! Basic access</h1></html>")
     });
   })
-  
+  app.get('/auth/http', function(req, res, params) {
+    req.authenticate(['http'], function(error, authenticated) { 
+      res.writeHead(200, {'Content-Type': 'text/html'})
+      res.end("<html><h1>Hello! Delegated Http access</h1></html>")
+    });
+  })  
   app.get('/auth/digest', function(req, res, params) {
     res.writeHead(200, {'Content-Type': 'text/html'})
     req.authenticate(['digest'], function(error, authenticated) { 
@@ -187,10 +192,15 @@ var server= connect.createServer(
                       connect.cookieDecoder(), 
                       connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
                       connect.bodyDecoder() /* Only required for the janrain strategy*/,
-                      auth( [auth.Anonymous(),
+                      auth( [
+                            auth.Anonymous(),
+                            auth.Basic({getPasswordForUser: getPasswordForUserFunction}),
+                            auth.Digest({getPasswordForUser: getPasswordForUserFunction}),
+                            auth.Http({getPasswordForUser: getPasswordForUserFunction}),
                             auth.Never(),
                             auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
-                            auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress})]), 
+                            auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress})
+                            ]), 
                             
                       connect.router(routes));
 
