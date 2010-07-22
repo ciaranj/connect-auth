@@ -65,6 +65,18 @@ function routes(app) {
     });
   })
 
+  app.get ('/auth/foursquare', function(req, res, params) {
+    req.authenticate(['foursquare'], function(error, authenticated) {
+      res.writeHead(200, {'Content-Type': 'text/html'})
+      if( authenticated ) {
+        res.end("<html><h1>Hello foursquare user:" + JSON.stringify(  req.session.auth.user ) + ".</h1></html>")
+      }
+      else {
+        res.end("<html><h1>Foursquare authentication failed :( </h1></html>")
+      }
+    });
+  })
+
 
   app.get ('/auth/github', function(req, res, params) {
     req.authenticate(['github'], function(error, authenticated) {
@@ -99,6 +111,13 @@ function routes(app) {
   
   app.get('/auth/never', function(req, res, params) {
     req.authenticate(['anon'], function(error, authenticated) { 
+      res.writeHead(200, {'Content-Type': 'text/html'})
+      res.end("<html><h1>Hello! Authenticated: "+ authenticated + "</h1></html>")
+    });
+  })
+  
+  app.get('/auth/janrain', function(req, res, params) {
+    req.authenticate(['janrain'], function(error, authenticated) { 
       res.writeHead(200, {'Content-Type': 'text/html'})
       res.end("<html><h1>Hello! Authenticated: "+ authenticated + "</h1></html>")
     });
@@ -142,6 +161,7 @@ function routes(app) {
       res.end('<html>                                              \n\
           <head>                                             \n\
             <title>connect Auth -- Not Authenticated</title> \n\
+            <script src="http://static.ak.fbcdn.net/connect/en_US/core.js"></script> \n\
           </head>                                            \n\
           <body>                                             \n\
             <div id="wrapper">                               \n\
@@ -166,6 +186,11 @@ function routes(app) {
               <div style="float:left;margin-left:5px">       \n\
                 <a href="/auth/github" style="border:0px">  \n\
                   <img style="border:0px" src="http://github.com/intridea/authbuttons/raw/master/png/github_64.png"/>\n\
+                </a>                                         \n\
+              </div>                                         \n\
+              <div style="float:left;margin-left:5px">       \n\
+                <a href="/auth/foursquare" style="border:0px">  \n\
+                  FourSquare\n\
                 </a>                                         \n\
               </div>                                         \n\
             </div>                                           \n\
@@ -201,18 +226,10 @@ var server= connect.createServer(
                             auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
                             auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
                             auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
-                            auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress})
+                            auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress}),
+                            auth.Foursquare({consumerKey: foursquareConsumerKey, consumerSecret: foursquareConsumerSecret}),
+                            auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
                             ]), 
                             
                       connect.router(routes));
-
-/*var server= connect.createServer( 
-                      connect.cookieDecoder(), 
-                      connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
-                      connect.bodyDecoder(), // Only required for the janrain strategy
-                           "foursquare" : new StrategyDefinition(auth.Foursquare, {consumerKey: foursquareConsumerKey, consumerSecret: foursquareConsumerSecret}),
-                           "janrain": new StrategyDefinition(auth.Janrain, {apiKey: janrainApiKey, 
-                                                                       appDomain: janrainAppDomain, 
-                                                                       callback: janrainCallbackUrl}),
-                       connect.router(routes)); */
 server.listen(80);
