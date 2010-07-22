@@ -17,8 +17,8 @@ var fbCallbackAddress= "http://yourtesthost.com/auth/facebook_callback"
 var ghId= "";
 var ghSecret= "";
 var ghCallbackAddress= "http://yourtesthost.com/auth/github_callback";
-var twitterConsumerKey= "GHDOryA8raJAjQNolf1fHw";
-var twitterConsumerSecret= "gcfRBoQDbSwS3thxe6yTaIkWk4utIgsCNXxfidi0RDM";
+var twitterConsumerKey= "";
+var twitterConsumerSecret= "";
 var yahooConsumerKey= "";
 var yahooConsumerSecret= "";
 var yahooCallbackAddress= "http://yourtesthost.com/auth/yahoo_callback";
@@ -200,7 +200,8 @@ var server= connect.createServer(
                             auth.Never(),
                             auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
                             auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
-                            auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress})
+                            auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
+                            auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress})
                             ]), 
                             
                       connect.router(routes));
@@ -209,8 +210,6 @@ var server= connect.createServer(
                       connect.cookieDecoder(), 
                       connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
                       connect.bodyDecoder(), // Only required for the janrain strategy
-                           "github": new StrategyDefinition(auth.Github, {appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
-                           "yahoo": new StrategyDefinition(auth.Yahoo, {consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress}),
                            "foursquare" : new StrategyDefinition(auth.Foursquare, {consumerKey: foursquareConsumerKey, consumerSecret: foursquareConsumerSecret}),
                            "janrain": new StrategyDefinition(auth.Janrain, {apiKey: janrainApiKey, 
                                                                        appDomain: janrainAppDomain, 
