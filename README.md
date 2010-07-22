@@ -49,4 +49,10 @@ For twitter auth
 
 
 [warden]: http://github.com/hassox/warden
-[npm]: http://github.com/isaacs/npm
+[npm]: http://github.com/isaacs/npm    
+
+
+Changelog
+=========
+
+ * 0.1.0 - New simplified configuration (connect idiomatic) of strategies implemented.
