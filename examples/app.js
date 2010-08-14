@@ -35,9 +35,9 @@ function routes(app) {
                           null,
                           "HMAC-SHA1");
         oa.getProtectedResource("http://twitter.com/statuses/user_timeline.xml", "GET",
-                                req.session.auth["twitter_oauth_token"], req.session.auth["twitter_oauth_token_secret"],  function (error, data) {
+                                req.getAuthDetails()["twitter_oauth_token"], req.getAuthDetails()["twitter_oauth_token_secret"],  function (error, data) {
             res.writeHead(200, {'Content-Type': 'text/html'})
-            res.end("<html><h1>Hello! Twitter authenticated user ("+req.session.auth.user.username+")</h1>"+data+ "</html>")
+            res.end("<html><h1>Hello! Twitter authenticated user ("+req.getAuthDetails().user.username+")</h1>"+data+ "</html>")
         });
       }
       else {
@@ -51,7 +51,7 @@ function routes(app) {
     req.authenticate(['facebook'], function(error, authenticated) {
       res.writeHead(200, {'Content-Type': 'text/html'})
       if( authenticated ) {
-        res.end("<html><h1>Hello Facebook user:" + JSON.stringify(  req.session.auth.user ) + ".</h1></html>")
+        res.end("<html><h1>Hello Facebook user:" + JSON.stringify( req.getAuthDetails().user ) + ".</h1></html>")
       }
       else {
         res.end("<html><h1>Facebook authentication failed :( </h1></html>")
@@ -63,7 +63,7 @@ function routes(app) {
     req.authenticate(['foursquare'], function(error, authenticated) {
       res.writeHead(200, {'Content-Type': 'text/html'})
       if( authenticated ) {
-        res.end("<html><h1>Hello foursquare user:" + JSON.stringify(  req.session.auth.user ) + ".</h1></html>")
+        res.end("<html><h1>Hello foursquare user:" + JSON.stringify( req.getAuthDetails().user ) + ".</h1></html>")
       }
       else {
         res.end("<html><h1>Foursquare authentication failed :( </h1></html>")
@@ -76,7 +76,7 @@ function routes(app) {
     req.authenticate(['github'], function(error, authenticated) {
       res.writeHead(200, {'Content-Type': 'text/html'})
       if( authenticated ) {
-        res.end("<html><h1>Hello github user:" + JSON.stringify(  req.session.auth.user ) + ".</h1></html>")
+        res.end("<html><h1>Hello github user:" + JSON.stringify( req.getAuthDetails().user ) + ".</h1></html>")
       }
       else {
         res.end("<html><h1>Github authentication failed :( </h1></html>")
@@ -88,7 +88,7 @@ function routes(app) {
     req.authenticate(['yahoo'], function(error, authenticated) {
       res.writeHead(200, {'Content-Type': 'text/html'})
       if( authenticated ) {
-        res.end("<html><h1>Hello Yahoo! user:" + JSON.stringify(  req.session.auth.user ) + ".</h1></html>")
+        res.end("<html><h1>Hello Yahoo! user:" + JSON.stringify( req.getAuthDetails().user ) + ".</h1></html>")
       }
       else {
         res.end("<html><h1>Yahoo! authentication failed :( </h1></html>")
@@ -134,7 +134,7 @@ function routes(app) {
     req.authenticate(['digest'], function(error, authenticated) { 
       if( authenticated ) {
         if( ! req.session.counter ) req.session.counter= 0;
-        res.end("<html><h1>Hello! My little digestive"+ req.session.auth.user.username+ "</h1>"  + "<p>" + (req.session.counter++) +"</p></html>")
+        res.end("<html><h1>Hello! My little digestive"+ req.getAuthDetails().user.username+ "</h1>"  + "<p>" + (req.session.counter++) +"</p></html>")
       }
       else {
         res.end("<html><h1>should not be happening...</h1></html>")
@@ -199,7 +199,7 @@ function routes(app) {
           <body>                                             \n\
             <div id="wrapper">                               \n\
               <h1>Authenticated</h1>     \n\
-            ' + JSON.stringify(req.session.auth.user) + '   \n\
+            ' + JSON.stringify( req.getAuthDetails().user ) + '   \n\
              <h2><a href="/logout">Logout</a></h2>                \n\
             </div>                                           \n\
           </body>                                            \n\
