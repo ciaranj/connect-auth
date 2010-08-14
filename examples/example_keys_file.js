@@ -1,0 +1,16 @@
+exports.fbId= "";
+exports.fbSecret= "";
+exports.fbCallbackAddress= "http://yourtesthost.com/auth/facebook_callback"
+exports.ghId= "";
+exports.ghSecret= "";
+exports.ghCallbackAddress= "http://yourtesthost.com/auth/github_callback";
+exports.twitterConsumerKey= "";
+exports.twitterConsumerSecret= "";
+exports.yahooConsumerKey= "";
+exports.yahooConsumerSecret= "";
+exports.yahooCallbackAddress= "http://yourtesthost.com/auth/yahoo_callback";
+exports.foursquareConsumerKey= "";
+exports.foursquareConsumerSecret= "";
+exports.janrainApiKey= "";
+exports.janrainAppDomain= "yourrpxnowsubdomain";
+exports.janrainCallbackUrl= "http://localhost/auth/janrain_callback";

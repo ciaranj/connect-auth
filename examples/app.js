@@ -10,24 +10,18 @@ var getPasswordForUserFunction= function(user,  callback) {
   callback(null, result);
 }
 
-// N.B. TO USE Any of these strategies the following relevant parameters must be defined!!!.
-var fbId= "";
-var fbSecret= "";
-var fbCallbackAddress= "http://yourtesthost.com/auth/facebook_callback"
-var ghId= "";
-var ghSecret= "";
-var ghCallbackAddress= "http://yourtesthost.com/auth/github_callback";
-var twitterConsumerKey= "";
-var twitterConsumerSecret= "";
-var yahooConsumerKey= "";
-var yahooConsumerSecret= "";
-var yahooCallbackAddress= "http://yourtesthost.com/auth/yahoo_callback";
-var foursquareConsumerKey= "";
-var foursquareConsumerSecret= "";
-var janrainApiKey= "";
-var janrainAppDomain= "yourrpxnowsubdomain";
-var janrainCallbackUrl= "http://localhost/auth/janrain_callback";
-
+// N.B. TO USE Any of the OAuth or RPX strategies you will need to provide
+// a copy of the example_keys_file (named keys_file) 
+try {
+  var example_keys= require('./keys_file');
+  for(var key in example_keys) {
+    global[key]= example_keys[key];
+  }
+}
+catch(e) {
+  console.log('Unable to locate the keys_file.js file.  Please copy and ammend the example_keys_file.js as appropriate');
+  return;
+}
 
 function routes(app) {
   app.get ('/auth/twitter', function(req, res, params) {
