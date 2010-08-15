@@ -14,6 +14,7 @@ var OAuthDataProvider = exports.OAuthDataProvider = function( options ) {
   if(!options) options= {};
   this.oauth_applications= options['applications'] || [];
   this.oauth_users_request_tokens= [];
+  this.oauth_previous_users_request_tokens= [];
 } 
 
 function generateRandomString() {
@@ -24,21 +25,23 @@ function generateRandomString() {
   Locating methods used for looking up authentication information
 **/
 OAuthDataProvider.prototype.previousRequestToken = function(token, callback) {
-/*  var self = this;
-  self.db.collection('oauth_previous_users_request_tokens', function(err, collection) {
-    collection.findOne({'token':token}, function(err, token) {
-      token != null ? callback(new Error("Previously used token"), null) : callback(null, token);
-    });
-  });*/
+  for(var key in this.oauth_previous_users_request_tokens) {
+    if( this.oauth_previous_users_request_tokens[key] && this.oauth_previous_users_request_tokens[key].token == token ) {
+      callback(new Error("Previously used token"));
+      return;
+    }
+  }  
+  callback(null, token);
 }
 
 OAuthDataProvider.prototype.tokenByConsumer = function(consumerKey, callback) {
-/*   this.db.collection('oauth_users_request_tokens', function(err, collection) {
-     collection.findOne({'consumer_key':consumerKey}, function(err, token) {
-       token == null ? callback(new Error("No suck token"), null) : callback(null, token);
-     });
-   });*/
-   
+  for(var key in this.oauth_users_request_tokens) {
+    if( this.oauth_users_request_tokens[key] && this.oauth_users_request_tokens[key].consumer_key == consumerKey ) {
+      callback(null, this.oauth_users_request_tokens[key]);
+      return;
+    }
+  }
+  callback( new Error("No such user with consumer key: " + consumerKey) );
 }
 
 OAuthDataProvider.prototype.applicationByConsumerKey = function(consumerKey, callback) {
@@ -49,12 +52,6 @@ OAuthDataProvider.prototype.applicationByConsumerKey = function(consumerKey, cal
     }
   }
   callback(new Error("No such user with consumer key: "+ consumerKey));
-  
-/*  this.db.collection('oauth_applications', function(err, collection) {
-    collection.findOne({'consumer_key':consumerKey}, function(err, user) {
-      user != null ? callback(null, user) : callback(new Error("No such user with consumer key: " + consumerKey), null);
-    });
-  });*/
 }
 
 OAuthDataProvider.prototype.fetchAuthorizationInformation = function(username, token, callback) {
@@ -211,32 +208,17 @@ OAuthDataProvider.prototype.generateRequestToken = function(oauthConsumerKey, oa
    requestToken['verifier']= generateRandomString();
    this.oauth_users_request_tokens[this.oauth_users_request_tokens.length++]= requestToken;
    callback(null, requestToken);
-/*  this.db.collection('oauth_users_request_tokens', function(err, collection) {
-    // Save the entry, Generate a request token and token secret
-    collection.save({'consumer_key':oauthConsumerKey , 'token':new mongo.ObjectID().toHexString(), 'token_secret':new mongo.ObjectID().toHexString(), 'callback':oauthCallback, 'verifier':new mongo.ObjectID().toHexString()}, function(err, doc) {
-      callback(null, doc);
-    });
-  }); */
 }
 
 OAuthDataProvider.prototype.generateAccessToken = function(oauthToken, callback) {
-/*  var self = this;
-  this.db.collection('oauth_users_request_tokens', function(err, collection) {
-    // Generate access token
-    collection.findOne({'token':oauthToken}, function(err, tokenObject) {
-      tokenObject['access_token'] = new mongo.ObjectID().toHexString();
-      collection.save(tokenObject, function(err, doc) {
-        // Remove the id from the doc (so we can reuse the document)
-        doc['_id'] = null;          
-        // Save the freshly minted access token to the list of used tokens
-        self.db.collection('oauth_previous_users_request_tokens', function(err, collection) {
-          collection.save(doc, function(err, doc) {
-            callback(null, doc);
-          });
-        });
-      });
-    });
-  }); */
+  for(var key in this.oauth_users_request_tokens) {
+    if( this.oauth_users_request_tokens[key] && this.oauth_users_request_tokens[key].token == oauthToken ) {
+      this.oauth_users_request_tokens[key]['access_token']= generateRandomString();
+      this.oauth_previous_users_request_tokens[this.oauth_previous_users_request_tokens.length]= this.oauth_users_request_tokens[key];
+      callback(null, this.oauth_users_request_tokens[key]);
+      return;
+    }
+  }  
 }
 
 /**
@@ -249,10 +231,4 @@ OAuthDataProvider.prototype.cleanRequestTokens = function(consumerKey, callback)
     }
   }
   callback(null, null);
-  
-/*  this.db.collection('oauth_users_request_tokens', function(err, collection) {
-    collection.remove({'consumer_key':consumerKey}, function(err, collection) {
-      callback(null, null);
-    });
-  }); */
 }
