@@ -72,7 +72,25 @@ var authorizeProvider = function(err, req, res, authorized, authResults, applica
              </body>      \n\
             </html>');
   }
-};
+};  
+/**
+  Handle the successful authentication and authorization
+**/
+var authorizationFinishedProvider = function(err, req, res, result) {
+
+  res.writeHead(200, {'Content-Type':'text/html'})
+  res.end('<html>                                              \n\
+           <body>        \n\
+           <h2>Authentication and Authorization Finished, Application can now access</h2> \n\
+             <input type="hidden" name="oauth_token" value="'+result.token+'"/> \n\
+             <input type="hidden" name="oauth_verifier" value="'+result.verifier+'"/> \n\
+             <table>            \n\
+               <tr><td>Token</td><td>' + result.token + '</td></tr>    \n\
+               <tr><td>Verifier</td><td>' + result.verifier + '</td></tr>    \n\
+             </table            \n\
+           </body>      \n\
+          </html>');
+}
 
 var server= connect.createServer( 
                       connect.cookieDecoder(), 
@@ -82,7 +100,8 @@ var server= connect.createServer(
                             auth.Oauth({oauth_provider: new OAuthDataProvider({  applications:[{title:'Test', description:'Test App', consumer_key:"JiYmll7CX3AXDgasnnIDeg",secret:"mWPBRK5kG2Tkthuf5zRV1jYWOEwnjI6xs3QVRqOOg"}]
                                                                                , users:[{username:'foo', password:'bar'}] }),
                                         authenticate_provider: authenticateProvider,
-                                        authorize_provider: authorizeProvider
+                                        authorize_provider: authorizeProvider,
+                                        authorization_finished_provider: authorizationFinishedProvider
                                        })
                             ]), 
                       connect.router(routes));
