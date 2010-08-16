@@ -15,6 +15,8 @@ var OAuthDataProvider = exports.OAuthDataProvider = function( options ) {
   this.oauth_applications= options['applications'] || [];
   this.oauth_users_request_tokens= [];
   this.oauth_previous_users_request_tokens= [];
+  this.users= options['users'] || [];
+  
 } 
 
 function generateRandomString() {
@@ -55,6 +57,27 @@ OAuthDataProvider.prototype.applicationByConsumerKey = function(consumerKey, cal
 }
 
 OAuthDataProvider.prototype.fetchAuthorizationInformation = function(username, token, callback) {
+  var request_token;
+  for(var key in this.oauth_users_request_tokens) {
+    if( this.oauth_users_request_tokens[key] && this.oauth_users_request_tokens[key].token == token ) {
+      request_token= this.oauth_users_request_tokens[key];
+      break;
+    }
+  }
+
+  
+  var application;
+  for( var key in this.oauth_applications ) {
+    if( this.oauth_applications && this.oauth_applications[key].consumer_key == request_token.consumer_key) {
+      application= this.oauth_applications[key];
+      break;
+    }
+  }
+
+  callback(null , application, request_token );  
+  
+  
+  
 /*  var self = this;
   
   // 
@@ -118,17 +141,26 @@ OAuthDataProvider.prototype.fetchAuthorizationInformation = function(username, t
   Validation methods used to check if the tokens and user are valid
 **/
 OAuthDataProvider.prototype.validToken = function(accessToken, callback) {
-/*  this.db.collection('oauth_users_request_tokens', function(err, collection) {
-    collection.findOne({'access_token':accessToken}, function(err, token) {
-      token == null ? callback(new Error("No suck token"), null) : callback(null, token);
-    });
-  });*/
+  for(var key in this.oauth_users_request_tokens) {
+    if( this.oauth_users_request_tokens[key] && this.oauth_users_request_tokens[key].access_token == accessToken ) {
+      callback(null, this.oauth_users_request_tokens[key]);
+      return;
+    }
+  }
+  callback( new Error("No such token") );
 }
 
 /**
   Fetch a token by token and verifier (can be used to verify if a token exists)
 **/
 OAuthDataProvider.prototype.tokenByTokenAndVerifier = function(token, verifier, callback) {
+  for(var key in this.oauth_users_request_tokens) {
+    if( this.oauth_users_request_tokens[key] && this.oauth_users_request_tokens[key].token == token && this.oauth_users_request_tokens[key].verifier == verifier ) {
+      callback(null, this.oauth_users_request_tokens[key] );
+      return;
+    }
+  }
+  callback(new Error("No token containing token: " + token + " and verifier: " + verifier));
 /*  var self = this;
   
   self.db.collection('oauth_users_request_tokens', function(err, collection) {
@@ -139,13 +171,19 @@ OAuthDataProvider.prototype.tokenByTokenAndVerifier = function(token, verifier, 
 }
 
 OAuthDataProvider.prototype.validateNotReplay = function(accessToken, timestamp, nonce, callback) {
-//  callback(null, true);
+  callback(null, true);
 }
 
 /**
   Fetch user id based on token (used to identify user in oauth calls later)
 **/
 OAuthDataProvider.prototype.userIdByToken = function(token, callback) {
+  for(var key in this.oauth_users_request_tokens) {
+    if( this.oauth_users_request_tokens[key] && this.oauth_users_request_tokens[key].access_token == token ) {
+      callback(null,  {id:this.oauth_users_request_tokens[key].username});
+      return;
+    }
+  }
 /*  var self = this;    
 
   self.db.collection('oauth_users_request_tokens', function(err, collection) {
@@ -156,6 +194,20 @@ OAuthDataProvider.prototype.userIdByToken = function(token, callback) {
 }
 
 OAuthDataProvider.prototype.authenticateUser = function(username, password, oauthToken, callback) {
+  for(var key in this.users) {
+    if( this.users[key] && this.users[key].username == username && this.users[key].password == password ) {
+      // Update the oauthToken document to signal that key is authenticated
+      for(var otherKey in this.oauth_users_request_tokens) {
+        if( this.oauth_users_request_tokens[otherKey] && this.oauth_users_request_tokens[otherKey].token == oauthToken ) {
+          this.oauth_users_request_tokens[otherKey].authenticated= true;
+          callback( null, this.oauth_users_request_tokens[otherKey] );
+          return;
+        }
+      }
+    }
+  }  
+  callback(new Error("Authentication of user/password failed"), null);
+  
 /*  var self = this;    
   
   self.db.collection('users', function(err, collection) {
@@ -182,6 +234,17 @@ OAuthDataProvider.prototype.authenticateUser = function(username, password, oaut
   Associate an application token request with a system user after the user has authenticated, allows for authorization later
 **/
 OAuthDataProvider.prototype.associateTokenToUser = function(username, token, callback) {
+  for(var key in this.users) {
+    if( this.users[key] && this.users[key].username == username ) {
+      for(var otherKey in this.oauth_users_request_tokens) {
+        if( this.oauth_users_request_tokens[otherKey] && this.oauth_users_request_tokens[otherKey].token == token ) {
+          this.oauth_users_request_tokens[otherKey].username= username;
+          callback( null,this.oauth_users_request_tokens[otherKey] )
+          return;
+        }
+      }
+    }
+  }
 /*  var self = this;    
   self.db.collection('users', function(err, collection) {
     collection.findOne({'username':username}, function(err, user) {
