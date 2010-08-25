@@ -93,8 +93,6 @@ var authorizationFinishedProvider = function(err, req, res, result) {
 }
 
 var server= connect.createServer( 
-                      connect.cookieDecoder(), 
-                      connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
                       connect.bodyDecoder(),
                       auth( [
                             auth.Oauth({oauth_provider: new OAuthDataProvider({  applications:[{title:'Test', description:'Test App', consumer_key:"JiYmll7CX3AXDgasnnIDeg",secret:"mWPBRK5kG2Tkthuf5zRV1jYWOEwnjI6xs3QVRqOOg"}]
