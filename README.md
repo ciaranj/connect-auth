@@ -57,5 +57,6 @@ For twitter auth
 Changelog
 =========
 
+ * 0.1.3 - Strategies can now be written that do not require the session middleware.
  * 0.1.2 - Added in new strategy that allows your authentication strategy to be a custom OAuth provider.
  * 0.1.0 - New simplified configuration (connect idiomatic) of strategies implemented.
