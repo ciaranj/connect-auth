@@ -4,11 +4,20 @@ var auth= require('../lib/auth');
 
 var OAuth= require('oauth').OAuth;
 
-var getPasswordForUserFunction= function(user,  callback) {
-  var result;
-  if( user == 'foo' ) result= 'bar';
-  callback(null, result);
-}
+var getSharedSecretForUserFunction = function(user,  callback) {
+	var result;
+	if(user == 'foo') 
+		result= 'bar';
+	callback(null, result);
+};
+
+var validatePasswordFunction = function(username, password, successCallback, failureCallback){
+	if (username === 'foo' && password === "bar"){
+		successCallback();
+	} else {
+		failureCallback();
+	}
+};
 
 // N.B. TO USE Any of the OAuth or RPX strategies you will need to provide
 // a copy of the example_keys_file (named keys_file) 
@@ -213,9 +222,9 @@ var server= connect.createServer(
                       connect.bodyDecoder() /* Only required for the janrain strategy*/,
                       auth( [
                             auth.Anonymous(),
-                            auth.Basic({getPasswordForUser: getPasswordForUserFunction}),
-                            auth.Digest({getPasswordForUser: getPasswordForUserFunction}),
-                            auth.Http({getPasswordForUser: getPasswordForUserFunction}),
+                            auth.Basic({validatePassword: validatePasswordFunction}),
+                            auth.Digest({getSharedSecretForUser: getSharedSecretForUserFunction}),
+                            auth.Http({validatePassword: validatePasswordFunction}),
                             auth.Never(),
                             auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
                             auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
@@ -226,4 +235,4 @@ var server= connect.createServer(
                             ]), 
                             
                       connect.router(routes));
-server.listen(80);
+server.listen(3000);
