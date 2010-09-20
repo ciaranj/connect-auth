@@ -17,8 +17,6 @@ Provides out of the box authentication strategies for:
 * Foursquare (thanks to http://github.com/stunti)
 * Custom OAuth Provider Strategy (Be your own 1.0A OAuth provider!) (A Port of Christian Amor Kvalheim's  [express-oauth-plugin])  
 
-Please note this has only just been ported over from express, and whilst it does in fact now work again, I've not yet fully ported the tests or example applications so your mileage may vary :) 
-
 Take Care!
 
 -cj.
@@ -57,6 +55,7 @@ For twitter auth
 Changelog
 =========
 
+ * 0.2.0 - Updated HTTP strategies c/o Robbie Clutton no longer require passwords to be stored in the plain.
  * 0.1.3 - Strategies can now be written that do not require the session middleware.
  * 0.1.2 - Added in new strategy that allows your authentication strategy to be a custom OAuth provider.
  * 0.1.0 - New simplified configuration (connect idiomatic) of strategies implemented.
