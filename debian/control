@@ -1,0 +1,13 @@
+Source: nodejs-connect-auth
+Section: misc
+Priority: extra
+Uploaders: Wade Simmons <wade@simplegeo.com>
+Maintainer: SimpleGeo Nerds <nerds@simplegeo.com>
+build-Depends: cdbs, debhelper (>= 7)
+Standards-Version: 3.9.1
+
+Package: nodejs-connect-auth
+Depends: nodejs (>= 0.2.3), ${misc:Depends}
+Architecture: all
+Description: node-connect-auth
+ http://github.com/ciaranj/connect-auth
