@@ -55,7 +55,13 @@ For twitter auth
 Changelog
 =========
 
- * 0.2.0 - Updated HTTP strategies c/o Robbie Clutton no longer require passwords to be stored in the plain.
- * 0.1.3 - Strategies can now be written that do not require the session middleware.
- * 0.1.2 - Added in new strategy that allows your authentication strategy to be a custom OAuth provider.
- * 0.1.0 - New simplified configuration (connect idiomatic) of strategies implemented.
+ * 0.2.0  
+		Updated HTTP strategies c/o Robbie Clutton no longer require passwords to be stored in the plain. (Breaking change)  
+		Fixed the isAuthenticated mechanism to work with mongodb (Lakin Wecker, Richard Walsh)  
+		Realm parameter now ignored in the Authorization header for the OAuth Provider strategy (Wade Simmons)
+ * 0.1.3  
+		Strategies can now be written that do not require the session middleware.
+ * 0.1.2  
+		Added in new strategy that allows your authentication strategy to be a custom OAuth provider.
+ * 0.1.0  
+		New simplified configuration (connect idiomatic) of strategies implemented.
