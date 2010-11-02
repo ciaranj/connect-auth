@@ -1,6 +1,6 @@
 var connect = require('connect');   
 var MemoryStore = require('connect/middleware/session/memory');
-var auth= require('../lib/auth');
+var auth= require('../lib/index');
 
 // We let the example run without npm, by setting up the require paths
 // so the node-oauth submodule inside of git is used.  You do *NOT*

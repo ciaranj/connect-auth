@@ -56,7 +56,8 @@ Changelog
 =========
 
  * 0.2.0  
-		Updated HTTP strategies c/o Robbie Clutton no longer require passwords to be stored in the plain. (Breaking change)  
+		Updated HTTP strategies c/o Robbie Clutton no longer require passwords to be stored in the plain. - *Breaking change*  
+		Changed the default javascript file from auth.js to index.js. - *Breaking change*  
 		Fixed the isAuthenticated mechanism to work with mongodb (Lakin Wecker, Richard Walsh)  
 		Realm parameter now ignored in the Authorization header for the OAuth Provider strategy (Wade Simmons)
  * 0.1.3  
