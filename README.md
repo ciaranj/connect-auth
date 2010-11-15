@@ -54,7 +54,8 @@ For twitter auth
 
 Changelog
 =========
-
+ * 0.2.1
+		Removed dead file that was seemingly breaking nDistro
  * 0.2.0  
 		Updated HTTP strategies c/o Robbie Clutton no longer require passwords to be stored in the plain. - *Breaking change*  
 		Changed the default javascript file from auth.js to index.js. - *Breaking change*  
