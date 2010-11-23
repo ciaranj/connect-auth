@@ -1,0 +1,14 @@
+nodejs-connect-auth (0.2.0-0sg2) UNRELEASED; urgency=low
+
+  [ Wade Simmons ]
+  * add debian/source/include-binaries
+
+  [ SimpleGeo Nerds ]
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Thu, 14 Oct 2010 19:29:41 +0000
+
+nodejs-connect-auth (0.2.0-0sg0) unstable; urgency=low
+
+  * Debianized
+
+ -- Wade Simmons <wade@simplegeo.com>  Wed, 13 Oct 2010 17:31:52 -0600
