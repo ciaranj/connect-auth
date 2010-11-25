@@ -180,7 +180,12 @@ OAuthDataProvider.prototype.validateNotReplay = function(accessToken, timestamp,
 OAuthDataProvider.prototype.userIdByToken = function(token, callback) {
   for(var key in this.oauth_users_request_tokens) {
     if( this.oauth_users_request_tokens[key] && this.oauth_users_request_tokens[key].access_token == token ) {
-      callback(null,  {id:this.oauth_users_request_tokens[key].username});
+	  if(this.oauth_users_request_tokens[key].username == null){
+		  //perhaps this is a 2-legged oauth call
+		  callback(null,  {id:''});
+	  }else{
+	      callback(null,  {id:this.oauth_users_request_tokens[key].username});		
+	  }
       return;
     }
   }
