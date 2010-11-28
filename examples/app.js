@@ -109,6 +109,18 @@ function routes(app) {
     });
   })
 
+  app.get ('/auth/google', function(req, res, params) {
+    req.authenticate(['google'], function(error, authenticated) {
+      res.writeHead(200, {'Content-Type': 'text/html'})
+      if( authenticated ) {
+        res.end("<html><h1>Hello Google user:" + JSON.stringify( req.getAuthDetails().user ) + ".</h1></html>")
+      }
+      else {
+        res.end("<html><h1>Google authentication failed :( </h1></html>")
+      }
+    });
+  })
+
   app.get('/auth/anon', function(req, res, params) {
     req.authenticate(['anon'], function(error, authenticated) { 
       res.writeHead(200, {'Content-Type': 'text/html'})
@@ -185,6 +197,11 @@ function routes(app) {
                  <img style="border:0px" src="http://l.yimg.com/a/i/reg/openid/buttons/1_new.png"/> \n\
                 </a>                                         \n\
               </div>                                         \n\
+              <div style="float:left;margin-left:5px"> \n\
+                <button onclick="location.href=\'/auth/google\'" style="padding:5px;border-radius:5px;border:1px solid #555555;cursor:pointer"> \n\
+                  <img src="https://www.google.com/favicon.ico" style="margin-bottom:-3px;"><span style="font-weight:bold;">&nbsp; Sign In with Google \n\
+                </button> \n\
+              </div> \n\
               <div style="float:left;margin-left:5px">       \n\
                 <a href="/auth/twitter" style="border:0px">  \n\
                   <img style="border:0px" src="http://apiwiki.twitter.com/f/1242697715/Sign-in-with-Twitter-darker.png"/>\n\
@@ -234,6 +251,7 @@ var server= connect.createServer(
                             auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
                             auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
                             auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress}),
+                            auth.Google({consumerKey: googleConsumerKey, consumerSecret: googleConsumerSecret, scope: "", callback: googleCallbackAddress}),
                             auth.Foursquare({consumerKey: foursquareConsumerKey, consumerSecret: foursquareConsumerSecret}),
                             auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
                             ]), 
