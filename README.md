@@ -54,6 +54,8 @@ For twitter auth
 
 Changelog
 =========
+ * 0.2.2
+		Added support for SSO with google (not using OpenId, but OAuth, so an intermediary approach) (Masahiro Hayashi)
  * 0.2.1
 		Removed dead file that was seemingly breaking nDistro
  * 0.2.0  
