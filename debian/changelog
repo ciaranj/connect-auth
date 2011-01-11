@@ -1,3 +1,9 @@
+nodejs-connect-auth (0.2.1-0sg0) unstable; urgency=low
+
+  * New upstream release
+
+ -- Wade Simmons <wade@simplegeo.com>  Tue, 11 Jan 2011 01:23:37 +0000
+
 nodejs-connect-auth (0.2.0-0sg2) UNRELEASED; urgency=low
 
   [ Wade Simmons ]
