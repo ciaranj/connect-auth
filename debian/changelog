@@ -1,3 +1,12 @@
+nodejs-connect-auth (0.2.1-0sg12) UNRELEASED; urgency=low
+
+  [ Wade Simmons ]
+  * ignore the support folder when debianizing
+
+  [ SimpleGeo Nerds ]
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Tue, 11 Jan 2011 01:27:16 +0000
+
 nodejs-connect-auth (0.2.1-0sg0) unstable; urgency=low
 
   * New upstream release
