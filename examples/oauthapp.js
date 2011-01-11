@@ -1,6 +1,6 @@
 var connect = require('connect');   
 var MemoryStore = require('connect/middleware/session/memory');
-var auth= require('../lib/auth');
+var auth= require('../lib');
 var url= require('url');
 var OAuthDataProvider= require('./in_memory_oauth_data_provider').OAuthDataProvider;
 function routes(app) {

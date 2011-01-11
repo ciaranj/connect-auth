@@ -1,10 +1,10 @@
 {
   "name" : "connect-auth",
   "description" : "Middleware for Connect (node.js) for handling your authentication needs.",
-  "version" : "0.2.0",
+  "version" : "0.2.1",
   "author" : "Ciaran Jessup <ciaranj@gmail.com>",
   "engines" : {"node" : ">=0.2.0"}, 
-  "main" : "lib/auth.js",
+  "main" : "lib/index.js",
   "directories" : { "lib" : "./lib" },
   "repositories" : [
     { "type":"git", "url":"http://github.com/ciaranj/connect-auth.git" }

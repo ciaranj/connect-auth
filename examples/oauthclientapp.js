@@ -1,6 +1,11 @@
 var connect = require('connect');   
 var url= require('url')
 var MemoryStore = require('connect/middleware/session/memory');
+
+// We let the example run without npm, by setting up the require paths
+// so the node-oauth submodule inside of git is used.  You do *NOT*
+// need to bother with this line if you're using npm ...
+require.paths.unshift('support')
 var OAuth= require('oauth').OAuth;
 var oa= new OAuth("http://localhost:3000/oauth/request_token",
                  "http://localhost:3000/oauth/access_token", 
