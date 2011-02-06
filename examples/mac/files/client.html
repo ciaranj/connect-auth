@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>API Test Utility</title>
+        <script type='text/javascript' src='mac.js'></script>
+        <script type='text/javascript'>
+
+            function sendRequest() {
+
+                var request = new XMLHttpRequest();
+
+                request.onreadystatechange = function () {
+                    if (request.readyState == 4) {
+
+                        document.getElementById('body').innerHTML = request.responseText;
+                    }
+                };
+
+                // Prepare authorization attributes
+
+                var uri = document.getElementById('uri').value;
+                var token = document.getElementById('token').value;
+                var secret = document.getElementById('secret').value;
+                var algorithm = document.getElementById('algorithm').value;
+                var method = document.getElementById('httpMethod').value;
+                var content = document.getElementById('content').value;
+
+                // Calculate Signature
+
+                var authorization = getAuthorizationHeader(method, uri, token, secret, algorithm, (content != '' || method == 'PUT' || method == 'POST' ? content : null));
+
+                // Send request
+
+                request.open(method, uri);
+                request.setRequestHeader('Authorization', authorization);
+
+                if (content[0] && content[0] == '{')
+                    request.setRequestHeader('Content-Type', 'application/json');
+                else
+                    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                request.send(content);
+                document.getElementById('body').innerHTML = "Waiting...";
+            }
+        </script>
+    </head>
+    <body>
+        Token: <input id='token' size='20' type='text' value='h328hdkasjd3' />
+        Secret: <input id='secret' size='20' type='text' value='23hdkdho2893hdkjd' />
+        Algorithm: <input id='algorithm' size='20' type='text' value='hmac-sha-256' />
+        <p />
+        URI: <input id='uri' size='100' type='text' value='http://localhost:8000/test' />
+        <select id="httpMethod">
+            <option selected="selected">GET</option>
+            <option>POST</option>
+            <option>PUT</option>
+            <option>DELETE</option>
+            <option>HEAD</option>
+        </select><br />
+        Body: <input id='content' size='100' type='text' />
+        <button id='button' onclick='sendRequest();'>Execute</button><br />
+        <p />
+        Result: <div id='body'></div>
+    </body>
+</html>
