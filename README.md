@@ -56,6 +56,7 @@ Changelog
 =========
  * 0.2.3
     Added index.js ( Pau Ramon Revilla ) to root folder for easier inclusion
+    Added support for SSO with http://t.sina.com.cn/ ( Danny Siu )  
  * 0.2.2
 		Added support for SSO with google (not using OpenId, but OAuth, so an intermediary approach) (Masahiro Hayashi)
  * 0.2.1
