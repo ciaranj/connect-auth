@@ -1,5 +1,4 @@
 var connect = require('connect');   
-var MemoryStore = require('connect/middleware/session/memory');
 var auth= require('../lib/index');
 
 // We let the example run without npm, by setting up the require paths
@@ -239,7 +238,8 @@ function routes(app) {
 }
 var server= connect.createServer( 
                       connect.cookieDecoder(), 
-                      connect.session({ store: new MemoryStore({ reapInterval: -1 }) }),
+                      connect.session({secret: 'FlurbleGurgleBurgle', 
+                                       store: new connect.session.MemoryStore({ reapInterval: -1 }) }),
                       connect.bodyDecoder() /* Only required for the janrain strategy*/,
                       auth( [
                             auth.Anonymous(),
