@@ -54,6 +54,8 @@ For twitter auth
 
 Changelog
 =========
+ * 0.2.3
+    Added index.js ( Pau Ramon Revilla ) to root folder for easier inclusion
  * 0.2.2
 		Added support for SSO with google (not using OpenId, but OAuth, so an intermediary approach) (Masahiro Hayashi)
  * 0.2.1
