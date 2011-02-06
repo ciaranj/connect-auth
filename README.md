@@ -56,14 +56,15 @@ Changelog
 =========
  * 0.2.3
     Added index.js ( Pau Ramon Revilla ) to root folder for easier inclusion
-    Added support for SSO with http://t.sina.com.cn/ ( Danny Siu )  
+    Added support for SSO with http://t.sina.com.cn/ ( Danny Siu )
+    Added hd query parameter to allow Google Hosted Domain for google sSO strategy ( Olmo Maldonado )
  * 0.2.2
 		Added support for SSO with google (not using OpenId, but OAuth, so an intermediary approach) (Masahiro Hayashi)
  * 0.2.1
 		Removed dead file that was seemingly breaking nDistro
  * 0.2.0  
-		Updated HTTP strategies c/o Robbie Clutton no longer require passwords to be stored in the plain. - *Breaking change*  
-		Changed the default javascript file from auth.js to index.js. - *Breaking change*  
+		Updated HTTP strategies c/o Robbie Clutton no longer require passwords to be stored in the plain. - *Breaking change*
+		Changed the default javascript file from auth.js to index.js. - *Breaking change*
 		Fixed the isAuthenticated mechanism to work with mongodb (Lakin Wecker, Richard Walsh)  
 		Realm parameter now ignored in the Authorization header for the OAuth Provider strategy (Wade Simmons)
  * 0.1.3  
