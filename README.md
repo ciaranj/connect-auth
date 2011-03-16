@@ -54,14 +54,15 @@ For twitter auth
 
 Changelog
 =========
- * 0.2.3
+ * 0.2.2
     Added index.js ( Pau Ramon Revilla ) to root folder for easier inclusion
     Added support for SSO with http://t.sina.com.cn/ ( Danny Siu )
     Added hd query parameter to allow Google Hosted Domain for google sSO strategy ( Olmo Maldonado )
 		Adds prelimenary support for the new HTTP MAC authentication scheme as defined by RFC-to-be:
 		http://tools.ietf.org/html/draft-hammer-oauth-v2-mac-token ( Eran Hammer-Lahav ) 
- * 0.2.2
 		Added support for SSO with google (not using OpenId, but OAuth, so an intermediary approach) (Masahiro Hayashi)
+		Twitter strategy now supports OAuth Callback Urls (Ben Marvell)
+		Added option 'isAutoRespond' to handle authentication errors by the application with the HTTP Schemes. (Eran Hammer-Lahav)
  * 0.2.1
 		Removed dead file that was seemingly breaking nDistro
  * 0.2.0  
