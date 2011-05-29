@@ -1,3 +1,48 @@
+nodejs-connect-auth (0.2.1-0sg17) UNRELEASED; urgency=low
+
+  * UNRELEASED
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Mon, 02 May 2011 23:40:54 +0000
+
+nodejs-connect-auth (0.2.1-0sg16) UNRELEASED; urgency=low
+
+  * UNRELEASED
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Fri, 15 Apr 2011 21:02:02 +0000
+
+nodejs-connect-auth (0.2.1-0sg15) UNRELEASED; urgency=low
+
+  * UNRELEASED
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Tue, 05 Apr 2011 22:39:10 +0000
+
+nodejs-connect-auth (0.2.1-0sg14) UNRELEASED; urgency=low
+
+  * UNRELEASED
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Thu, 17 Feb 2011 21:49:14 +0000
+
+nodejs-connect-auth (0.2.1-0sg13) UNRELEASED; urgency=low
+
+  * UNRELEASED
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Tue, 01 Feb 2011 01:54:06 +0000
+
+nodejs-connect-auth (0.2.1-0sg12) UNRELEASED; urgency=low
+
+  [ Wade Simmons ]
+  * ignore the support folder when debianizing
+
+  [ SimpleGeo Nerds ]
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Tue, 11 Jan 2011 01:27:16 +0000
+
+nodejs-connect-auth (0.2.1-0sg0) unstable; urgency=low
+
+  * New upstream release
+
+ -- Wade Simmons <wade@simplegeo.com>  Tue, 11 Jan 2011 01:23:37 +0000
+
 nodejs-connect-auth (0.2.0-0sg2) UNRELEASED; urgency=low
 
   [ Wade Simmons ]
