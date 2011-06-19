@@ -61,15 +61,18 @@ function routes(app) {
 
   app.get ('/auth/facebook', function(req, res, params) {
     req.authenticate(['facebook'], function(error, authenticated) {
-      res.writeHead(200, {'Content-Type': 'text/html'})
       if( authenticated ) {
         res.end("<html><h1>Hello Facebook user:" + JSON.stringify( req.getAuthDetails().user ) + ".</h1></html>")
       }
       else {
-        res.end("<html><h1>Facebook authentication failed :( </h1></html>")
+        console.log("Not yet authenticated... (redirection in process??)");
       }
     });
   })
+  
+  app.get ('/auth/facebook_failed', function(req, res, params) {
+      res.end("<html><h1>Bad times :( Facebook No like you!</h1></html>")
+  })  
 
   app.get ('/auth/foursquare', function(req, res, params) {
     req.authenticate(['foursquare'], function(error, authenticated) {
@@ -237,10 +240,10 @@ function routes(app) {
   })
 }
 var server= connect.createServer( 
-                      connect.cookieDecoder(), 
+                      connect.cookieParser(), 
                       connect.session({secret: 'FlurbleGurgleBurgle', 
                                        store: new connect.session.MemoryStore({ reapInterval: -1 }) }),
-                      connect.bodyDecoder() /* Only required for the janrain strategy*/,
+                      connect.bodyParser() /* Only required for the janrain strategy*/,
                       auth( [
                             auth.Anonymous(),
                             auth.Basic({validatePassword: validatePasswordFunction}),
@@ -248,7 +251,7 @@ var server= connect.createServer(
                             auth.Http({validatePassword: validatePasswordFunction}),
                             auth.Never(),
                             auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
-                            auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress}),
+                            auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress, failedUri: '/auth/facebook_failed'}),
                             auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
                             auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress}),
                             auth.Google({consumerKey: googleConsumerKey, consumerSecret: googleConsumerSecret, scope: "", callback: googleCallbackAddress}),
