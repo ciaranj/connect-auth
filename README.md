@@ -14,6 +14,7 @@ Provides out of the box authentication strategies for:
 * Yahoo (OAuth 1.0A)
 * Twitter (OAuth 1.0)
 * RPXNow / janrain SSO 
+* BitBucket ( thanks to simplegeo )
 * Foursquare (thanks to http://github.com/stunti)
 * Custom OAuth Provider Strategy (Be your own 1.0A OAuth provider!) (A Port of Christian Amor Kvalheim's  [express-oauth-plugin])  
 
@@ -54,6 +55,10 @@ For twitter auth
 
 Changelog
 =========
+
+ * 0.2.3
+    Added support for BitBucket (Thanks simplegeo) 
+    Fixed bug introduced in 0.2.2 when dealing with strategies that 'fail'
  * 0.2.2
     Added index.js ( Pau Ramon Revilla ) to root folder for easier inclusion
     Added support for SSO with http://t.sina.com.cn/ ( Danny Siu )
