@@ -61,15 +61,16 @@ function routes(app) {
 
   app.get ('/auth/facebook', function(req, res, params) {
     req.authenticate(['facebook'], function(error, authenticated) {
-      if( authenticated ) {
+      if( authenticated === true ) {
+        res.writeHead(200, {'Content-Type': 'text/html'})
         res.end("<html><h1>Hello Facebook user:" + JSON.stringify( req.getAuthDetails().user ) + ".</h1></html>")
       }
-      else {
-        console.log("Not yet authenticated... (redirection in process??)");
+      else if( authenticated === false ) {
+        res.writeHead(200, {'Content-Type': 'text/html'})
       }
     });
   })
-  
+
   app.get ('/auth/facebook_failed', function(req, res, params) {
       res.end("<html><h1>Bad times :( Facebook No like you!</h1></html>")
   })  
