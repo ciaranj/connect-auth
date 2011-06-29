@@ -1,5 +1,7 @@
-var connect = require('connect');   
-var auth= require('../lib/index');
+var connect = require('connect')
+   ,auth= require('../lib/index')
+   ,url = require('url')
+   ,fs = require('fs');
 
 // We let the example run without npm, by setting up the require paths
 // so the node-oauth submodule inside of git is used.  You do *NOT*
@@ -35,227 +37,83 @@ catch(e) {
   return;
 }
 
+// Setup the 'template' pages (don't use sync calls generally, but meh.)
+var authenticatedContent= fs.readFileSync( __dirname+"/public/authenticated.html", "utf8" );
+var unAuthenticatedContent= fs.readFileSync( __dirname+"/public/unauthenticated.html", "utf8" );
+
+// There appear to be Scurrilous ;) rumours abounding that connect-auth
+// doesn't 'work with connect' as it does not act like an 'onion skin'
+// to address this I'm showing how one might extend the *PRIMITIVES* 
+// provided by connect-auth to simplify a middleware layer. 
+
+// This middleware detects login requests (in this case requests with a query param of ?login_with=xxx where xxx is a known strategy)
+var example_auth_middleware= function() {
+  return function(req, res, next) {
+    var urlp= url.parse(req.url, true)
+    if( urlp.query.login_with ) {
+      req.authenticate([urlp.query.login_with], function(error, authenticated) {
+        if( error ) {
+          // Something has gone awry, behave as you wish.
+          console.log( error );
+          res.end();
+        }
+        else {
+          if( authenticated === undefined ) {
+            // The authentication strategy requires some more browser interaction, suggest you do nothing here!
+          }
+          else { 
+            // We've either failed to authenticate, or succeeded (req.isAuthenticated() will confirm, as will the value of the received argument)
+            next();
+          }
+        }
+      });
+    }
+    else {
+      next();
+    }
+  }
+};
+
+
 function routes(app) {
-  app.get ('/auth/twitter', function(req, res, params) {
-    req.authenticate(['twitter'], function(error, authenticated) { 
-      if( authenticated ) {
-        var oa= new OAuth("http://twitter.com/oauth/request_token",
-                          "http://twitter.com/oauth/access_token",
-                          twitterConsumerKey,
-                          twitterConsumerSecret,
-                          "1.0",
-                          null,
-                          "HMAC-SHA1");
-        oa.getProtectedResource("http://twitter.com/statuses/user_timeline.xml", "GET",
-                                req.getAuthDetails()["twitter_oauth_token"], req.getAuthDetails()["twitter_oauth_token_secret"],  function (error, data) {
-            res.writeHead(200, {'Content-Type': 'text/html'})
-            res.end("<html><h1>Hello! Twitter authenticated user ("+req.getAuthDetails().user.username+")</h1>"+data+ "</html>")
-        });
-      }
-      else {
-        res.writeHead(200, {'Content-Type': 'text/html'})
-        res.end("<html><h1>Twitter authentication failed :( </h1></html>")
-      }
-    });
-  })
-
-  app.get ('/auth/facebook', function(req, res, params) {
-    req.authenticate(['facebook'], function(error, authenticated) {
-      if( authenticated === true ) {
-        res.writeHead(200, {'Content-Type': 'text/html'})
-        res.end("<html><h1>Hello Facebook user:" + JSON.stringify( req.getAuthDetails().user ) + ".</h1></html>")
-      }
-      else if( authenticated === false ) {
-        res.writeHead(200, {'Content-Type': 'text/html'})
-        res.end("<html><h1>Bad times :( Facebook No like you!</h1></html>")
-      }
-    });
-  })
-
-  app.get ('/auth/foursquare', function(req, res, params) {
-    req.authenticate(['foursquare'], function(error, authenticated) {
-      res.writeHead(200, {'Content-Type': 'text/html'})
-      if( authenticated ) {
-        res.end("<html><h1>Hello foursquare user:" + JSON.stringify( req.getAuthDetails().user ) + ".</h1></html>")
-      }
-      else {
-        res.end("<html><h1>Foursquare authentication failed :( </h1></html>")
-      }
-    });
-  })
-
-
-  app.get ('/auth/github', function(req, res, params) {
-    req.authenticate(['github'], function(error, authenticated) {
-      res.writeHead(200, {'Content-Type': 'text/html'})
-      if( authenticated ) {
-        res.end("<html><h1>Hello github user:" + JSON.stringify( req.getAuthDetails().user ) + ".</h1></html>")
-      }
-      else {
-        res.end("<html><h1>Github authentication failed :( </h1></html>")
-      }
-    });
-  })
-
-  app.get ('/auth/yahoo', function(req, res, params) {
-    req.authenticate(['yahoo'], function(error, authenticated) {
-      res.writeHead(200, {'Content-Type': 'text/html'})
-      if( authenticated ) {
-        res.end("<html><h1>Hello Yahoo! user:" + JSON.stringify( req.getAuthDetails().user ) + ".</h1></html>")
-      }
-      else {
-        res.end("<html><h1>Yahoo! authentication failed :( </h1></html>")
-      }
-    });
-  })
-
-  app.get ('/auth/google', function(req, res, params) {
-    req.authenticate(['google'], function(error, authenticated) {
-      res.writeHead(200, {'Content-Type': 'text/html'})
-      if( authenticated ) {
-        res.end("<html><h1>Hello Google user:" + JSON.stringify( req.getAuthDetails().user ) + ".</h1></html>")
-      }
-      else {
-        res.end("<html><h1>Google authentication failed :( </h1></html>")
-      }
-    });
-  })
-
-  app.get('/auth/anon', function(req, res, params) {
-    req.authenticate(['anon'], function(error, authenticated) { 
-      res.writeHead(200, {'Content-Type': 'text/html'})
-      res.end("<html><h1>Hello! Full anonymous access</h1></html>")
-    });
-  })
-  
-  app.get('/auth/never', function(req, res, params) {
-    req.authenticate(['anon'], function(error, authenticated) { 
-      res.writeHead(200, {'Content-Type': 'text/html'})
-      res.end("<html><h1>Hello! Authenticated: "+ authenticated + "</h1></html>")
-    });
-  })
-  
-  app.get('/auth/janrain', function(req, res, params) {
-    req.authenticate(['janrain'], function(error, authenticated) { 
-      res.writeHead(200, {'Content-Type': 'text/html'})
-      res.end("<html><h1>Hello! Authenticated: "+ authenticated + "</h1></html>")
-    });
-  })
-    
-  app.get('/auth/basic', function(req, res, params) {
-    req.authenticate(['basic'], function(error, authenticated) { 
-      res.writeHead(200, {'Content-Type': 'text/html'})
-      res.end("<html><h1>Hello! Basic access</h1></html>")
-    });
-  })
-  app.get('/auth/http', function(req, res, params) {
-    req.authenticate(['http'], function(error, authenticated) { 
-      res.writeHead(200, {'Content-Type': 'text/html'})
-      res.end("<html><h1>Hello! Delegated Http access</h1></html>")
-    });
-  })  
-  app.get('/auth/digest', function(req, res, params) {
-    res.writeHead(200, {'Content-Type': 'text/html'})
-    req.authenticate(['digest'], function(error, authenticated) { 
-      if( authenticated ) {
-        if( ! req.session.counter ) req.session.counter= 0;
-        res.end("<html><h1>Hello! My little digestive"+ req.getAuthDetails().user.username+ "</h1>"  + "<p>" + (req.session.counter++) +"</p></html>")
-      }
-      else {
-        res.end("<html><h1>should not be happening...</h1></html>")
-      }
-    });
-  })
-
   app.get ('/logout', function(req, res, params) {
     req.logout();
     res.writeHead(303, { 'Location': "/" });
     res.end('');
   })
 
-  app.get('/', function(req, res, params) {
-    var self=this;
+  app.get(/.*/, function(req, res, params) {
     res.writeHead(200, {'Content-Type': 'text/html'})
-    if( !req.isAuthenticated() ) {
-      res.end('<html>                                              \n\
-          <head>                                             \n\
-            <title>connect Auth -- Not Authenticated</title> \n\
-            <script src="http://static.ak.fbcdn.net/connect/en_US/core.js"></script> \n\
-          </head>                                            \n\
-          <body>                                             \n\
-            <div id="wrapper">                               \n\
-              <h1>Not authenticated</h1>                     \n\
-              <div class="fb_button" id="fb-login" style="float:left; background-position: left -188px">          \n\
-                <a href="/auth/facebook" class="fb_button_medium">        \n\
-                  <span id="fb_login_text" class="fb_button_text"> \n\
-                    Connect with Facebook                    \n\
-                  </span>                                    \n\
-                </a>                                         \n\
-              </div>                                         \n\
-              <div style="float:left;margin-left:5px">       \n\
-                <a href="/auth/yahoo" style="border:0px">  \n\
-                 <img style="border:0px" src="http://l.yimg.com/a/i/reg/openid/buttons/1_new.png"/> \n\
-                </a>                                         \n\
-              </div>                                         \n\
-              <div style="float:left;margin-left:5px"> \n\
-                <button onclick="location.href=\'/auth/google\'" style="padding:5px;border-radius:5px;border:1px solid #555555;cursor:pointer"> \n\
-                  <img src="https://www.google.com/favicon.ico" style="margin-bottom:-3px;"><span style="font-weight:bold;">&nbsp; Sign In with Google \n\
-                </button> \n\
-              </div> \n\
-              <div style="float:left;margin-left:5px">       \n\
-                <a href="/auth/twitter" style="border:0px">  \n\
-                  <img style="border:0px" src="http://apiwiki.twitter.com/f/1242697715/Sign-in-with-Twitter-darker.png"/>\n\
-                </a>                                         \n\
-              </div>                                         \n\
-              <div style="float:left;margin-left:5px">       \n\
-                <a href="/auth/github" style="border:0px">  \n\
-                  <img style="border:0px" src="http://github.com/intridea/authbuttons/raw/master/png/github_64.png"/>\n\
-                </a>                                         \n\
-              </div>                                         \n\
-              <div style="float:left;margin-left:5px">       \n\
-                <a href="/auth/foursquare" style="border:0px">  \n\
-                  FourSquare\n\
-                </a>                                         \n\
-              </div>                                         \n\
-            </div>                                           \n\
-          </body>                                            \n\
-        </html>')
+    if( req.isAuthenticated() ) {
+      res.end( authenticatedContent.replace("#USER#", JSON.stringify( req.getAuthDetails().user )  ) );
     }
     else {
-      res.end('<html>                                              \n\
-          <head>                                             \n\
-            <title>Express Auth -- Authenticated</title>\n\
-          </head>                                            \n\
-          <body>                                             \n\
-            <div id="wrapper">                               \n\
-              <h1>Authenticated</h1>     \n\
-            ' + JSON.stringify( req.getAuthDetails().user ) + '   \n\
-             <h2><a href="/logout">Logout</a></h2>                \n\
-            </div>                                           \n\
-          </body>                                            \n\
-        </html>')
+      res.end( unAuthenticatedContent.replace("#PAGE#", req.url) );
     }
   })
 }
-var server= connect.createServer( 
+
+var server= connect.createServer(
+                      connect.static(__dirname + '/public'),
                       connect.cookieParser(), 
                       connect.session({secret: 'FlurbleGurgleBurgle', 
                                        store: new connect.session.MemoryStore({ reapInterval: -1 }) }),
                       connect.bodyParser() /* Only required for the janrain strategy*/,
+                      connect.compiler({enable: ["sass"]}),
                       auth( [
                             auth.Anonymous(),
                             auth.Basic({validatePassword: validatePasswordFunction}),
                             auth.Digest({getSharedSecretForUser: getSharedSecretForUserFunction}),
-                            auth.Http({validatePassword: validatePasswordFunction}),
+                            auth.Http({validatePassword: validatePasswordFunction, getSharedSecretForUser: getSharedSecretForUserFunction}),
                             auth.Never(),
                             auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
                             auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress, failedUri: '/auth/facebook_failed'}),
                             auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
                             auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress}),
                             auth.Google({consumerKey: googleConsumerKey, consumerSecret: googleConsumerSecret, scope: "", callback: googleCallbackAddress}),
-                            auth.Foursquare({consumerKey: foursquareConsumerKey, consumerSecret: foursquareConsumerSecret}),
+                            auth.Foursquare({appId: foursquareId, appSecret: foursquareSecret, callback: foursquareCallbackAddress}),
                             auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
                             ]), 
-                            
+                      example_auth_middleware(),      
                       connect.router(routes));
 server.listen(80);

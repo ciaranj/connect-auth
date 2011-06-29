@@ -1,0 +1,53 @@
+<html>
+    <head>
+      <title>Connect Auth -- Not Authenticated</title>
+      <script src="http://static.ak.fbcdn.net/connect/en_US/core.js"></script>
+    </head>
+    <body>
+      #PAGE#
+      <ul>
+      <li><a href="?login_with=basic" >Basic</a></li>
+      <li><a href="?login_with=digest" >Digest</a></li>
+      <li><a href="?login_with=http" >Http</a></li>
+      <li><a href="?login_with=anon" >Anonymous</a></li>
+      <li><a href="?login_with=never" >Never</a></li>
+      <li><a href="?login_with=janrain" >Janrain</a></li>
+      </ul>
+      <div id="wrapper">
+        <h1>Not authenticated</h1>
+        <a href="?login_with=basic" >Basic</a>
+        <div class="fb_button" id="fb-login" style="float:left; background-position: left -188px">
+          <a href="?login_with=facebook" class="fb_button_medium">
+            <span id="fb_login_text" class="fb_button_text">
+              Connect with Facebook
+            </span>
+          </a>
+        </div>
+        <div style="float:left;margin-left:5px">
+          <a href="?login_with=yahoo" style="border:0px">
+           <img style="border:0px" src="http://l.yimg.com/a/i/reg/openid/buttons/1_new.png"/>
+          </a>
+        </div>
+        <div style="float:left;margin-left:5px">
+          <button onclick="location.href='\?login_with=google'" style="padding:5px;border-radius:5px;border:1px solid #555555;cursor:pointer">
+            <img src="https://www.google.com/favicon.ico" style="margin-bottom:-3px;" /><span style="font-weight:bold;">&nbsp; Sign In with Google</span>
+          </button>
+        </div>
+        <div style="float:left;margin-left:5px">
+          <a href="?login_with=twitter" style="border:0px">
+            <img style="border:0px" src="/Sign-in-with-Twitter-d.png"/>
+          </a>
+        </div>
+        <div style="float:left;margin-left:5px">
+          <a href="?login_with=github" style="border:0px">
+            <img style="border:0px" src="http://github.com/intridea/authbuttons/raw/master/png/github_64.png"/>
+          </a>
+        </div>
+        <div style="float:left;margin-left:5px">
+          <a href="?login_with=foursquare" style="border:0px">
+            FourSquare
+          </a>
+        </div>
+      </div>
+    </body>
+ </html>
