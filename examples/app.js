@@ -237,10 +237,10 @@ function routes(app) {
   })
 }
 var server= connect.createServer( 
-                      connect.cookieDecoder(), 
+                      connect.cookieParser(), 
                       connect.session({secret: 'FlurbleGurgleBurgle', 
                                        store: new connect.session.MemoryStore({ reapInterval: -1 }) }),
-                      connect.bodyDecoder() /* Only required for the janrain strategy*/,
+                      connect.bodyParser() /* Only required for the janrain strategy*/,
                       auth( [
                             auth.Anonymous(),
                             auth.Basic({validatePassword: validatePasswordFunction}),
