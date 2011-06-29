@@ -32,20 +32,14 @@ Running with npm
 =================
 
     % npm install connect-auth
-    % node examples/connect-testing.js
+	% cp examples/example_keys_file.js examples/keys_file.js
 
-Edit /etc/hosts to include the following entry
+Edit keys_file.js
 
-    % grep twit /etc/hosts
-    127.0.0.1    testtwitter.com
+Run
 
-For basic auth
-
-    % open http://localhost:3000
-
-For twitter auth
-
-    % open http://localhost:3000/twitter
+    % node examples/app.js
+    % open http://localhost
 
 
 [warden]: http://github.com/hassox/warden

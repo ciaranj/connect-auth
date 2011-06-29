@@ -56,25 +56,25 @@ var example_auth_middleware= function() {
           // Something has gone awry, behave as you wish.
           console.log( error );
           res.end();
-        }
-        else {
+      }
+      else {
           if( authenticated === undefined ) {
             // The authentication strategy requires some more browser interaction, suggest you do nothing here!
-          }
-          else { 
+      }
+      else {
             // We've either failed to authenticate, or succeeded (req.isAuthenticated() will confirm, as will the value of the received argument)
             next();
-          }
-        }
-      });
-    }
-    else {
+      }
+      }
+    });
+      }
+      else {
       next();
-    }
-  }
+      }
+      }
 };
 
-
+  
 function routes(app) {
   app.get ('/logout', function(req, res, params) {
     req.logout();
@@ -93,7 +93,7 @@ function routes(app) {
   })
 }
 
-var server= connect.createServer(
+var server= connect.createServer( 
                       connect.static(__dirname + '/public'),
                       connect.cookieParser(), 
                       connect.session({secret: 'FlurbleGurgleBurgle', 
