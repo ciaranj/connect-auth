@@ -67,13 +67,10 @@ function routes(app) {
       }
       else if( authenticated === false ) {
         res.writeHead(200, {'Content-Type': 'text/html'})
+        res.end("<html><h1>Bad times :( Facebook No like you!</h1></html>")
       }
     });
   })
-
-  app.get ('/auth/facebook_failed', function(req, res, params) {
-      res.end("<html><h1>Bad times :( Facebook No like you!</h1></html>")
-  })  
 
   app.get ('/auth/foursquare', function(req, res, params) {
     req.authenticate(['foursquare'], function(error, authenticated) {
