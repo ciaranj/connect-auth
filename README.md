@@ -54,6 +54,7 @@ Changelog
 		Modified 'request.Authenticate(...)' to pass back 'undefined' when an active authentication strategy has required a communication with the browser to fully complete the authentication process.  - *Possible Breaking change*  
 		Fixed various failure cases for nearly all strategies (utilising the new 'undefined' authentication type)  
 		Migrated Foursquare strategy to OAuth2 (requires at least v0.9.3 of node-oauth)  
+		New getglue strategy
  * 0.2.3  
     Added support for BitBucket (Thanks simplegeo)  
     Fixed bug introduced in 0.2.2 when dealing with strategies that 'fail'  
