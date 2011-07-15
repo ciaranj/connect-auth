@@ -1,6 +1,9 @@
 exports.fbId= "";
 exports.fbSecret= "";
 exports.fbCallbackAddress= "http://yourtesthost.com/auth/facebook_callback"
+exports.getGlueId= "";
+exports.getGlueSecret= "";
+exports.getGlueCallbackAddress= "http://yourtesthost.com/auth/getglue_callback"
 exports.ghId= "";
 exports.ghSecret= "";
 exports.ghCallbackAddress= "http://yourtesthost.com/auth/github_callback";
