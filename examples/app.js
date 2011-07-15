@@ -60,18 +60,17 @@ var example_auth_middleware= function() {
       else {
           if( authenticated === undefined ) {
             // The authentication strategy requires some more browser interaction, suggest you do nothing here!
-      }
-      else {
+          }
+          else {
             // We've either failed to authenticate, or succeeded (req.isAuthenticated() will confirm, as will the value of the received argument)
             next();
-      }
-      }
-    });
-      }
-      else {
+          }
+      }});
+    }
+    else {
       next();
-      }
-      }
+    }
+  }
 };
 
   
@@ -93,6 +92,10 @@ function routes(app) {
   })
 }
 
+process.on('uncaughtException', function (err) {
+  console.log('Caught exception: ' + err);
+});
+
 var server= connect.createServer( 
                       connect.static(__dirname + '/public'),
                       connect.cookieParser(), 
@@ -100,19 +103,20 @@ var server= connect.createServer(
                                        store: new connect.session.MemoryStore({ reapInterval: -1 }) }),
                       connect.bodyParser() /* Only required for the janrain strategy*/,
                       connect.compiler({enable: ["sass"]}),
-                      auth( [
-                            auth.Anonymous(),
-                            auth.Basic({validatePassword: validatePasswordFunction}),
-                            auth.Digest({getSharedSecretForUser: getSharedSecretForUserFunction}),
-                            auth.Http({validatePassword: validatePasswordFunction, getSharedSecretForUser: getSharedSecretForUserFunction}),
-                            auth.Never(),
-                            auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret}),
-                            auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress, failedUri: '/auth/facebook_failed'}),
-                            auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress}),
-                            auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress}),
-                            auth.Google({consumerKey: googleConsumerKey, consumerSecret: googleConsumerSecret, scope: "", callback: googleCallbackAddress}),
-                            auth.Foursquare({appId: foursquareId, appSecret: foursquareSecret, callback: foursquareCallbackAddress}),
-                            auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
+                      auth( [ auth.Anonymous()
+                            , auth.Basic({validatePassword: validatePasswordFunction})
+                            , auth.Bitbucket({consumerKey: bitbucketConsumerKey, consumerSecret: bitbucketConsumerSecret, callback: bitbucketCallbackAddress})
+                            , auth.Digest({getSharedSecretForUser: getSharedSecretForUserFunction})
+                            , auth.Http({validatePassword: validatePasswordFunction, getSharedSecretForUser: getSharedSecretForUserFunction})
+                            , auth.Never()
+                            , auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret})
+                            , auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress})
+                            , auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress})
+                            , auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress})
+                            , auth.Google({consumerKey: googleConsumerKey, consumerSecret: googleConsumerSecret, scope: "", callback: googleCallbackAddress})
+                            , auth.Foursquare({appId: foursquareId, appSecret: foursquareSecret, callback: foursquareCallbackAddress})
+                            , auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
+                            , auth.Getglue({appId : getGlueId, appSecret: getGlueSecret, callback: getGlueCallbackAddress})
                             ]), 
                       example_auth_middleware(),      
                       connect.router(routes));

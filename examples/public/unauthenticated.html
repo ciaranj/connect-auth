@@ -1,53 +1,169 @@
 <html>
     <head>
       <title>Connect Auth -- Not Authenticated</title>
+      <link rel="stylesheet" href="BluePigment.css" type="text/css" />
+      <style type="text/css">
+      .section {
+        float:left; 
+      }
+      </style>
       <script src="http://static.ak.fbcdn.net/connect/en_US/core.js"></script>
     </head>
     <body>
-      #PAGE#
-      <ul>
-      <li><a href="?login_with=basic" >Basic</a></li>
-      <li><a href="?login_with=digest" >Digest</a></li>
-      <li><a href="?login_with=http" >Http</a></li>
-      <li><a href="?login_with=anon" >Anonymous</a></li>
-      <li><a href="?login_with=never" >Never</a></li>
-      <li><a href="?login_with=janrain" >Janrain</a></li>
-      </ul>
-      <div id="wrapper">
-        <h1>Not authenticated</h1>
-        <a href="?login_with=basic" >Basic</a>
-        <div class="fb_button" id="fb-login" style="float:left; background-position: left -188px">
-          <a href="?login_with=facebook" class="fb_button_medium">
-            <span id="fb_login_text" class="fb_button_text">
-              Connect with Facebook
-            </span>
-          </a>
-        </div>
-        <div style="float:left;margin-left:5px">
-          <a href="?login_with=yahoo" style="border:0px">
-           <img style="border:0px" src="http://l.yimg.com/a/i/reg/openid/buttons/1_new.png"/>
-          </a>
-        </div>
-        <div style="float:left;margin-left:5px">
-          <button onclick="location.href='\?login_with=google'" style="padding:5px;border-radius:5px;border:1px solid #555555;cursor:pointer">
-            <img src="https://www.google.com/favicon.ico" style="margin-bottom:-3px;" /><span style="font-weight:bold;">&nbsp; Sign In with Google</span>
-          </button>
-        </div>
-        <div style="float:left;margin-left:5px">
-          <a href="?login_with=twitter" style="border:0px">
-            <img style="border:0px" src="/Sign-in-with-Twitter-d.png"/>
-          </a>
-        </div>
-        <div style="float:left;margin-left:5px">
-          <a href="?login_with=github" style="border:0px">
-            <img style="border:0px" src="http://github.com/intridea/authbuttons/raw/master/png/github_64.png"/>
-          </a>
-        </div>
-        <div style="float:left;margin-left:5px">
-          <a href="?login_with=foursquare" style="border:0px">
-            FourSquare
-          </a>
-        </div>
-      </div>
+
+      	<!-- header starts here -->
+      	<div id="header"><div id="header-content">	
+      		<h1 id="logo-text"><a href="index.html" title="">Connect<span>Auth</span></a></h1>	
+      		<h2 id="slogan">Authly good fun...</h2>		
+      	</div></div>
+
+      	<!-- navigation starts here -->
+      	<div id="nav-wrap"><div id="nav">
+
+      		<ul>
+      			<li><a href="index.html">Home</a></li>
+      			<li><a href="index.html">News</a></li>
+      			<li id="current"><a href="index.html">Strategies</a></li>
+      			<li><a href="index.html">Support</a></li>
+      			<li><a href="index.html">About</a></li>			
+      		</ul>
+
+      	</div></div>
+
+      	<!-- content-wrap starts here -->
+      	<div id="content-wrap"><div id="content">	 
+      			<div class="box">
+      				<h1>Bundled Client Strategies</h1>
+              <div class="section">
+        				<h2>Miscellaneous</h2>
+        				<table>
+        					<tr>
+        						<th class="first">Name</th>
+        						<th>Try it!</th>
+        					</tr>
+        					<tr class="row-a">
+        						<td class="first">Anonymous</td>
+        						<td><a href="?login_with=anon">Try It!</a></td>
+        					</tr>
+        					<tr class="row-b">
+        						<td class="first">Never</td>
+        						<td><a href="?login_with=never">Try It!</a></td>
+        					</tr>
+        				</table>
+        			</div>
+              <div class="section">
+        				<h2>HTTP</h2>
+        				<table>
+        					<tr>
+        						<th class="first">Name</th>
+        						<th>Try it!</th>
+        					</tr>
+        					<tr class="row-a">
+        						<td class="first">Http Basic (Only)</td>
+        						<td><a href="?login_with=basic">Try It!</a></td>
+        					</tr>
+        					<tr class="row-b">
+        						<td class="first">Http Digest (Only)</td>
+        						<td><a href="?login_with=digest">Try It!</a></td>
+        					</tr>
+        					<tr class="row-a">
+        						<td class="first">Http (Digest then Basic)</td>
+        						<td><a href="?login_with=http">Try It!</a></td>
+        					</tr>
+        				</table>
+      			  </div>
+              <div class="section">
+      				<h2>OAuth</h2>
+      				<table>
+      					<tr>
+      						<th class="first">Name</th>
+      						<th>Try it!</th>
+      					</tr>
+      					<tr class="row-a">
+      						<td class="first">BitBucket</td>
+      						<td><a href="?login_with=bitbucket">Try It!</a></td>
+      					</tr>
+      					<tr class="row-a">
+      						<td class="first">Getglue</td>
+      						<td><a href="?login_with=getglue">Try It!</a></td>
+      					</tr>
+      					<tr class="row-b">
+      						<td class="first">Google</td>
+      						<td><div style="float:left;margin-left:5px">
+                    <button onclick="location.href='\?login_with=google'" style="padding:5px;border-radius:5px;border:1px solid #555555;cursor:pointer">
+                      <img src="https://www.google.com/favicon.ico" style="margin-bottom:-3px;" /><span style="font-weight:bold;">&nbsp; Sign In with Google</span>
+                    </button>
+                  </div></td>
+      					</tr>
+      					<tr class="row-a">
+      						<td class="first">Twitter</td>
+      						<td><div style="float:left;margin-left:5px">
+                    <a href="?login_with=twitter" style="border:0px">
+                      <img style="border:0px" src="/Sign-in-with-Twitter-d.png"/>
+                    </a>
+                  </div></td>
+      					</tr>
+      					<tr class="row-b">
+      						<td class="first">Yahoo!</td>
+      						<td><div style="float:left;margin-left:5px">
+                    <a href="?login_with=yahoo" style="border:0px">
+                     <img style="border:0px" src="http://l.yimg.com/a/i/reg/openid/buttons/1_new.png"/>
+                    </a>
+                  </div></td>
+      					</tr>
+      				</table>
+      			</div>
+            <div class="section">
+      				<h2>OAuth 2</h2>
+      				<table>
+      					<tr>
+      						<th class="first">Name</th>
+      						<th>Try it!</th>
+      					</tr>
+      					<tr class="row-a">
+      						<td class="first">Facebook</td>
+      						<td><div class="fb_button" id="fb-login" style="float:left; background-position: left -188px">
+                    <a href="?login_with=facebook" class="fb_button_medium">
+                      <span id="fb_login_text" class="fb_button_text">
+                        Connect with Facebook
+                      </span>
+                    </a>
+                  </div></td>
+      					</tr> 
+      					<tr class="row-b">
+      						<td class="first">FourSquare</td>
+      						<td><a href="?login_with=foursquare">Try It!</a></td>
+      					</tr>
+      					<tr class="row-b">
+      						<td class="first">Github</td>
+      						<td><div style="float:left;margin-left:5px">
+                    <a href="?login_with=github" style="border:0px">
+                      <img style="border:0px" src="http://github.com/intridea/authbuttons/raw/master/png/github_64.png"/>
+                    </a>
+                  </div></td>
+      					</tr>
+      					<tr class="row-b">
+      						<td class="first">Janrain</td>
+      						<td><a href="?login_with=janrain">Try It!</a></td>
+      					</tr>
+      				</table>
+      			</div>
+      			<div class="clear"></div>
+      		 </div>
+       	<!-- content-wrap ends here -->		
+      	</div></div>
+
+      	<!-- footer starts here-->		
+      	<div id="footer-wrap">
+      		<div id="footer-bottom">
+            <p>
+              &copy; 2010 Ciaran Jessup
+              &nbsp;&nbsp;&nbsp;&nbsp;
+      			  <a href="http://www.bluewebtemplates.com/" title="Website Templates">website templates</a> by <a href="http://www.styleshout.com/">styleshout</a>
+         		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      			</p>
+      		</div>	
+      <!-- footer ends-->
+      </div>      
     </body>
  </html>
