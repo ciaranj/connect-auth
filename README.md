@@ -55,6 +55,7 @@ Changelog
 		Fixed various failure cases for nearly all strategies (utilising the new 'undefined' authentication type)  
 		Migrated Foursquare strategy to OAuth2 (requires at least v0.9.3 of node-oauth)  
 		New getglue strategy
+		logout now takes an (optional) callback [this should be the default that is used.] 
  * 0.2.3  
     Added support for BitBucket (Thanks simplegeo)  
     Fixed bug introduced in 0.2.2 when dealing with strategies that 'fail'  

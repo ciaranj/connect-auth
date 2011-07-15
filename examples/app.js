@@ -76,9 +76,10 @@ var example_auth_middleware= function() {
   
 function routes(app) {
   app.get ('/logout', function(req, res, params) {
-    req.logout();
-    res.writeHead(303, { 'Location': "/" });
-    res.end('');
+    req.logout(function (error) {
+      res.writeHead(303, { 'Location': "/" });
+      res.end('');
+    });
   })
 
   app.get(/.*/, function(req, res, params) {
