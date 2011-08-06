@@ -50,6 +50,8 @@ Run
 Changelog
 =========
 
+ * 0.3.1 
+		Fixing package.json (no real changes)
  * 0.3.0  
 		Modified 'request.Authenticate(...)' to pass back 'undefined' when an active authentication strategy has required a communication with the browser to fully complete the authentication process.  - *Possible Breaking change*  
 		Fixed various failure cases for nearly all strategies (utilising the new 'undefined' authentication type)  
