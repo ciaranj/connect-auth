@@ -50,6 +50,9 @@ Run
 Changelog
 =========
 
+ * 0.3.2 
+		Fixed Google OAuth Strategy
+		Provided *new* Google OAuth2 Strategy
  * 0.3.1 
 		Fixing package.json (no real changes)
  * 0.3.0  
