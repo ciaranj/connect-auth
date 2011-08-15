@@ -9,7 +9,7 @@
   "devDependencies" : { "expresso": "0.7.7" },
   "dependencies" : {
       "connect": ">= 1.4.3"
-     , "oauth": ">= 0.9.3"
+     , "oauth": ">= 0.9.4"
   },
   "repository" : {
       "type":"git"
