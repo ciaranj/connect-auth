@@ -100,22 +100,23 @@ var server= connect.createServer(
                                        store: new connect.session.MemoryStore({ reapInterval: -1 }) }),
                       connect.bodyParser() /* Only required for the janrain strategy*/,
                       connect.compiler({enable: ["sass"]}),
-                      auth( [ auth.Anonymous()
-                            , auth.Basic({validatePassword: validatePasswordFunction})
-                            , auth.Bitbucket({consumerKey: bitbucketConsumerKey, consumerSecret: bitbucketConsumerSecret, callback: bitbucketCallbackAddress})
-                            , auth.Digest({getSharedSecretForUser: getSharedSecretForUserFunction})
-                            , auth.Http({validatePassword: validatePasswordFunction, getSharedSecretForUser: getSharedSecretForUserFunction})
-                            , auth.Never()
-                            , auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret})
-                            , auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress})
-                            , auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress})
-                            , auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress})
-                            , auth.Google({consumerKey: googleConsumerKey, consumerSecret: googleConsumerSecret, scope: "", callback: googleCallbackAddress})
-                            , auth.Google2({appId : google2Id, appSecret: google2Secret, callback: google2CallbackAddress})
-                            , auth.Foursquare({appId: foursquareId, appSecret: foursquareSecret, callback: foursquareCallbackAddress})
-                            , auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
-                            , auth.Getglue({appId : getGlueId, appSecret: getGlueSecret, callback: getGlueCallbackAddress})
-                            ]), 
-                      example_auth_middleware(),      
+                      auth( {strategies:[ auth.Anonymous()
+                                        , auth.Basic({validatePassword: validatePasswordFunction})
+                                        , auth.Bitbucket({consumerKey: bitbucketConsumerKey, consumerSecret: bitbucketConsumerSecret, callback: bitbucketCallbackAddress})
+                                        , auth.Digest({getSharedSecretForUser: getSharedSecretForUserFunction})
+                                        , auth.Http({validatePassword: validatePasswordFunction, getSharedSecretForUser: getSharedSecretForUserFunction})
+                                        , auth.Never()
+                                        , auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret})
+                                        , auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress})
+                                        , auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress})
+                                        , auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress})
+                                        , auth.Google({consumerKey: googleConsumerKey, consumerSecret: googleConsumerSecret, scope: "", callback: googleCallbackAddress})
+                                        , auth.Google2({appId : google2Id, appSecret: google2Secret, callback: google2CallbackAddress})
+                                        , auth.Foursquare({appId: foursquareId, appSecret: foursquareSecret, callback: foursquareCallbackAddress})
+                                        , auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
+                                        , auth.Getglue({appId : getGlueId, appSecret: getGlueSecret, callback: getGlueCallbackAddress})
+                                        ],
+                             trace:true}), 
+                      example_auth_middleware(),
                       connect.router(routes));
 server.listen(80);
