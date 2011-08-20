@@ -115,6 +115,7 @@ var server= connect.createServer(
                                         , auth.Foursquare({appId: foursquareId, appSecret: foursquareSecret, callback: foursquareCallbackAddress})
                                         , auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
                                         , auth.Getglue({appId : getGlueId, appSecret: getGlueSecret, callback: getGlueCallbackAddress})
+                                        , auth.Openid({})
                                         ],
                              trace:true}), 
                       example_auth_middleware(),

@@ -49,6 +49,16 @@
         						<td class="first">Never</td>
         						<td><a href="?login_with=never">Try It!</a></td>
         					</tr>
+        					<tr class="row-a">
+        						<td class="first">OpenID</td>
+        						<td>
+        						  <form method="get" action="/authenticate">
+                        <input type='hidden' name="login_with" value='openid' />
+                        <input name="openid_identifier" />
+                        <input type="submit" value="Try It!" />
+        						  </form>
+        					  </td>
+        					</tr>
         				</table>
         			</div>
               <div class="section">
