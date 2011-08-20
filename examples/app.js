@@ -90,7 +90,7 @@ function routes(app) {
 }
 
 process.on('uncaughtException', function (err) {
-  console.log('Caught exception: ' + err);
+  console.log('Caught exception: ' + err.stack);
 });
 
 var server= connect.createServer( 
@@ -115,7 +115,7 @@ var server= connect.createServer(
                                         , auth.Foursquare({appId: foursquareId, appSecret: foursquareSecret, callback: foursquareCallbackAddress})
                                         , auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
                                         , auth.Getglue({appId : getGlueId, appSecret: getGlueSecret, callback: getGlueCallbackAddress})
-                                        , auth.Openid({})
+                                        , auth.Openid({callback: openIdCallback})
                                         ],
                              trace:true}), 
                       example_auth_middleware(),

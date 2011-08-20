@@ -27,3 +27,4 @@ exports.foursquareCallbackAddress= "http://yourtesthost.com/auth/foursquare_call
 exports.janrainApiKey= "";
 exports.janrainAppDomain= "yourrpxnowsubdomain";
 exports.janrainCallbackUrl= "http://localhost/auth/janrain_callback";
+exports.openIdCallback= "http://yourtesthost.com/verify";
