@@ -115,7 +115,8 @@ var server= connect.createServer(
                                         , auth.Openid({callback: openIdCallback})
                                         ],
                              trace: true,
-                             logoutHandler: require('../lib/events').redirectOnLogout("/")}),
+                             logoutHandler: require('../lib/events').redirectOnLogout("/")
+                             }),
                       example_auth_middleware(),
                       connect.router(routes));
 server.listen(80);
