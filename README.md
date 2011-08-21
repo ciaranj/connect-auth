@@ -50,11 +50,16 @@ Run
 Changelog
 =========
 
- * 0.3.2 
-		Fixed Google OAuth Strategy
-		Provided *new* Google OAuth2 Strategy
- * 0.3.1 
-		Fixing package.json (no real changes)
+ * 0.4.0  
+		Introduce new tracing capabilities (provide an option of trace:true/function when constructing the auth middleware)  
+		Introduce 2 new 'events/callbacks' : firstLoginHandler and logoutHandler to allow fairly standard authentication strategies.  
+		Restructured the code to help with others reading it :)  
+		Although I'm bumping the version number this release is still backwards compatible with 0.3.x, it just introduces significant new functionality.  
+ * 0.3.2  
+		Fixed Google OAuth Strategy  
+		Provided *new* Google OAuth2 Strategy  
+ * 0.3.1  
+		Fixing package.json (no real changes)  
  * 0.3.0  
 		Modified 'request.Authenticate(...)' to pass back 'undefined' when an active authentication strategy has required a communication with the browser to fully complete the authentication process.  - *Possible Breaking change*  
 		Fixed various failure cases for nearly all strategies (utilising the new 'undefined' authentication type)  
