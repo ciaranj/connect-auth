@@ -72,10 +72,7 @@ var example_auth_middleware= function() {
   
 function routes(app) {
   app.get ('/logout', function(req, res, params) {
-    req.logout(function (error) {
-      res.writeHead(303, { 'Location': "/" });
-      res.end('');
-    });
+    req.logout(); // Using the 'event' model to do a redirect on logout.
   })
 
   app.get(/.*/, function(req, res, params) {
@@ -117,7 +114,8 @@ var server= connect.createServer(
                                         , auth.Getglue({appId : getGlueId, appSecret: getGlueSecret, callback: getGlueCallbackAddress})
                                         , auth.Openid({callback: openIdCallback})
                                         ],
-                             trace:true}), 
+                             trace: true,
+                             logoutHandler: require('../lib/events').redirectOnLogout("/")}),
                       example_auth_middleware(),
                       connect.router(routes));
 server.listen(80);
