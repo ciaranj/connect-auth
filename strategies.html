@@ -31,6 +31,24 @@
 
       	<!-- content-wrap starts here -->
       	<div id="content-wrap"><div id="content">	 
+      	    <div class="box">
+      	      <h1> Oh-noes this is on Github! </h1>
+      	      <p> Unfortunately as these pages are currently static you cannot try out the many bundled out of the box strategies you get with connect-auth 
+      	          on this server.  The <b>great</b> news though is that if you follow these instructions then you will be able to be up and running with this
+      	          example application in mere moments on your local machine:</p>
+
+      	      <h2>Step 1 - Fetch the awesome</h2>
+      	      All the connect-auth code is stored over on github so we need to clone it locally (this is *NOT* required if you just want to use the library in your applications, but to experiment with available strategies or to write your own it is recommended.)
+              <pre><code>git clone git://github.com/ciaranj/connect-auth.git
+cd connect-auth</code></pre>
+
+      	      <h2>Step 2 - Update and configure</h2>
+              <pre><code>npm install -d
+cp examples/example_keys_file.js examples/keys_file.js</code></pre>
+      	      After doing this it will be neccessary to update the keys_file to contain your secrets if you wish to use authentication providers that require them.
+    	      <h2>Step 3 - Run it!</h2>
+            <pre><code>sudo node examples/app.js</code></pre>
+      	    </div>
       			<div class="box">
       				<h1>Bundled Client Strategies</h1>
               <div class="section">
@@ -42,16 +60,16 @@
         					</tr>
         					<tr class="row-a">
         						<td class="first">Anonymous</td>
-        						<td><a href="?login_with=anon">Try It!</a></td>
+        						<td><a href="#">Try It!</a></td>
         					</tr>
         					<tr class="row-b">
         						<td class="first">Never</td>
-        						<td><a href="?login_with=never">Try It!</a></td>
+        						<td><a href="#">Try It!</a></td>
         					</tr>
         					<tr class="row-a">
         						<td class="first">OpenID</td>
         						<td>
-        						  <form method="get" action="/authenticate">
+        						  <form method="get" action="">
                         <input type='hidden' name="login_with" value='openid' />
                         <input name="openid_identifier" />
                         <input type="submit" value="Try It!" />
@@ -69,15 +87,15 @@
         					</tr>
         					<tr class="row-a">
         						<td class="first">Http Basic (Only)</td>
-        						<td><a href="?login_with=basic">Try It!</a></td>
+        						<td><a href="#">Try It!</a></td>
         					</tr>
         					<tr class="row-b">
         						<td class="first">Http Digest (Only)</td>
-        						<td><a href="?login_with=digest">Try It!</a></td>
+        						<td><a href="#">Try It!</a></td>
         					</tr>
         					<tr class="row-a">
         						<td class="first">Http (Digest then Basic)</td>
-        						<td><a href="?login_with=http">Try It!</a></td>
+        						<td><a href="#">Try It!</a></td>
         					</tr>
         				</table>
       			  </div>
@@ -90,16 +108,16 @@
       					</tr>
       					<tr class="row-a">
       						<td class="first">BitBucket</td>
-      						<td><a href="?login_with=bitbucket">Try It!</a></td>
+      						<td><a href="#">Try It!</a></td>
       					</tr>
       					<tr class="row-b">
       						<td class="first">Getglue</td>
-      						<td><a href="?login_with=getglue">Try It!</a></td>
+      						<td><a href="#">Try It!</a></td>
       					</tr>
       					<tr class="row-a">
       						<td class="first">Google (OAuth 1.0)</td>
       						<td><div style="float:left;margin-left:5px">
-                    <button onclick="location.href='\?login_with=google'" style="padding:5px;border-radius:5px;border:1px solid #555555;cursor:pointer">
+                    <button onclick="location.href='strategies.html'" style="padding:5px;border-radius:5px;border:1px solid #555555;cursor:pointer">
                       <img src="https://www.google.com/favicon.ico" style="margin-bottom:-3px;" /><span style="font-weight:bold;">&nbsp; Sign In with Google</span>
                     </button>
                   </div></td>
@@ -107,7 +125,7 @@
       					<tr class="row-b">
       						<td class="first">Twitter</td>
       						<td><div style="float:left;margin-left:5px">
-                    <a href="?login_with=twitter" style="border:0px">
+                    <a href="#" style="border:0px">
                       <img style="border:0px" src="/Sign-in-with-Twitter-d.png"/>
                     </a>
                   </div></td>
@@ -115,7 +133,7 @@
       					<tr class="row-a">
       						<td class="first">Yahoo!</td>
       						<td><div style="float:left;margin-left:5px">
-                    <a href="?login_with=yahoo" style="border:0px">
+                    <a href="#" style="border:0px">
                      <img style="border:0px" src="http://l.yimg.com/a/i/reg/openid/buttons/1_new.png"/>
                     </a>
                   </div></td>
@@ -132,7 +150,7 @@
       					<tr class="row-a">
       						<td class="first">Facebook</td>
       						<td><div class="fb_button" id="fb-login" style="float:left; background-position: left -188px">
-                    <a href="?login_with=facebook" class="fb_button_medium">
+                    <a href="#" class="fb_button_medium">
                       <span id="fb_login_text" class="fb_button_text">
                         Connect with Facebook
                       </span>
@@ -141,12 +159,12 @@
       					</tr> 
       					<tr class="row-b">
       						<td class="first">FourSquare</td>
-      						<td><a href="?login_with=foursquare">Try It!</a></td>
+      						<td><a href="#">Try It!</a></td>
       					</tr>
       					<tr class="row-a">
       						<td class="first">Github</td>
       						<td><div style="float:left;margin-left:5px">
-                    <a href="?login_with=github" style="border:0px">
+                    <a href="#" style="border:0px">
                       <img style="border:0px" src="http://github.com/intridea/authbuttons/raw/master/png/github_64.png"/>
                     </a>
                   </div></td>
@@ -154,14 +172,14 @@
       					<tr class="row-b">
       						<td class="first">Google (OAuth 2)</td>
       						<td><div style="float:left;margin-left:5px">
-                    <button onclick="location.href='\?login_with=google2'" style="padding:5px;border-radius:5px;border:1px solid #555555;cursor:pointer">
+                    <button onclick="location.href='strategies.html'" style="padding:5px;border-radius:5px;border:1px solid #555555;cursor:pointer">
                       <img src="https://www.google.com/favicon.ico" style="margin-bottom:-3px;" /><span style="font-weight:bold;">&nbsp; Sign In with Google</span>
                     </button>
                   </div></td>
       					</tr>
       					<tr class="row-a">
       						<td class="first">Janrain</td>
-      						<td><a href="?login_with=janrain">Try It!</a></td>
+      						<td><a href="#">Try It!</a></td>
       					</tr>
       				</table>
       			</div>
