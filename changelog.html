@@ -32,6 +32,94 @@
       	<!-- content-wrap starts here -->
       	<div id="content-wrap"><div id="content">	 
        	<!-- content-wrap ends here -->		
+        <div class="box">
+    			<h1>ChangeLog</span></h1>
+    			<ul>
+    			  <li>
+    			    <h3>0.4.0</h2>
+    			    <ul>
+    			      <li>Introduce new <b>tracing</b> capabilities (provide an option of trace:true/function when constructing the auth middleware)</li>
+    			      <li><b>Restructured</b> the code to help with others reading it :)</li>
+    			      <li>Although I'm bumping the version number this release is still <b>backwards compatible</b> with 0.3.x, it just introduces significant new functionality.</li>
+    			    </ul>
+    			  </li>
+    			  <li>
+    			    <h3>0.3.2</h2>
+    			    <ul>
+    			      <li>Fixed Google OAuth Strategy</li>
+    			      <li>Provided new Google OAuth2 Strategy</li>
+    			    </ul>
+    			  </li>
+    			  <li>
+    			    <h3>0.3.1</h2>
+    			    <ul>
+    			      <li>Fixing package.json (no real changes)</li>
+    			    </ul>
+    			  </li>
+    			  <li>
+    			    <h3>0.3.0</h2>
+    			    <ul>
+    			      <li>Modified 'request.Authenticate(...)' to pass back 'undefined' when an active authentication strategy has required a communication with the browser to fully complete the authentication process. - <b>Possible Breaking change</b></li>
+    			      <li>Fixed various failure cases for nearly all strategies (utilising the new 'undefined' authentication type)</li>
+    			      <li>Migrated Foursquare strategy to OAuth2 (requires at least v0.9.3 of node-oauth)</li>
+    			      <li>New getglue strategy logout now takes an (optional) callback [this should be the default that is used.]</li>
+    			    </ul>
+    			  </li>
+    			  <li>
+    			    <h3>0.2.3</h2>
+    			    <ul>
+    			      <li>Added support for BitBucket (Thanks simplegeo)</li>
+    			      <li>Fixed bug introduced in 0.2.2 when dealing with strategies that 'fail'</li>
+    			    </ul>
+    			  </li>
+    			  <li>
+    			    <h3>0.2.2</h2>
+    			    <ul>
+    			      <li>Added index.js ( Pau Ramon Revilla ) to root folder for easier inclusion</li>
+    			      <li>Added support for SSO with http://t.sina.com.cn/ ( Danny Siu )</li>
+    			      <li>Added hd query parameter to allow Google Hosted Domain for google sSO strategy ( Olmo Maldonado )</li>
+    			      <li>Adds prelimenary support for the new HTTP MAC authentication scheme as defined by RFC-to-be: http://tools.ietf.org/html/draft-hammer-oauth-v2-mac-token ( Eran Hammer-Lahav )</li>
+    			      <li>Added support for SSO with google (not using OpenId, but OAuth, so an intermediary approach) (Masahiro Hayashi)</li>
+    			      <li>Twitter strategy now supports OAuth Callback Urls (Ben Marvell)</li>
+    			      <li>Added option 'isAutoRespond' to handle authentication errors by the application with the HTTP Schemes. (Eran Hammer-Lahav)</li>
+    			      <li>Support for 'scoped' users (aka multiple con-current authentications) (Logan Aube)</li>
+    			    </ul>
+    			  </li>
+    			  <li>
+    			    <h3>0.2.1</h2>
+    			    <ul>
+    			      <li>Removed dead file that was seemingly breaking nDistro</li>
+    			    </ul>
+    			  </li>
+    			  <li>
+    			    <h3>0.2.0</h2>
+    			    <ul>
+    			      <li>Updated HTTP strategies c/o Robbie Clutton no longer require passwords to be stored in the plain. - Breaking change</li>
+    			      <li>Changed the default javascript file from auth.js to index.js. - Breaking change</li>
+    			      <li>Fixed the isAuthenticated mechanism to work with mongodb (Lakin Wecker, Richard Walsh)</li>
+    			      <li>Realm parameter now ignored in the Authorization header for the OAuth Provider strategy (Wade Simmons)</li>
+    			    </ul>
+    			  </li>
+    			  <li>
+    			    <h3>0.1.3</h2>
+    			    <ul>
+    			      <li>Strategies can now be written that do not require the session middleware.</li>
+    			    </ul>
+    			  </li>
+    			  <li>
+    			    <h3>0.1.2</h2>
+    			    <ul>
+    			      <li>Added in new strategy that allows your authentication strategy to be a custom OAuth provider.</li>
+    			    </ul>
+    			  </li>
+    			  <li>
+    			    <h3>0.1.0</h2>
+    			    <ul>
+    			      <li>New simplified configuration (connect idiomatic) of strategies implemented.</li>
+    			    </ul>
+    			  </li>
+    			</ul>
+        </div>
       	</div></div>
 
       	<!-- footer starts here-->		
