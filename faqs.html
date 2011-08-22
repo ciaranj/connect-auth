@@ -32,6 +32,22 @@
       	<!-- content-wrap starts here -->
       	<div id="content-wrap"><div id="content">	 
        	<!-- content-wrap ends here -->		
+       	<div class="box">
+       	  <h1>How do I install connect-auth?</h1>
+       	  <p>The easiest way to do this is with npm.  From within the root of your connect or express application, execute the following command:
+       	    <code>npm install connect-auth</code>
+       	   This is all that is required to make it available, then head on over to <a href="docs.html">the docs</a> for further detais.
+       	  </p>
+       	  <hr/>
+       	  <h1>What license is connect-auth release under?</h1>
+       	  <p><a href="http://www.opensource.org/licenses/mit-license.php">MIT</a> baby!</p>
+       	  <hr/>
+       	  <h1>Why doesn't Facebook/Twitter/Yahoo work!!!?</h1>
+       	  <p>Check your hosts!  The most commonly reported issues are due to testing with local hosts then having remote providers re-direct back to a different host.  As *most* strategies require the presence of a session this voids the session that the user began authenticating with and presents a brand new authentication in a 'weird' state which then fails.</p>
+       	  <hr/>
+       	  <h1>Will connect-auth make my life more awesome?</h1>
+       	  <p>Yes. Undoubtedly.</p>
+       	</div>
       	</div></div>
 
       	<!-- footer starts here-->		
