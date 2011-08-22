@@ -31,7 +31,129 @@
 
       	<!-- content-wrap starts here -->
       	<div id="content-wrap"><div id="content">	 
-       	<!-- content-wrap ends here -->		
+       	<!-- content-wrap ends here -->
+       	<div class="box">
+       	  <h1>Concepts</h1>
+       	  <!--ul>
+       	    <li>AuthContext</li>
+       	    <li>ExecutionResult<li>
+       	    <li>Strategy</li>
+       	    <li>StrategyExecutor</li>
+       	    <li>middleware</li>
+       	  </ul-->
+       	</div>
+
+       	<div class="box">
+       	  <h1>Strategies</h1>
+       	  <h2>Defining Custom Strategies</h2>
+       	  <h2>Bundled Strategies</h2>
+       	</div>
+       	<div class="box">
+       	  <h1>Middleware</h1>
+       	  <h2>Basic Usage</h2>
+          <code>var auth= require('connect-auth')</code> Returns a factory method that can be passed to connect (or express)  in the following manner:
+       	  <code><pre>// For express:
+app.configure(function(){
+  app.use(express.cookieParser());
+  app.use(express.session({secret: 'secrets'}));
+  app.use( auth( auth.Anonymous() ) );
+});
+
+// For connect
+connect.createServer(  connect.cookieParser()
+                     , connect.session({secret: 'FlurbleGurgleBurgle', store: new connect.session.MemoryStore({ reapInterval: -1 }) })
+                     , auth( auth.Anonymous() ));</pre></code>
+          <h2>Construction Details</h2>
+          <p>
+          The middleware factory method has two distinct signatures:
+          </p>
+          <h3><tt>auth(strategies)</tt>&nbsp;</h3>
+          <p>
+          This form of the method takes in a single configured strategy object, or an array of them.  These make up the set of available strategies to the middleware that can be authenticated against (matched on 'name'.)  This form is the easiest to use (an example is given above) and it requires a minimum of a single strategy to be passed in for the authentication to be built and available.
+          </p>
+          <h3><tt>auth(authenticationOptions)</tt>&nbsp;</h3>
+          <p>
+          This form of the method allows for greater control the authentication middleware and enables several non-default options that are required for advanced functioning of the middleware.  The passed in hash contains the following properties:
+          <ul>
+            <li><b>firstLoginHandler</b>&nbsp;:&nbsp;A callback function with the signature '<tt>function(authContext, executionResult, callback ){}</tt>'&nbsp; This property is optional, but if given <b>must</b> be a reference to a valid function that calls onto the callback function. This handler gets called whenever a scope (if given) 'first' logs into the application (session).</li>
+            <li><b>logoutHandler</b>&nbsp;:&nbsp;A callback function with the signature '<tt>function(authContext, loggedOutUser, callback){}</tt>'&nbsp; This property is optional, but if given <b>must</b> be a reference to a valid function that calls onto the callback function. This handler gets called whenever a user is 'logged out' of the application.</li>
+            <li><b>trace</b>&nbsp;:&nbsp;An optional property that defines the diagnostic tracing behaviour of the middleware. Can take 4 forms:
+              <ul>
+              <li><b>undefined</b>&nbsp;:&nbsp; - The default, no tracing will occur.</li>
+              <li><b>true</b>&nbsp;:&nbsp; - Tracing will occur using the default trace logger provided.</li>
+              <li><b>false</b>&nbsp;:&nbsp; - Tracing will not occur.</li>
+              <li><b>Function</b>&nbsp;:&nbsp; - If a function is provided, it should have the signature  '<tt>function(message, authContext, linePrefix)</tt>'&nbsp; and will be used whenever tracing is needed.</li>
+            </ul></li>
+            <li><b>strategies</b>&nbsp;&nbsp; Required property that can either be a single configured strategy object, or an array of them. (see the notes on the first form of the middleware constructor function for further details.)
+          </ul>
+          </p>
+       	</div>
+       	<div class="box">
+       	  <h1>Request Extensions</h1>
+       	  <p>
+       	  connect-auth's <b>core</b> middleware is designed to add methods into the request object that can be utilised by downstream middleware implementations. 
+       	  These downstream middleware could be further authentication approaches, authorization middlewares, routers or view renderers for example.
+       	  </p>
+       	  <p>The methods available on each request, and execute in the scope of the request object.  They are documented as follows:</p>
+       	  <h3>authenticate( [strategy, ][options, ]callback )</h3>
+       	  <p>
+       	    The main method, the big kahuna!  This method can be called to try and attempt an authentication (against 1 or more optionally given authentication strategies.)  If the request scope is currently authenticated then connect-auth will short-circuit and return without actually going through the motions of a full authentication cycle, otherwise one will begin.
+       	    The method must be treated as if it was asynchronous (it may in fact be!)  The callback will always be called back to (assuming either an out-of-the-box strategy or a correct custom strategy) however the response *may* have been
+       	    written to already and further writing may cause errors.  It is very important to pay attention to the results of the callback and act appropriately :) The
+       	    arguments are as follows:
+        	   <ul>
+        	     <li><b>strategy</b>&nbsp;:&nbsp;An optional argument that can specify either the name of the strategy to try to authenticate or an array of names.</li>
+        	     <li><b>options</b>&nbsp;:&nbsp;An optional argument that specifies the following configuration that can be applied for a given authentication request:
+        	       <ul>
+        	         <li><b>scope</b>&nbsp;:&nbsp;The current 'scope' that wants to be authenticated.</li>
+        	       </ul>
+        	     </li>
+        	     <li><b>callback</b>&nbsp;:&nbsp;A callback with the signature: '<tt>function(error, authenticated){}</tt>'&nbsp; that will fire when the authentication needs to return control to the original request.  If an error has occurred then the first argument will be non-null.  Otherwise the second argument can hold one of 3 values:
+        	       <ul><li><b><tt>true</tt></b>&nbsp; - The authentication was successful, carry on with this in mind.</li>
+        	           <li><b><tt>false</tt></b>&nbsp; - The authentication was unsuccessful, carry on with this in mind.</li>
+        	           <li><b><tt>undefined</tt></b>&nbsp; - If the variable comes back as undefined (and error is also not defined or null) the authentication strategy has had to request some action by the browser.  In this scenario you probably do not wish to perform any more server side actions that may also interact with the browser, but you may want to perform some other actions that don't affect the client state.</li>
+        	       </ul>
+        	      </li>
+        	   </ul>
+       	  </p>
+       	  <hr />
+       	  <h3>getAuthDetails([scope])</h3>
+       	  <p>
+       	  A 'view' into the internals of the authentication middleware, exposes a few utilities that could be used if neccessary but don't pollute the request's scope.
+       	  Consists of:
+       	  <ul>
+       	    <li><b>trace</b>&nbsp;:&nbsp; A function with the signature '<tt>function(message, scope, linePrefix){}</tt>'&nbsp; that can be used for aiding diagnostics when building authentication strategies.</li>
+       	    <li><b>user</b>&nbsp;:&nbsp; If not using scopes, and the request is authenticated.  This will contain the 'authenticated' user details</li>
+       	    <li><b>scopedUsers</b>&nbsp;:&nbsp; If using scopes, and the request is authenticated.  This will contain a hash of 'authenticated' user details against scope.</li>
+       	  </ul>
+       	  It also takes a single optional argument:
+       	  <ul>
+       	    <li><b>scope</b>&nbsp;:&nbsp; The scope to get the authDetails for.</li>
+       	  </ul>
+       	  </p>
+       	  <hr />
+       	  <h3>isAuthenticated()</h3>
+       	  <p>
+       	  Trivial <b>synchronous</b> method that retuns <tt>true</tt> if the current request is 'authenticated' (<tt>false</tt> otherwise).  This method will not
+       	  cause an authentication to occur.
+       	  </p>
+       	  <hr />
+       	  <h3>isUnAuthenticated()</h3>
+       	  <p>
+       	  Trivial <b>synchronous</b> method that retuns <tt>false</tt> if the current request is 'authenticated' (<tt>true</tt> otherwise).  This method will not
+       	  cause an authentication to occur.
+     	    </p>
+       	  <hr />
+       	  <h3>logout( [scope, ][callback] )</h3>
+       	  <p>
+       	   This method 'logs out' the current request (i.e. calls to 'isAuthenticated()' will no longer return true.)  The method takes 2 optional arguments:
+       	   <ul>
+       	     <li><b>scope</b>&nbsp;:&nbsp;The current 'scope' that wants to be logged out.</li>
+       	     <li><b>callback</b>&nbsp;:&nbsp;A callback with the signature: '<tt>function(error){}</tt>'&nbsp; that will fire when the logout has 'completed'.  This is optional, but recommended to use.  Wait for the callback before completing any request,or passing on to the next middleware.</li>
+       	   </ul>
+       	  </p>
+       	  <hr />
+       	</div>
       	</div></div>
 
       	<!-- footer starts here-->		
