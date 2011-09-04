@@ -49,7 +49,8 @@ Run
 
 Changelog
 =========
-
+ * 0.4.1  
+		Provide support to allow the authentication scope to 'survive' authentication redirects e.g. twitter, facebook etc. Allowing for scope usage with these strategies.  
  * 0.4.0  
 		Introduce new tracing capabilities (provide an option of trace:true/function when constructing the auth middleware)  
 		Introduce 2 new 'events/callbacks' : firstLoginHandler and logoutHandler to allow fairly standard authentication strategies.  
