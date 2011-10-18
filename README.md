@@ -14,7 +14,7 @@ Provides out of the box authentication strategies for:
 * Yahoo (OAuth 1.0A)
 * Twitter (OAuth 1.0)
 * RPXNow / janrain SSO 
-* BitBucket ( thanks to simplegeo )
+* BitBucket ( thanks to http://github.com/fjakobs )
 * Foursquare (thanks to http://github.com/stunti)
 * Custom OAuth Provider Strategy (Be your own 1.0A OAuth provider!) (A Port of Christian Amor Kvalheim's  [express-oauth-plugin])  
 
@@ -68,7 +68,7 @@ Changelog
 		New getglue strategy
 		logout now takes an (optional) callback [this should be the default that is used.] 
  * 0.2.3  
-    Added support for BitBucket (Thanks simplegeo)  
+    Added support for BitBucket (Thanks http://github.com/fjakobs)  
     Fixed bug introduced in 0.2.2 when dealing with strategies that 'fail'  
  * 0.2.2  
     Added index.js ( Pau Ramon Revilla ) to root folder for easier inclusion  
