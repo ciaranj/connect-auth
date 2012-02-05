@@ -113,6 +113,7 @@ var server= connect.createServer(
                                         , auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
                                         , auth.Getglue({appId : getGlueId, appSecret: getGlueSecret, callback: getGlueCallbackAddress})
                                         , auth.Openid({callback: openIdCallback})
+                                        , auth.Cas({casServer:casCasServer, serverBaseURL:casServerBaseURL})
                                         ],
                              trace: true,
                              logoutHandler: require('../lib/events').redirectOnLogout("/")
