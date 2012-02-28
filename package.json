@@ -8,7 +8,7 @@
   "directories" : { "lib" : "./lib" },
   "devDependencies" : { "expresso": "0.7.7" },
   "dependencies" : {
-      "connect": ">= 1.4.3"
+      "connect": "1.8.5"
      , "oauth": ">= 0.9.4"
      , "openid": "0.3.1"
   },
