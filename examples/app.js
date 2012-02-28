@@ -69,54 +69,44 @@ var example_auth_middleware= function() {
   }
 };
 
-  
-function routes(app) {
-  app.get ('/logout', function(req, res, params) {
-    req.logout(); // Using the 'event' model to do a redirect on logout.
-  })
-
-  app.get(/.*/, function(req, res, params) {
-    res.writeHead(200, {'Content-Type': 'text/html'})
-    if( req.isAuthenticated() ) {
-      res.end( authenticatedContent.replace("#USER#", JSON.stringify( req.getAuthDetails().user )  ) );
-    }
-    else {
-      res.end( unAuthenticatedContent.replace("#PAGE#", req.url) );
-    }
-  })
-}
-
 process.on('uncaughtException', function (err) {
   console.log('Caught exception: ' + err.stack);
 });
 
-var server= connect.createServer( 
-                      connect.static(__dirname + '/public'),
-                      connect.cookieParser(), 
-                      connect.session({secret: 'FlurbleGurgleBurgle', 
-                                       store: new connect.session.MemoryStore({ reapInterval: -1 }) }),
-                      connect.bodyParser() /* Only required for the janrain strategy*/,
-                      connect.compiler({enable: ["sass"]}),
-                      auth( {strategies:[ auth.Anonymous()
-                                        , auth.Basic({validatePassword: validatePasswordFunction})
-                                        , auth.Bitbucket({consumerKey: bitbucketConsumerKey, consumerSecret: bitbucketConsumerSecret, callback: bitbucketCallbackAddress})
-                                        , auth.Digest({getSharedSecretForUser: getSharedSecretForUserFunction})
-                                        , auth.Http({validatePassword: validatePasswordFunction, getSharedSecretForUser: getSharedSecretForUserFunction})
-                                        , auth.Never()
-                                        , auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret})
-                                        , auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress})
-                                        , auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress})
-                                        , auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress})
-                                        , auth.Google({consumerKey: googleConsumerKey, consumerSecret: googleConsumerSecret, scope: "", callback: googleCallbackAddress})
-                                        , auth.Google2({appId : google2Id, appSecret: google2Secret, callback: google2CallbackAddress})
-                                        , auth.Foursquare({appId: foursquareId, appSecret: foursquareSecret, callback: foursquareCallbackAddress})
-                                        , auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
-                                        , auth.Getglue({appId : getGlueId, appSecret: getGlueSecret, callback: getGlueCallbackAddress})
-                                        , auth.Openid({callback: openIdCallback})
-                                        ],
-                             trace: true,
-                             logoutHandler: require('../lib/events').redirectOnLogout("/")
-                             }),
-                      example_auth_middleware(),
-                      connect.router(routes));
-server.listen(80);
+var app= connect();
+app.use(connect.static(__dirname + '/public'))  
+   .use(connect.cookieParser('my secret here'))
+   .use(connect.session())
+   .use(connect.bodyParser())
+   .use(auth({strategies:[ auth.Anonymous()
+                     , auth.Basic({validatePassword: validatePasswordFunction})
+                     , auth.Bitbucket({consumerKey: bitbucketConsumerKey, consumerSecret: bitbucketConsumerSecret, callback: bitbucketCallbackAddress})
+                     , auth.Digest({getSharedSecretForUser: getSharedSecretForUserFunction})
+                     , auth.Http({validatePassword: validatePasswordFunction, getSharedSecretForUser: getSharedSecretForUserFunction})
+                     , auth.Never()
+                     , auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret})
+                     , auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress})
+                     , auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress})
+                     , auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress})
+                     , auth.Google({consumerKey: googleConsumerKey, consumerSecret: googleConsumerSecret, scope: "", callback: googleCallbackAddress})
+                     , auth.Google2({appId : google2Id, appSecret: google2Secret, callback: google2CallbackAddress})
+                     , auth.Foursquare({appId: foursquareId, appSecret: foursquareSecret, callback: foursquareCallbackAddress})
+                     , auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
+                     , auth.Getglue({appId : getGlueId, appSecret: getGlueSecret, callback: getGlueCallbackAddress})
+                     , auth.Openid({callback: openIdCallback})], 
+              trace: true, 
+              logoutHandler: require('../lib/events').redirectOnLogout("/")}))
+   .use(example_auth_middleware())
+   .use('/logout', function(req, res, params) {
+     req.logout(); // Using the 'event' model to do a redirect on logout.
+   })      
+   .use("/", function(req, res, params) {
+     res.writeHead(200, {'Content-Type': 'text/html'})
+     if( req.isAuthenticated() ) {
+       res.end( authenticatedContent.replace("#USER#", JSON.stringify( req.getAuthDetails().user )  ) );
+     }
+     else {
+       res.end( unAuthenticatedContent.replace("#PAGE#", req.url) );
+     }
+   })
+   .listen(80);
