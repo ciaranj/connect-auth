@@ -1,5 +1,5 @@
 var connect = require('connect');   
-var MemoryStore = require('connect/middleware/session/memory');
+//var MemoryStore = require('connect/middleware/session/memory');
 var auth= require('../lib');
 var url= require('url');
 var OAuthDataProvider= require('./in_memory_oauth_data_provider').OAuthDataProvider;
@@ -93,7 +93,7 @@ var authorizationFinishedProvider = function(err, req, res, result) {
 }
 
 var server= connect.createServer( 
-                      connect.bodyDecoder(),
+                      connect.bodyParser(),
                       auth( [
                             auth.Oauth({oauth_provider: new OAuthDataProvider({  applications:[{title:'Test', description:'Test App', consumer_key:"JiYmll7CX3AXDgasnnIDeg",secret:"mWPBRK5kG2Tkthuf5zRV1jYWOEwnjI6xs3QVRqOOg"}]
                                                                                , users:[{username:'foo', password:'bar'}] }),
