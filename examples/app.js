@@ -45,7 +45,7 @@ var unAuthenticatedContent= fs.readFileSync( __dirname+"/public/unauthenticated.
 // This middleware detects login requests (in this case requests with a query param of ?login_with=xxx where xxx is a known strategy)
 var example_auth_middleware= function() {
   return function(req, res, next) {
-    var urlp= url.parse(req.url, true)
+    var urlp= url.parse(req.originalUrl, true)
     if( urlp.query.login_with ) {
       req.authenticate([urlp.query.login_with], function(error, authenticated) {
         if( error ) {
@@ -106,7 +106,7 @@ app.use(connect.static(__dirname + '/public'))
        res.end( authenticatedContent.replace("#USER#", JSON.stringify( req.getAuthDetails().user )  ) );
      }
      else {
-       res.end( unAuthenticatedContent.replace("#PAGE#", req.url) );
+       res.end( unAuthenticatedContent.replace("#PAGE#", req.originalUrl) );
      }
    })
    .listen(80);
