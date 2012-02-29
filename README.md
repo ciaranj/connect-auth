@@ -16,7 +16,9 @@ Provides out of the box authentication strategies for:
 * RPXNow / janrain SSO 
 * BitBucket ( thanks to http://github.com/fjakobs )
 * Foursquare (thanks to http://github.com/stunti)
-* Custom OAuth Provider Strategy (Be your own 1.0A OAuth provider!) (A Port of Christian Amor Kvalheim's  [express-oauth-plugin])  
+* Custom OAuth Provider Strategy (2-Legged & 3-Legged)(Be your own 1.0A OAuth provider!) (A Port of Christian Amor Kvalheim's  [express-oauth-plugin])  
+* Sina  (Danny Siu)
+* Google (Oauth 1 & OAuth 2 clients)
 
 Take Care!
 
@@ -49,6 +51,11 @@ Run
 
 Changelog
 =========
+ * 0.5.0  
+		Update to support connect 2.0.0  
+		New 2-legged OAuth provider support ( Jason Chu )  
+		Support for configuring Facebook's OAuth dialog mode ( Barada Sahu )  
+		Stopped some global scope pollution ( Fabian Jakobs )  
  * 0.4.1  
 		Provide support to allow the authentication scope to 'survive' authentication redirects e.g. twitter, facebook etc. Allowing for scope usage with these strategies.  
  * 0.4.0  
