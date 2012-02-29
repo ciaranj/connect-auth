@@ -19,6 +19,8 @@ Provides out of the box authentication strategies for:
 * Custom OAuth Provider Strategy (2-Legged & 3-Legged)(Be your own 1.0A OAuth provider!) (A Port of Christian Amor Kvalheim's  [express-oauth-plugin])  
 * Sina  (Danny Siu)
 * Google (Oauth 1 & OAuth 2 clients)
+* Yammer (Stephen Belanger)
+* Linkedin (Stephen Belanger)
 
 Take Care!
 
@@ -54,6 +56,8 @@ Changelog
  * 0.5.0  
 		Update to support connect 2.0.0  
 		New 2-legged OAuth provider support ( Jason Chu )  
+		Yammer Support added (Stephen Belanger)  
+		Linkedin Support added (Stephen Belanger)  
 		Support for configuring Facebook's OAuth dialog mode ( Barada Sahu )  
 		Stopped some global scope pollution ( Fabian Jakobs )  
  * 0.4.1  

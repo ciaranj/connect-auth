@@ -93,7 +93,9 @@ app.use(connect.static(__dirname + '/public'))
                      , auth.Foursquare({appId: foursquareId, appSecret: foursquareSecret, callback: foursquareCallbackAddress})
                      , auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
                      , auth.Getglue({appId : getGlueId, appSecret: getGlueSecret, callback: getGlueCallbackAddress})
-                     , auth.Openid({callback: openIdCallback})], 
+                     , auth.Openid({callback: openIdCallback})
+                     , auth.Yammer({consumerKey: yammerConsumerKey, yammerSecret: yammerConsumerSecret, callback: yammerCallback})
+                     , auth.Linkedin({consumerKey: linkedinConsumerKey, consumerSecret: linkedinConsumerSecret, callback: linkedinCallback})], 
               trace: true, 
               logoutHandler: require('../lib/events').redirectOnLogout("/")}))
    .use(example_auth_middleware())
