@@ -34,3 +34,6 @@ exports.linkedinCallback= "http://localhost/auth/linkedin_callback";
 exports.yammerConsumerKey= "";
 exports.yammerConsumerSecret= "";
 exports.yammerCallback= "http://localhost/auth/yammer_callback";
+exports.nkConnectId = "";
+exports.nkConnectSecret = "";
+exports.nkConnectCallbackAddress = "http://localhost/auth/nkConnect_callback";
