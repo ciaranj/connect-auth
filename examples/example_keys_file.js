@@ -36,4 +36,4 @@ exports.yammerConsumerSecret= "";
 exports.yammerCallback= "http://localhost/auth/yammer_callback";
 exports.nkConnectId = "";
 exports.nkConnectSecret = "";
-exports.nkConnectCallbackAddress = "http://localhost/auth/nkConnect_callback";
+exports.nkConnectCallbackAddress = "http://localhost/auth/nk_callback";
