@@ -53,6 +53,8 @@ Run
 
 Changelog
 =========
+ * 0.5.1  
+		Change Google OAuth2 strategy to only request (and retrieve) the authenticating user's profile information (and optionally their e-mail address.)
  * 0.5.0  
 		Update to support connect 2.0.0  
 		New 2-legged OAuth provider support ( Jason Chu )  
