@@ -49,6 +49,8 @@ Run
 
 Changelog
 =========
+ * 0.4.3  
+		Change Google OAuth2 strategy to only request (and retrieve) the authenticating user's profile information (and optionally their e-mail address.)
  * 0.4.2  
 		Locking connect dependency to 1.8.5 to provide a version that works with expressjs
  * 0.4.1  

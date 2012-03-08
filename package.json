@@ -1,7 +1,7 @@
 {
   "name" : "connect-auth",
   "description" : "Middleware for Connect (node.js) for handling your authentication needs.",
-  "version" : "0.4.2",
+  "version" : "0.4.3",
   "author" : "Ciaran Jessup <ciaranj@gmail.com>",
   "engines" : {"node" : ">=0.4.0"}, 
   "main" : "lib/index.js",

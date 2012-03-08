@@ -108,7 +108,7 @@ var server= connect.createServer(
                                         , auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress})
                                         , auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress})
                                         , auth.Google({consumerKey: googleConsumerKey, consumerSecret: googleConsumerSecret, scope: "", callback: googleCallbackAddress})
-                                        , auth.Google2({appId : google2Id, appSecret: google2Secret, callback: google2CallbackAddress})
+                                        , auth.Google2({appId : google2Id, appSecret: google2Secret, callback: google2CallbackAddress, requestEmailPermission: true})
                                         , auth.Foursquare({appId: foursquareId, appSecret: foursquareSecret, callback: foursquareCallbackAddress})
                                         , auth.Janrain({apiKey: janrainApiKey, appDomain: janrainAppDomain, callback: janrainCallbackUrl})
                                         , auth.Getglue({appId : getGlueId, appSecret: getGlueSecret, callback: getGlueCallbackAddress})
