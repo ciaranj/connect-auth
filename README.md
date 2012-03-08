@@ -49,6 +49,8 @@ Run
 
 Changelog
 =========
+ * 0.4.2  
+		Locking connect dependency to 1.8.5 to provide a version that works with expressjs
  * 0.4.1  
 		Provide support to allow the authentication scope to 'survive' authentication redirects e.g. twitter, facebook etc. Allowing for scope usage with these strategies.  
  * 0.4.0  
