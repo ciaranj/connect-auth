@@ -36,9 +36,9 @@ OAuthDataProvider.prototype.previousRequestToken = function(token, callback) {
   callback(null, token);
 }
 
-OAuthDataProvider.prototype.tokenByConsumer = function(consumerKey, callback) {
+OAuthDataProvider.prototype.tokenByTokenAndConsumer = function(token, consumerKey, callback) {
   for(var key in this.oauth_users_request_tokens) {
-    if( this.oauth_users_request_tokens[key] && this.oauth_users_request_tokens[key].consumer_key == consumerKey ) {
+    if( this.oauth_users_request_tokens[key] && this.oauth_users_request_tokens[key].consumer_key == consumerKey && this.oauth_users_request_tokens[key].token == token ) {
       callback(null, this.oauth_users_request_tokens[key]);
       return;
     }
