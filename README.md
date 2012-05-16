@@ -53,6 +53,10 @@ Run
 
 Changelog
 =========
+* 0.5.2  
+		Allow multiple users per application in Oauth Provider (3 legged) (Evan Prodromou)
+		Improved the behaviour of the OAuth Provider's Form/POST signing behaviours ( Evan Prodromou )
+		Fix broken 3-legged OAuth provider support ( Jason Chu )
  * 0.5.1  
 		Change Google OAuth2 strategy to only request (and retrieve) the authenticating user's profile information (and optionally their e-mail address.)
  * 0.5.0  

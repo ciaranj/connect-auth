@@ -1,14 +1,14 @@
 {
   "name" : "connect-auth",
   "description" : "Middleware for Connect (node.js) for handling your authentication needs.",
-  "version" : "0.5.1",
+  "version" : "0.5.2",
   "author" : "Ciaran Jessup <ciaranj@gmail.com>",
   "engines" : {"node" : ">=0.6.0"}, 
   "main" : "lib/index.js",
   "directories" : { "lib" : "./lib" },
   "dependencies" : {
       "connect": "2.0.0"
-     , "oauth":  "0.9.5"
+     , "oauth":  "0.9.7"
      , "openid": "0.4.1"
   },
   "repository" : {
