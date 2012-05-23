@@ -174,6 +174,10 @@ OAuthDataProvider.prototype.validateNotReplay = function(accessToken, timestamp,
   callback(null, true);
 }
 
+OAuthDataProvider.prototype.validateNotReplayClient = function(consumerKey, accessToken, timestamp, nonce, callback) {
+  callback(null, true);
+}
+
 /**
   Fetch user id based on token (used to identify user in oauth calls later)
 **/
