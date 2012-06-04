@@ -21,6 +21,7 @@ Provides out of the box authentication strategies for:
 * Google (Oauth 1 & OAuth 2 clients)
 * Yammer (Stephen Belanger)
 * Linkedin (Stephen Belanger)
+* NK (OAuth 1/2)
 
 Take Care!
 
