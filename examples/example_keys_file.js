@@ -34,3 +34,6 @@ exports.linkedinCallback= "http://localhost/auth/linkedin_callback";
 exports.yammerConsumerKey= "";
 exports.yammerConsumerSecret= "";
 exports.yammerCallback= "http://localhost/auth/yammer_callback";
+exports.skyrockConsumerKey= "";
+exports.skyrockConsumerSecret= "";
+exports.skyrockCallbackAddress= "http://local.host/auth/skyrock_callback";
