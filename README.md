@@ -53,7 +53,9 @@ Run
 
 Changelog
 =========
-* 0.5.2  
+ * 0.5.3  
+		Fix GitHub strategy to work with v3 of their API (older API versions no longer work!) (Dennis Reimann)
+ * 0.5.2  
 		Allow multiple users per application in Oauth Provider (3 legged) (Evan Prodromou)
 		Improved the behaviour of the OAuth Provider's Form/POST signing behaviours ( Evan Prodromou )
 		Fix broken 3-legged OAuth provider support ( Jason Chu )
