@@ -96,7 +96,8 @@ app.use(connect.static(__dirname + '/public'))
                      , auth.Getglue({appId : getGlueId, appSecret: getGlueSecret, callback: getGlueCallbackAddress})
                      , auth.Openid({callback: openIdCallback})
                      , auth.Yammer({consumerKey: yammerConsumerKey, yammerSecret: yammerConsumerSecret, callback: yammerCallback})
-                     , auth.Linkedin({consumerKey: linkedinConsumerKey, consumerSecret: linkedinConsumerSecret, callback: linkedinCallback})], 
+                     , auth.Linkedin({consumerKey: linkedinConsumerKey, consumerSecret: linkedinConsumerSecret, callback: linkedinCallback})
+                     , auth.Nk({appId : nkConnectId, appSecret: nkConnectSecret, callback: nkConnectCallbackAddress})], 
               trace: true, 
               logoutHandler: require('../lib/events').redirectOnLogout("/")}))
    .use(example_auth_middleware())

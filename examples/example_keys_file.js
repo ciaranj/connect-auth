@@ -37,3 +37,6 @@ exports.yammerCallback= "http://localhost/auth/yammer_callback";
 exports.skyrockConsumerKey= "";
 exports.skyrockConsumerSecret= "";
 exports.skyrockCallbackAddress= "http://local.host/auth/skyrock_callback";
+exports.nkConnectId = "";
+exports.nkConnectSecret = "";
+exports.nkConnectCallbackAddress = "http://localhost/auth/nk_callback";

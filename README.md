@@ -22,6 +22,7 @@ Provides out of the box authentication strategies for:
 * Yammer (Stephen Belanger)
 * Linkedin (Stephen Belanger)
 * Skyrock.com (Nicolas Quiénot)
+* NK (Kamil Kamiński & Marek Ziółkowski)
 
 Take Care!
 
