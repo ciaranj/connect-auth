@@ -16,7 +16,7 @@ Provides out of the box authentication strategies for:
 * RPXNow / janrain SSO 
 * BitBucket ( thanks to http://github.com/fjakobs )
 * Foursquare (thanks to http://github.com/stunti)
-* Custom OAuth Provider Strategy (2-Legged & 3-Legged)(Be your own 1.0A OAuth provider!) (A Port of Christian Amor Kvalheim's  [express-oauth-plugin])  
+* Custom OAuth Provider Strategy (2-Legged & 3-Legged)(Be your own 1.0A OAuth provider!) (Christian Amor Kvalheim & Evan Prodromou)  
 * Sina  (Danny Siu)
 * Google (Oauth 1 & OAuth 2 clients)
 * Yammer (Stephen Belanger)
@@ -36,7 +36,7 @@ Running with npm
 =================
 
     % npm install connect-auth
-	% cp examples/example_keys_file.js examples/keys_file.js
+    % cp examples/example_keys_file.js examples/keys_file.js
 
 Edit keys_file.js
 
