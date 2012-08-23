@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/ciaranj/connect-auth.png)](http://travis-ci.org/ciaranj/connect-auth)
 connect-auth
 ============
 
