@@ -57,11 +57,6 @@ ul, ol {
 }
 
 /* images */
-img {
-	background: #FAFAFA;
-   border: 1px solid #0F7ACC;
-	padding: 6px;
-}
 img.float-right {
    margin: .5em 0 1em 1em;   
 }
