@@ -55,6 +55,8 @@ Run
 
 Changelog
 =========
+ * **0.5.4**  
+		Fixes Twitter strategy, they now require the oauth_verifier query parameter to be sent (Michael "Z" Goddard)_
  * **0.5.3**  
 		Fix GitHub strategy to work with v3 of their API (older API versions no longer work!) (Dennis Reimann)
 		Added new Skyrock.com provider (Nicolas Quiénot)
