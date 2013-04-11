@@ -47,6 +47,7 @@ Run
 Changelog
 =========
  * **0.6.0**  
+		Google OAuth2 strategy now supports offline access (Oz Katz)  
 		New Mozilla Persona Strategy (verifier, not IdP)  
 		BREAKING: Moves dependencies to connect 2.7.x and node >=0.8.0.  This should make modern installations easier to keep up to date. (Evan Prodromou )  
  * **0.5.4**  
