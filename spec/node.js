@@ -7,7 +7,7 @@ require("express")
 require("express/spec")
 require("express/plugins") 
 
-print = require('sys').puts
+print = require('util').puts
 quit = process.exit
 readFile = require('fs').readFileSync
 

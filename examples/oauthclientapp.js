@@ -17,7 +17,7 @@ app.use(connect.logger())
    .use(connect.session())
    .use ('/oauth/callback', function(req, res, params) {
      var parsedUrl= url.parse(req.originalUrl, true);
-     console.log(require('sys').inspect(req.session))
+     console.log(require('util').inspect(req.session))
      oa.getOAuthAccessToken(parsedUrl.query.oauth_token, req.session.oauth_token_secret, parsedUrl.query.oauth_verifier, 
        function(error, oauth_access_token, oauth_access_token_secret, results) {
          oa.getProtectedResource("http://localhost:3000/fetch/unicorns", "GET", oauth_access_token, oauth_access_token_secret, function(error, data){
