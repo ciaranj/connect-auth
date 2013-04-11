@@ -58,8 +58,18 @@ var example_auth_middleware= function() {
             // The authentication strategy requires some more browser interaction, suggest you do nothing here!
           }
           else {
-            // We've either failed to authenticate, or succeeded (req.isAuthenticated() will confirm, as will the value of the received argument)
-            next();
+            if( urlp.query.login_with == "persona" && authenticated === false ) {
+              // persona behaves differently to the other strategies as it is async-to-the-page POST.
+              res.writeHead(401, "" );
+              res.end()
+            }
+            else {
+              if( authenticated == true ) {
+                req.getAuthDetails().activeStrategy= urlp.query.login_with;
+              }
+              // We've either failed to authenticate, or succeeded (req.isAuthenticated() will confirm, as will the value of the received argument)
+              next();
+            }
           }
       }});
     }
@@ -87,6 +97,7 @@ app.use(connect.static(__dirname + '/public'))
                      , auth.Twitter({consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret})
                      , auth.Skyrock({consumerKey: skyrockConsumerKey, consumerSecret: skyrockConsumerSecret, callback: skyrockCallbackAddress})
                      , auth.Facebook({appId : fbId, appSecret: fbSecret, scope: "email", callback: fbCallbackAddress})
+                     , auth.Persona({audience: personaAudience})
                      , auth.Github({appId : ghId, appSecret: ghSecret, callback: ghCallbackAddress})
                      , auth.Yahoo({consumerKey: yahooConsumerKey, consumerSecret: yahooConsumerSecret, callback: yahooCallbackAddress})
                      , auth.Google({consumerKey: googleConsumerKey, consumerSecret: googleConsumerSecret, scope: "", callback: googleCallbackAddress})
@@ -106,10 +117,18 @@ app.use(connect.static(__dirname + '/public'))
    .use("/", function(req, res, params) {
      res.writeHead(200, {'Content-Type': 'text/html'})
      if( req.isAuthenticated() ) {
-       res.end( authenticatedContent.replace("#USER#", JSON.stringify( req.getAuthDetails().user )  ) );
+       var logoutApproach= "";
+       if( req.getAuthDetails().activeStrategy  == "persona" ) {
+         logoutApproach= "<a href='#' onclick='navigator.id.logout();'>Logout</a>";
+       }
+       else {
+         logoutApproach= "<a href='/logout'>Logout</a>";
+       }
+       res.end( authenticatedContent.replace("#USER#", JSON.stringify( req.getAuthDetails().user )  )
+                                       .replace("#LOGOUTAPPROACH#", logoutApproach) );
      }
      else {
-       res.end( unAuthenticatedContent.replace("#PAGE#", req.originalUrl) );
+       res.end( unAuthenticatedContent.replace("#PAGE#", req.originalUrl));
      }
    })
    .listen(80);

@@ -31,6 +31,7 @@ exports.openIdCallback= "http://yourtesthost.com/verify";
 exports.linkedinConsumerKey= "";
 exports.linkedinConsumerSecret= "";
 exports.linkedinCallback= "http://localhost/auth/linkedin_callback";
+exports.personaAudience="yourtesthost.com";
 exports.yammerConsumerKey= "";
 exports.yammerConsumerSecret= "";
 exports.yammerCallback= "http://localhost/auth/yammer_callback";

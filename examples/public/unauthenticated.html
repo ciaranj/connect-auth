@@ -8,6 +8,9 @@
       }
       </style>
       <script src="http://static.ak.fbcdn.net/connect/en_US/core.js"></script>
+      <script src="https://login.persona.org/include.js"></script>
+      <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
     </head>
     <body>
 
@@ -57,6 +60,10 @@
                         <input type="submit" value="Try It!" />
         						  </form>
         					  </td>
+        					</tr>
+        					<tr class="row-b">
+        						<td class="first">Mozilla Persona</td>
+        						<td><a id="personasignin" href="#"  onclick="navigator.id.request();"><img src="persona_sign_in_blue.png"/></a></td>
         					</tr>
         				</table>
         			</div>
@@ -199,4 +206,30 @@
       <!-- footer ends-->
       </div>      
     </body>
+    <script type="text/javascript">
+    $(function(){ // on DOM Ready
+      navigator.id.watch({
+        loggedInUser: null,
+        onlogin: function(assertion) {
+          // A user has logged in! Here you need to:
+          // 1. Send the assertion to your backend for verification and to create a session.
+          // 2. Update your UI.
+          $.ajax({
+            type: 'POST',
+            url: '?login_with=persona', // This is a URL on your website.
+            data: {assertion: assertion},
+            success: function(res, status, xhr) {
+              window.location.reload();
+            },
+            error: function(xhr, status, err) {
+              navigator.id.logout();
+              alert("Login failure: " + err);
+            }
+          });
+        },
+        onlogout: function() {
+        }
+      });
+    })
+    </script>
  </html>

@@ -1,12 +1,35 @@
 <html>
     <head>
       <title>Connect Auth -- Authenticated</title>
+      <script src="https://login.persona.org/include.js"></script>
+      <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     </head>
     <body>
       <div id="wrapper">
         <h1>Authenticated</h1>
         <div id="user">#USER#</div>
-       <h2><a href="/logout">Logout</a></h2>
+       <h2>#LOGOUTAPPROACH#</h2>
       </div>
-    </body>
+       <script type="text/javascript">
+        $(function(){ // on DOM Ready
+          navigator.id.watch({
+            loggedInUser: null,
+            onlogin: function(assertion) {
+            },
+            onlogout: function() {
+              // A user has logged out! Here you need to:
+              // Tear down the user's session by redirecting the user or making a call to your backend.
+              // Also, make sure loggedInUser will get set to null on the next page load.
+              // (That's a literal JavaScript null. Not false, 0, or undefined. null.)
+              $.ajax({
+                type: 'POST',
+                url: '/logout', // This is a URL on your website.
+                success: function(res, status, xhr) { window.location.reload(); },
+                error: function(xhr, status, err) { alert("Logout failure: " + err); }
+              });
+            }
+          });
+        })
+        </script>
+</body>
 </html>
