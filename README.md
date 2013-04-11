@@ -55,6 +55,8 @@ Run
 
 Changelog
 =========
+ * **0.6.0** 
+		BREAKING: Moves dependencies to connect 2.7.x and node >=0.8.0.  This should make modern installations easier to keep up to date. (Evan Prodromou )
  * **0.5.4**  
 		Fixes Twitter strategy, they now require the oauth_verifier query parameter to be sent (Michael "Z" Goddard)_
  * **0.5.3**  
