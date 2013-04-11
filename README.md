@@ -112,3 +112,8 @@ Changelog
 		Added in new strategy that allows your authentication strategy to be a custom OAuth provider.  
  * **0.1.0**  
 		New simplified configuration (connect idiomatic) of strategies implemented.
+
+License
+=======
+
+Released under the MIT license (see LICENSE file)
