@@ -23,16 +23,8 @@ Provides out of the box authentication strategies for:
 * Yammer (Stephen Belanger)
 * Linkedin (Stephen Belanger)
 * Skyrock.com (Nicolas Quiénot)
+* Mozilla Persona
 
-Take Care!
-
--cj.
-
-
-Testing
-=======
-
-    % make
 
 Running with npm
 =================
@@ -50,24 +42,24 @@ Run
 
 [warden]: http://github.com/hassox/warden
 [npm]: http://github.com/isaacs/npm    
-[express-oauth-plugin]: http://github.com/christkv/node-express-oauth-plugin
 
 
 Changelog
 =========
- * **0.6.0** 
-		BREAKING: Moves dependencies to connect 2.7.x and node >=0.8.0.  This should make modern installations easier to keep up to date. (Evan Prodromou )
+ * **0.6.0**  
+		New Mozilla Persona Strategy (verifier, not IdP)  
+		BREAKING: Moves dependencies to connect 2.7.x and node >=0.8.0.  This should make modern installations easier to keep up to date. (Evan Prodromou )  
  * **0.5.4**  
-		Fixes Twitter strategy, they now require the oauth_verifier query parameter to be sent (Michael "Z" Goddard)_
+		Fixes Twitter strategy, they now require the oauth_verifier query parameter to be sent (Michael "Z" Goddard)_  
  * **0.5.3**  
-		Fix GitHub strategy to work with v3 of their API (older API versions no longer work!) (Dennis Reimann)
-		Added new Skyrock.com provider (Nicolas Quiénot)
+		Fix GitHub strategy to work with v3 of their API (older API versions no longer work!) (Dennis Reimann)  
+		Added new Skyrock.com provider (Nicolas Quiénot)  
  * **0.5.2**  
-		Allow multiple users per application in Oauth Provider (3 legged) (Evan Prodromou)
-		Improved the behaviour of the OAuth Provider's Form/POST signing behaviours ( Evan Prodromou )
-		Fix broken 3-legged OAuth provider support ( Jason Chu )
+		Allow multiple users per application in Oauth Provider (3 legged) (Evan Prodromou)  
+		Improved the behaviour of the OAuth Provider's Form/POST signing behaviours ( Evan Prodromou )  
+		Fix broken 3-legged OAuth provider support ( Jason Chu )  
  * **0.5.1**  
-		Change Google OAuth2 strategy to only request (and retrieve) the authenticating user's profile information (and optionally their e-mail address.)
+		Change Google OAuth2 strategy to only request (and retrieve) the authenticating user's profile information (and optionally their e-mail address.)  
  * **0.5.0**  
 		Update to support connect 2.0.0  
 		New 2-legged OAuth provider support ( Jason Chu )  
