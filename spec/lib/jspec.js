@@ -1522,7 +1522,7 @@
 
     error : function(message, e) {
       if ('stack' in e)
-        require('sys').puts(e.stack + '\n')
+        require('util').puts(e.stack + '\n')
       throw (message ? message : '') + e.toString() + 
               (e.line ? ' near line ' + e.line : '')
     },
