@@ -7,8 +7,8 @@
   "main" : "lib/index.js",
   "directories" : { "lib" : "./lib" },
   "dependencies" : {
-      "connect": "2.21.x"
-     , "oauth":  "0.9.7"
+      //"connect": "2.21.x", 
+      "oauth":  "0.9.7"
      , "openid": "0.4.1"
   },
   "repository" : {
