@@ -7,7 +7,7 @@
   "main" : "lib/index.js",
   "directories" : { "lib" : "./lib" },
   "dependencies" : {
-      "connect": "2.7.x"
+      "connect": "^2.7.11"
      , "oauth":  "0.9.7"
      , "openid": "0.4.1"
   },
